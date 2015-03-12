@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PreferenceSpecifiers</key>
+	<array>
+		<dict>
+			<key>Values</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+				<string>3</string>
+				<string>4</string>
+				<string>5</string>
+				<string>6</string>
+				<string>7</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Sunday</string>
+				<string>Monday</string>
+				<string>Tuesday</string>
+				<string>Wednesday</string>
+				<string>Thursday</string>
+				<string>Friday</string>
+				<string>Saturday</string>
+			</array>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>The week begins on</string>
+			<key>Key</key>
+			<string>firstDay</string>
+			<key>DefaultValue</key>
+			<string>2</string>
+		</dict>
+		<dict>
+			<key>Values</key>
+			<array>
+				<string>gregorian</string>
+				<string>buddhist</string>
+				<string>chinese</string>
+				<string>hebrew</string>
+				<string>iso8601</string>
+				<string>indian</string>
+				<string>islamic</string>
+				<string>islamicCivil</string>
+				<string>japanese</string>
+				<string>persian</string>
+				<string>republicOfChina</string>
+			</array>
+			<key>Titles</key>
+			<array>
+				<string>Gregorian</string>
+				<string>Buddhist</string>
+				<string>Chinese</string>
+				<string>Hebrew</string>
+				<string>ISO8601</string>
+				<string>Indian</string>
+				<string>Islamic</string>
+				<string>Islamic Civil</string>
+				<string>Japanese</string>
+				<string>Persian</string>
+				<string>Republic Of China</string>
+			</array>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>Calendar</string>
+			<key>Key</key>
+			<string>calendarIdentifier</string>
+			<key>DefaultValue</key>
+			<string>gregorian</string>
+		</dict>
+	</array>
+	<key>StringsTable</key>
+	<string>Root</string>
+</dict>
+</plist>
