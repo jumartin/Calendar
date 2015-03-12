@@ -462,9 +462,6 @@
 					72B5D8ED180D73E0004ADB86 = {
 						DevelopmentTeam = RSMX8QUE69;
 					};
-					72B5D908180D73E0004ADB86 = {
-						TestTargetID = 72B5D8ED180D73E0004ADB86;
-					};
 				};
 			};
 			buildConfigurationList = 72B5D8E9180D73E0004ADB86 /* Build configuration list for PBXProject "Calendar" */;
@@ -709,21 +706,19 @@
 		72B5D91E180D73E0004ADB86 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Calendar.app/Calendar";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Calendar/Calendar-Prefix.pch";
+				GCC_PREFIX_HEADER = "CalendarDemo/Calendar-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "CalendarTests/CalendarTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
@@ -731,17 +726,15 @@
 		72B5D91F180D73E0004ADB86 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Calendar.app/Calendar";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Calendar/Calendar-Prefix.pch";
+				GCC_PREFIX_HEADER = "CalendarDemo/Calendar-Prefix.pch";
 				INFOPLIST_FILE = "CalendarTests/CalendarTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
