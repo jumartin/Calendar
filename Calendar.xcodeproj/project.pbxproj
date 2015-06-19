@@ -23,6 +23,7 @@
 		7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7258E8B01A5A98DD007F88AF /* WeekSettingsViewController.m */; };
 		72707CDD18858F9600830A8E /* MGCMonthPlannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72707CDC18858F9600830A8E /* MGCMonthPlannerView.m */; };
 		72707CE2188592AC00830A8E /* MGCMonthPlannerViewDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72707CE1188592AC00830A8E /* MGCMonthPlannerViewDayCell.m */; };
+		72734BB71B32E93800B2BA49 /* main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */; };
 		727A94B218F3B9C300260D6E /* MGCEventsRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A94B118F3B9C300260D6E /* MGCEventsRowView.m */; };
 		727A94B818F3D28F00260D6E /* MGCEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A94B718F3D28F00260D6E /* MGCEventView.m */; };
 		727A94BD18F3D2E000260D6E /* MGCStandardEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A94BC18F3D2E000260D6E /* MGCStandardEventView.m */; };
@@ -43,7 +44,7 @@
 		72B5D917180D73E0004ADB86 /* CalendarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B5D916180D73E0004ADB86 /* CalendarTests.m */; };
 		72B5D922180D73F3004ADB86 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B5D920180D73F3004ADB86 /* EventKit.framework */; };
 		72B5D923180D73F3004ADB86 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B5D921180D73F3004ADB86 /* EventKitUI.framework */; };
-		72B5D928180D7476004ADB86 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72B5D927180D7476004ADB86 /* main.storyboard */; };
+		72B5D928180D7476004ADB86 /* main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72B5D927180D7476004ADB86 /* main-iPad.storyboard */; };
 		72B5D92E180D7840004ADB86 /* MGCEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B5D92D180D7840004ADB86 /* MGCEventCell.m */; };
 		72B5D953180D9A93004ADB86 /* MGCTimedEventsViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B5D952180D9A93004ADB86 /* MGCTimedEventsViewLayout.m */; };
 		72DD627618155AAD00D270DB /* MGCDayPlannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72DD627518155AAD00D270DB /* MGCDayPlannerView.m */; };
@@ -104,6 +105,7 @@
 		72707CDC18858F9600830A8E /* MGCMonthPlannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCMonthPlannerView.m; sourceTree = "<group>"; };
 		72707CE0188592AC00830A8E /* MGCMonthPlannerViewDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCMonthPlannerViewDayCell.h; sourceTree = "<group>"; };
 		72707CE1188592AC00830A8E /* MGCMonthPlannerViewDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCMonthPlannerViewDayCell.m; sourceTree = "<group>"; };
+		72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "main-iPhone.storyboard"; sourceTree = "<group>"; };
 		727A94B018F3B9C300260D6E /* MGCEventsRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventsRowView.h; sourceTree = "<group>"; };
 		727A94B118F3B9C300260D6E /* MGCEventsRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCEventsRowView.m; sourceTree = "<group>"; };
 		727A94B618F3D28F00260D6E /* MGCEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventView.h; sourceTree = "<group>"; };
@@ -134,7 +136,7 @@
 		72B5D916180D73E0004ADB86 /* CalendarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarTests.m; sourceTree = "<group>"; };
 		72B5D920180D73F3004ADB86 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		72B5D921180D73F3004ADB86 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
-		72B5D927180D7476004ADB86 /* main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
+		72B5D927180D7476004ADB86 /* main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "main-iPad.storyboard"; sourceTree = "<group>"; };
 		72B5D92C180D7840004ADB86 /* MGCEventCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventCell.h; sourceTree = "<group>"; };
 		72B5D92D180D7840004ADB86 /* MGCEventCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCEventCell.m; sourceTree = "<group>"; };
 		72B5D951180D9A93004ADB86 /* MGCTimedEventsViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCTimedEventsViewLayout.h; sourceTree = "<group>"; };
@@ -328,7 +330,8 @@
 				72B5D901180D73E0004ADB86 /* AppDelegate.m */,
 				721DC18718219C4D00F9470C /* MainViewController.h */,
 				721DC18818219C4D00F9470C /* MainViewController.m */,
-				72B5D927180D7476004ADB86 /* main.storyboard */,
+				72B5D927180D7476004ADB86 /* main-iPad.storyboard */,
+				72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */,
 				72EF080B1A3DB8C6005699CA /* MonthViewController.h */,
 				72EF080C1A3DB8C6005699CA /* MonthViewController.m */,
 				72EF080D1A3DB8C6005699CA /* YearViewController.h */,
@@ -494,7 +497,8 @@
 				72B5D8FC180D73E0004ADB86 /* InfoPlist.strings in Resources */,
 				721CA1B41A9382990083F41A /* Localizable.strings in Resources */,
 				72B5D904180D73E0004ADB86 /* Images.xcassets in Resources */,
-				72B5D928180D7476004ADB86 /* main.storyboard in Resources */,
+				72B5D928180D7476004ADB86 /* main-iPad.storyboard in Resources */,
+				72734BB71B32E93800B2BA49 /* main-iPhone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -680,7 +684,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -698,7 +702,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
