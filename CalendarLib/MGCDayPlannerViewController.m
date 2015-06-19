@@ -59,13 +59,6 @@
 
 - (void)loadView
 {
-	if (self.nibName)
-	{
-		[super loadView];
-		NSAssert(self.dayPlannerView != nil, @"NIB file did not set dayPlannerView property.");
-		return;
-	}
-	
 	MGCDayPlannerView *dayPlannerView = [[MGCDayPlannerView alloc]initWithFrame:CGRectZero];
 	dayPlannerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 	self.dayPlannerView = dayPlannerView;

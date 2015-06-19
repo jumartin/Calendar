@@ -36,7 +36,7 @@
 
 @property (nonatomic) NSCalendar *calendar;
 @property (nonatomic) NSSet *visibleCalendars;
-@property (nonatomic) EKEventStore *eventStore;
+@property (nonatomic, readonly) EKEventStore *eventStore;
 
 /** designated initializer */
 - (instancetype)initWithEventStore:(EKEventStore*)eventStore;

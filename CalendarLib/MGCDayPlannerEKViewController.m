@@ -56,7 +56,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 @property (nonatomic) dispatch_queue_t bgQueue;			// dispatch queue for loading events
 @property (nonatomic) NSMutableOrderedSet *daysToLoad;	// dates for months of which we want to load events
-@property (nonatomic, readonly) NSCache *eventsCache;
+@property (nonatomic) NSCache *eventsCache;
 @property EKEvent* savedEvent;
 @property (nonatomic, copy) EventSaveCompletionBlockType saveCompletion;
 @property (nonatomic) BOOL accessGranted;
@@ -69,25 +69,13 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 @implementation MGCDayPlannerEKViewController
 
-@synthesize eventsCache = _eventsCache;
+@synthesize eventStore = _eventStore;
+@synthesize calendar = _calendar;
 
 - (instancetype)initWithEventStore:(EKEventStore*)eventStore
 {
 	if (self = [super initWithNibName:nil bundle:nil]) {
 		_eventStore = eventStore;
-		if (eventStore == nil) {
-			_eventStore = [[EKEventStore alloc]init];
-		}
-		
-		[[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadEvents) name:EKEventStoreChangedNotification object:self.eventStore];
-
-		_eventsCache = [[OSCache alloc]init];
-		_eventsCache.countLimit = cacheSize;
-		//_eventsCache.delegate = self;
-	
-		_bgQueue = dispatch_queue_create("MGCDayPlannerEKViewController.bgQueue", NULL);
-		
-		[self checkEventStoreAccessForCalendar];
 	}
 	return self;
 }
@@ -167,11 +155,6 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 #pragma mark - UIViewController
 
-- (instancetype)initWithNibName:(NSString*)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil
-{
-	return [self initWithEventStore:nil];
-}
-
 - (void)dealloc
 {
 	[[NSNotificationCenter defaultCenter]removeObserver:self];
@@ -180,6 +163,16 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+	
+	[[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadEvents) name:EKEventStoreChangedNotification object:self.eventStore];
+
+	self.eventsCache = [[OSCache alloc]init];
+	self.eventsCache.countLimit = cacheSize;
+	//self.eventsCache.delegate = self;
+	
+	self.bgQueue = dispatch_queue_create("MGCDayPlannerEKViewController.bgQueue", NULL);
+	
+	[self checkEventStoreAccessForCalendar];
 	
 	self.dayPlannerView.calendar = self.calendar;
 	[self.dayPlannerView registerClass:MGCStandardEventView.class forEventViewWithReuseIdentifier:EventCellReuseIdentifier];
@@ -192,10 +185,26 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 #pragma mark - Properties
 
+- (NSCalendar*)calendar
+{
+	if (_calendar == nil) {
+		_calendar = [NSCalendar currentCalendar];
+	}
+	return _calendar;
+}
+
 - (void)setCalendar:(NSCalendar*)calendar
 {
 	_calendar = calendar;
 	self.dayPlannerView.calendar = calendar;
+}
+
+- (EKEventStore*)eventStore
+{
+	if (_eventStore == nil) {
+		_eventStore = [[EKEventStore alloc]init];
+	}
+	return _eventStore;
 }
 
 - (void)setVisibleCalendars:(NSSet*)visibleCalendars

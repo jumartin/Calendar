@@ -143,7 +143,6 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 
 - (void)setup
 {
-	_calendar = [NSCalendar currentCalendar];
 	_numberOfVisibleDays = 7;
 	_hourSlotHeight = 65.;
 	_timeColumnWidth = 60.;
@@ -234,6 +233,16 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		[self reloadAllEvents];
 		self.allDayEventsView.contentOffset = CGPointMake(self.timedEventsView.contentOffset.x, 0);
 	}
+}
+
+// public
+
+- (NSCalendar*)calendar
+{
+	if (_calendar == nil) {
+		_calendar = [NSCalendar currentCalendar];
+	}
+	return _calendar;
 }
 
 // public
@@ -1480,23 +1489,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 
 #pragma mark - UIView
 
-- (void)setFrame:(CGRect)frame
-{
-	[super setFrame:frame];
-	[self invalidateLayout];
-}
-
-- (void)setNeedsLayout
-{
-	[super setNeedsLayout];
-	[self invalidateLayout];
-}
-
 - (void)layoutSubviews
 {
 	//NSLog(@"layout subviews");
 	
 	[super layoutSubviews];
+	
+	[self invalidateLayout];
 	
 	[self setupSubviews];
 	[self updateVisibleDaysRange];
