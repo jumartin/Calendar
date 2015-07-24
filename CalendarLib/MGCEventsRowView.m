@@ -43,6 +43,8 @@ static const CGFloat kCellSpacing = 2.;		// space around cells
 
 @implementation MGCEventsRowView
 
+@dynamic delegate;
+
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame])
