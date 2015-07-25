@@ -1,0 +1,6 @@
+module OSCache {
+  umbrella header "OSCache-umbrella.h"
+
+  export *
+  module * { export * }
+}
