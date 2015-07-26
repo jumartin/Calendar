@@ -1,4 +1,4 @@
-MGC Graphical Calendars Library is a set of views and controllers for displaying and scheduling events on iOS.
+MGC Graphical Calendars Library (CalendarLib) is a set of views and controllers for displaying and scheduling events on iOS.
 
 ![Day Planner View](CalendarDocs/DayPlannerView.jpg?raw=true "Day planner view")
 
@@ -31,24 +31,28 @@ The views work on the iPhone but the EventKit controllers still need a bit of wo
 
 # Installation #
 
-Copy the CalendarLib folder content into your project.
+## CocoaPods ##
+    
+The best way is to use [CocoaPods](https://cocoapods.org/pods/CalendarLib). Add the following line to your `Podfile`: 
+
+	pod 'CalendarLib', '~> 1.0'
+
+## The old way ##
+
+If you don't want to use CocoaPods, you need to copy the content of the CalendarLib folder into your project, as well as the source of the two dependencies: [OSCache](https://github.com/nicklockwood/OSCache) and [OrderedDictionary](https://github.com/nicklockwood/OrderedDictionary).
 
 # Getting started #
 
-1.	Create a new project
-	
-2.	Import the **CalendarLib** folder into the project
-
-3.  If you want to use EventKit as a data source, create an instance of `MGCDayPlannerEKViewController` or `MGCMonthPlannerEKViewController`, or subclass them for your own needs.
+1.  If you want to use EventKit as a data source, create an instance of `MGCDayPlannerEKViewController` or `MGCMonthPlannerEKViewController`, or subclass them for your own needs.
 	
 	Don't forget to add the following frameworks to the project:
 	
 	- **EventKit.framework**
 	- **EventKitUI.framework**
 	
-4.  If you want to use another event provider, subclass one of `MGCDayPlannerViewController` or `MGCMonthPlannerViewController` and implement the data source protocol methods.
+2.  If you want to use another event provider, subclass one of `MGCDayPlannerViewController` or `MGCMonthPlannerViewController` and implement the data source protocol methods.
 
-5.  If you want to use a custom event cell, subclass `MGCEventView` or `MGCStandardEventView` and register the class with the day / month planner view.
+3.  If you want to use a custom event cell, subclass `MGCEventView` or `MGCStandardEventView` and register the class with the day / month planner view.
 	
 See the demo project to get an idea of how to use the library.
 
