@@ -1142,7 +1142,7 @@ typedef enum
 		
 	NSInteger start = MAX(0, [self.calendar components:NSCalendarUnitDay fromDate:view.referenceDate toDate:dateRange.start options:0].day);
 	NSInteger end = [self.calendar components:NSCalendarUnitDay fromDate:view.referenceDate toDate:dateRange.end options:0].day;
-	if ([dateRange.end timeIntervalSinceDate:[self.calendar mgc_startOfDayForDate:dateRange.end]] > 0) {
+	if ([dateRange.end timeIntervalSinceDate:[self.calendar mgc_startOfDayForDate:dateRange.end]] >= 0) {
 		end++;
 	}
 	end = MIN(end, NSMaxRange(view.daysRange));
