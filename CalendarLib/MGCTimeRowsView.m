@@ -55,6 +55,7 @@
 		_timeColor = [UIColor lightGrayColor];
 		_currentTimeColor = [UIColor redColor];
 		_rounding = 15;
+		_hourRange = NSMakeRange(0, 24);
 		
 		self.showsCurrentTime = YES;
 	}
@@ -78,6 +79,12 @@
 	return self.hourSlotHeight > 100;
 }
 
+- (void)setHourRange:(NSRange)hourRange
+{
+    NSAssert(hourRange.length >= 1 && NSMaxRange(hourRange) <= 24, @"Invalid hour range %@", NSStringFromRange(hourRange));
+    _hourRange = hourRange;
+}
+
 - (void)setTimeMark:(NSTimeInterval)timeMark
 {
 	_timeMark = timeMark;
@@ -89,15 +96,14 @@
 	[self setNeedsDisplay];
 }
 
-// time is the interval since the start of the day
+// time is the interval since the start of the day.
+// result can be negative if hour range doesn't start at 0
 - (CGFloat)yOffsetForTime:(NSTimeInterval)time rounded:(BOOL)rounded
 {
-	if (rounded) {
+    if (rounded) {
 		time = roundf(time / (self.rounding * 60)) * (self.rounding * 60);
 	}
-	
-	CGFloat hour = time / 3600.;
-	return hour * self.hourSlotHeight + self.insetsHeight;
+    return (time / 3600. - self.hourRange.location) * self.hourSlotHeight + self.insetsHeight;
 }
 
 // time is the interval since the start of the day
@@ -139,25 +145,33 @@
     return attrStr;
 }
 
+- (BOOL)canDisplayTime:(NSTimeInterval)ti
+{
+    CGFloat hour = ti/3600.;
+    return hour >= self.hourRange.location && hour <= NSMaxRange(self.hourRange);
+}
+
 - (void)drawRect:(CGRect)rect
 {
 	const CGFloat kSpacing = 5.;
 	const CGFloat dash[2]= {2, 3};
-	
+    
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	
     CGSize markSizeMax = CGSizeMake(self.timeColumnWidth - 2.*kSpacing, CGFLOAT_MAX);
     
 	// calculate rect for current time mark
 	NSTimeInterval currentTime = -[[self.calendar mgc_startOfDayForDate:[NSDate date]] timeIntervalSinceNow];
+    
     NSAttributedString *markAttrStr = [self attributedStringForTimeMark:MGCDayPlannerTimeMarkCurrent time:currentTime];
     CGSize markSize = [markAttrStr boundingRectWithSize:markSizeMax options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
     
 	CGFloat y = [self yOffsetForTime:currentTime rounded:NO];
-	CGRect rectCurTime = CGRectMake(kSpacing, y - markSize.height/2., markSizeMax.width, markSize.height);
+    CGRect rectCurTime = CGRectZero;
 	
 	// draw current time mark
-	if (self.showsCurrentTime) {
+	if (self.showsCurrentTime && [self canDisplayTime:currentTime]) {
+        rectCurTime =  CGRectMake(kSpacing, y - markSize.height/2., markSizeMax.width, markSize.height);
         [markAttrStr drawInRect:rectCurTime];
 		CGRect lineRect = CGRectMake(self.timeColumnWidth - kSpacing, y, self.bounds.size.width - self.timeColumnWidth + kSpacing, 1);
         CGContextSetFillColorWithColor(context, self.currentTimeColor.CGColor);
@@ -169,17 +183,17 @@
     markSize = [floatingMarkAttrStr boundingRectWithSize:markSizeMax options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
 	
     y = [self yOffsetForTime:self.timeMark rounded:YES];
-	CGRect rectTimeMark = CGRectMake(kSpacing, y - markSize.height/2., markSizeMax.width, markSize.height);
-	
-	BOOL drawTimeMark = (self.timeMark != 0) && !CGRectIntersectsRect(rectTimeMark, rectCurTime);
-	
+    CGRect rectTimeMark = CGRectMake(kSpacing, y - markSize.height/2., markSizeMax.width, markSize.height);
+    
+    BOOL drawTimeMark = self.timeMark != 0 && [self canDisplayTime:self.timeMark];
+    
 	// draw the hour marks
-	for (int i = 0; i <= 24; i++) {
+	for (NSUInteger i = self.hourRange.location; i <=  NSMaxRange(self.hourRange); i++) {
 		
         markAttrStr = [self attributedStringForTimeMark:MGCDayPlannerTimeMarkHeader time:(i % 24)*3600];
         markSize = [markAttrStr boundingRectWithSize:markSizeMax options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
 
-		y = i * self.hourSlotHeight + self.insetsHeight;
+        y = (i - self.hourRange.location) * self.hourSlotHeight + self.insetsHeight;
 		CGRect r = CGRectMake(kSpacing, y - markSize.height / 2., markSizeMax.width, markSize.height);
 
 		if (!CGRectIntersectsRect(r, rectCurTime) || !self.showsCurrentTime) {
@@ -193,7 +207,7 @@
 		CGContextAddLineToPoint(context, self.timeColumnWidth + rect.size.width, y);
 		CGContextStrokePath(context);
 		
-		if (self.showsHalfHourLines && i != 24) {
+		if (self.showsHalfHourLines && i < NSMaxRange(self.hourRange)) {
 			y += self.hourSlotHeight / 2;
 			CGContextSetLineDash(context, 0, dash, 2);
 			CGContextMoveToPoint(context, self.timeColumnWidth, y),

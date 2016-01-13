@@ -98,8 +98,10 @@ static NSDateFormatter *dateFormatter;
 	[self checkIfValid];
 
 	// range.end <= start || end <= range.start
-	if ([range.end compare:self.start] != NSOrderedDescending || [self.end compare:range.start] != NSOrderedDescending)
-		return;
+    if ([range.end compare:self.start] != NSOrderedDescending || [self.end compare:range.start] != NSOrderedDescending) {
+        self.end = self.start;
+        return;
+    }
 
 	if ([self.start compare:range.start] == NSOrderedAscending) {
 		self.start = range.start;
@@ -150,6 +152,11 @@ static NSDateFormatter *dateFormatter;
 - (BOOL)isEqualToDateRange:(MGCDateRange*)range
 {
 	return range && [range.start isEqualToDate:self.start] && [range.end isEqualToDate:self.end];
+}
+
+- (BOOL)isEmpty
+{
+    return [self.start isEqualToDate:self.end];
 }
 
 #pragma mark - NSObject

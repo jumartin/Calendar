@@ -32,22 +32,28 @@
 
 @interface WeekSettingsViewController ()
 
-@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic) NSDateFormatter *dateFormatter;
 
-@property (nonatomic, weak) IBOutlet UILabel *visibleDaysLabel;
-@property (nonatomic, weak) IBOutlet UIStepper *visibleDaysStepper;
+@property (nonatomic) IBOutlet UILabel *visibleDaysLabel;
+@property (nonatomic) IBOutlet UIStepper *visibleDaysStepper;
+
+@property (nonatomic) IBOutlet UILabel *firstHourLabel;
+@property (nonatomic) IBOutlet UIStepper *firstHourStepper;
+
+@property (nonatomic) IBOutlet UILabel *lastHourLabel;
+@property (nonatomic) IBOutlet UIStepper *lastHourStepper;
 
 @property (nonatomic) IBOutlet UISwitch *pagingSwitch;
 @property (nonatomic) IBOutlet UISwitch *zoomingSwitch;
 
 @property (nonatomic) IBOutlet UISwitch *allDayEventSwitch;
 
-@property (nonatomic, strong) IBOutlet UIDatePicker *startDatePicker;
-@property (nonatomic, strong) IBOutlet UITableViewCell *startDateCell;
+@property (nonatomic) IBOutlet UIDatePicker *startDatePicker;
+@property (nonatomic) IBOutlet UITableViewCell *startDateCell;
 @property (nonatomic) IBOutlet UILabel *startDateLabel;
 
-@property (nonatomic, strong) IBOutlet UIDatePicker *endDatePicker;
-@property (nonatomic, strong) IBOutlet UITableViewCell *endDateCell;
+@property (nonatomic) IBOutlet UIDatePicker *endDatePicker;
+@property (nonatomic) IBOutlet UITableViewCell *endDateCell;
 @property (nonatomic) IBOutlet UILabel *endDateLabel;
 
 @property (nonatomic) BOOL showsStartDatePicker, showsEndDatePicker;
@@ -65,15 +71,18 @@
 
 - (UIView*)makeCancelAccessoryView
 {
-	UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 22)];
+	UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 18)];
 	
 	UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-	cancelButton.frame = CGRectMake(8, 0, 22, 22);
+	cancelButton.frame = CGRectMake(12, 0, 18, 18);
 	[cancelButton setTitle:@"x" forState:UIControlStateNormal];
+    cancelButton.titleLabel.font = [UIFont systemFontOfSize:13 weight:UIFontWeightBlack];
+    cancelButton.tintColor = [UIColor blackColor];
+    cancelButton.contentEdgeInsets = UIEdgeInsetsMake(0, 0, 2, 0);
 	cancelButton.clipsToBounds = YES;
-	cancelButton.layer.cornerRadius = 5;
+	cancelButton.layer.cornerRadius = 9;
 	cancelButton.layer.borderWidth = 1;
-	cancelButton.layer.borderColor = [[UIColor blueColor]CGColor];
+	cancelButton.layer.borderColor = [[UIColor grayColor]CGColor];
 	[cancelButton addTarget:self action:@selector(accessoryButtonTapped:withEvent:) forControlEvents:UIControlEventTouchUpInside];
 	
 	[view addSubview:cancelButton];
@@ -93,6 +102,15 @@
 	self.visibleDaysStepper.value = self.dayPlannerView.numberOfVisibleDays;
 	self.visibleDaysLabel.text = [NSString stringWithFormat:@"%d", (int)self.dayPlannerView.numberOfVisibleDays];
 	
+    self.firstHourStepper.value = self.dayPlannerView.hourRange.location;
+    self.firstHourLabel.text = [NSString stringWithFormat:@"%d", (int)self.dayPlannerView.hourRange.location];
+ 
+    self.lastHourStepper.value = NSMaxRange(self.dayPlannerView.hourRange);
+    self.lastHourLabel.text = [NSString stringWithFormat:@"%d", (int)NSMaxRange(self.dayPlannerView.hourRange)];
+    
+    self.lastHourStepper.minimumValue = self.firstHourStepper.value + 1;
+    self.firstHourStepper.maximumValue = self.lastHourStepper.value - 1;
+    
 	self.pagingSwitch.on = self.dayPlannerView.pagingEnabled;
 	self.zoomingSwitch.on = self.dayPlannerView.zoomingEnabled;
 	
@@ -226,16 +244,28 @@
 
 - (IBAction)stepperChanged:(UIStepper*)sender
 {
-	NSDate* date = self.dayPlannerView.visibleDays.start;
-	self.visibleDaysLabel.text = [NSString stringWithFormat:@"%1.0f", sender.value];
-	self.dayPlannerView.numberOfVisibleDays  = sender.value;
-	if (sender.value <= 3) {
-		self.dayPlannerView.dateFormat = @"eeee d MMMM";
-	}
-	else {
-		self.dayPlannerView.dateFormat = @"eeeee\nd MMM";
-	}
-	[self.dayPlannerView scrollToDate:date options:MGCDayPlannerScrollDate animated:NO];
+    if (sender == self.visibleDaysStepper) {
+        NSDate* date = self.dayPlannerView.visibleDays.start;
+        self.visibleDaysLabel.text = [NSString stringWithFormat:@"%1.0f", sender.value];
+        self.dayPlannerView.numberOfVisibleDays  = sender.value;
+        if (sender.value <= 3) {
+            self.dayPlannerView.dateFormat = @"eeee d MMMM";
+        }
+        else {
+            self.dayPlannerView.dateFormat = @"eeeee\nd MMM";
+        }
+        [self.dayPlannerView scrollToDate:date options:MGCDayPlannerScrollDate animated:NO];
+    }
+    else if (sender == self.firstHourStepper) {
+        self.lastHourStepper.minimumValue = self.firstHourStepper.value + 1;
+        self.firstHourLabel.text = [NSString stringWithFormat:@"%d", (int)self.firstHourStepper.value];
+        self.dayPlannerView.hourRange = NSMakeRange(self.firstHourStepper.value, self.lastHourStepper.value - self.firstHourStepper.value);
+    }
+    else if (sender == self.lastHourStepper) {
+        self.firstHourStepper.maximumValue = self.lastHourStepper.value - 1;
+        self.lastHourLabel.text = [NSString stringWithFormat:@"%d", (int)self.lastHourStepper.value];
+        self.dayPlannerView.hourRange = NSMakeRange(self.firstHourStepper.value, self.lastHourStepper.value - self.firstHourStepper.value);
+    }
 }
 
 - (IBAction)switchToggled:(UISwitch*)sender

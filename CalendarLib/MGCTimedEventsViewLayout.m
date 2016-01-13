@@ -84,18 +84,21 @@
 		
 		for (NSInteger item = 0; item < numItems; item++) {
 			NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-			MGCEventCellLayoutAttributes *cellAttribs = [MGCEventCellLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
 			
-			CGFloat left = self.dayColumnSize.width * indexPath.section;
-			CGFloat top = [self.delegate collectionView:self.collectionView layout:self yPosForEventAtIndexPath:indexPath];
-			CGFloat height = [self.delegate collectionView:self.collectionView layout:self heightForEventAtIndexPath:indexPath];
-			height = fmax(self.minimumVisibleHeight, height);
-			
-			cellAttribs.frame = CGRectInset(CGRectMake(left, top, self.dayColumnSize.width, height), 0, 1);
-			cellAttribs.visibleHeight = cellAttribs.frame.size.height;
-			
-			[attribs addObject:cellAttribs];
-		}
+            CGRect rect = [self.delegate collectionView:self.collectionView layout:self rectForEventAtIndexPath:indexPath];
+            if (!CGRectIsNull(rect)) {
+                MGCEventCellLayoutAttributes *cellAttribs = [MGCEventCellLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+                
+                rect.origin.x = self.dayColumnSize.width * indexPath.section;
+                rect.size.width = self.dayColumnSize.width;
+                rect.size.height = fmax(self.minimumVisibleHeight, rect.size.height);
+                
+                cellAttribs.frame = CGRectInset(rect, 0, 1);
+                cellAttribs.visibleHeight = cellAttribs.frame.size.height;
+                
+                [attribs addObject:cellAttribs];
+            }
+        }
 		
 		sectionAttribs = [self adjustLayoutForOverlappingCells:attribs inSection:section];
 		

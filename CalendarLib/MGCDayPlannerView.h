@@ -179,6 +179,13 @@ typedef enum : NSUInteger {
 @property (nonatomic, copy) MGCDateRange *dateRange;
 
 /*!
+	@abstract	Displayable range of hours. Default is {0, 24}.
+    @discussion Range length must be >= 1
+
+ */
+@property (nonatomic) NSRange hourRange;
+
+/*!
 	@abstract	Determines whether zooming is enabled for this day planner view.
 				If set to YES, the user can decrease or increase the height of the one-hour slot by pinching in and out on the view.
 	@discussion The default value is YES.

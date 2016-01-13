@@ -46,7 +46,7 @@
 @property (nonatomic) NSTimeInterval timeMark;			// time from start of day for the mark that appears when an event is moved around - set to 0 to hide it
 @property (nonatomic) BOOL showsCurrentTime;			// YES if shows red line for current time
 @property (nonatomic, readonly) BOOL showsHalfHourLines; // returns YES if hourSlotHeight > 100
-
+@property (nonatomic) NSRange hourRange;                // range of displayed hours
 @property (nonatomic) UIFont *font;						// font used for time marks
 @property (nonatomic) UIColor *timeColor;				// color used for time marks and lines
 @property (nonatomic) UIColor *currentTimeColor;		// color used for current time mark and line

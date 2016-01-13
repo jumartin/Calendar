@@ -46,7 +46,7 @@
 
 @protocol MGCTimedEventsViewLayoutDelegate <UICollectionViewDelegate>
 
-- (CGFloat)collectionView:(UICollectionView*)collectionView layout:(MGCTimedEventsViewLayout*)layout yPosForEventAtIndexPath:(NSIndexPath*)indexPath;
-- (CGFloat)collectionView:(UICollectionView*)collectionView layout:(MGCTimedEventsViewLayout*)layout heightForEventAtIndexPath:(NSIndexPath*)indexPath;
+// x and width of returned rect are ignored
+- (CGRect)collectionView:(UICollectionView*)collectionView layout:(MGCTimedEventsViewLayout*)layout rectForEventAtIndexPath:(NSIndexPath*)indexPath;
 
 @end
