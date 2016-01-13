@@ -36,36 +36,46 @@
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-		self.backgroundColor = [UIColor whiteColor];
-		
-		self.dayLabel = [[UILabel alloc]initWithFrame:CGRectNull];
-		self.dayLabel.textAlignment = NSTextAlignmentCenter;
-		self.dayLabel.font = [UIFont systemFontOfSize:10];
-		[self.contentView addSubview:self.dayLabel];
-		
-		UIView *view = [UIView new];
-		view.backgroundColor = [UIColor colorWithWhite:.7 alpha:.2];
-		self.selectedBackgroundView = view;
+        self.backgroundColor = [UIColor whiteColor];
+        
+        self.dayLabel = [[UILabel alloc]initWithFrame:CGRectNull];
+        self.dayLabel.textAlignment = NSTextAlignmentCenter;
+        self.dayLabel.font = [UIFont systemFontOfSize:10];
+        [self.contentView addSubview:self.dayLabel];
+        
+        UIView *view = [UIView new];
+        view.backgroundColor = [UIColor colorWithWhite:.7 alpha:.2];
+        self.selectedBackgroundView = view;
     }
     return self;
 }
 
 - (void)prepareForReuse
 {
-	self.marked = NO;
+    self.marked = NO;
 }
 
 - (void)setMarked:(BOOL)marked
 {
-	_marked = marked;
-	self.dayLabel.textColor = marked ? [UIColor redColor] : [UIColor blackColor];
-	self.dayLabel.layer.cornerRadius = marked ? 10. : 0.;
+    _marked = marked;
+    self.dayLabel.textColor = marked ? [UIColor redColor] : [UIColor blackColor];
+    self.dayLabel.layer.cornerRadius = marked ? 10. : 0.;
 }
 
 - (void)layoutSubviews
 {
-	[super layoutSubviews];
-	self.dayLabel.frame = CGRectMake(0, 0, self.contentView.bounds.size.width, 20);
+    [super layoutSubviews];
+    
+    if (isiPad) {
+        //NSLog(@"---------------- iPAD ------------------");
+        self.dayLabel.frame = CGRectMake(0, 0, self.contentView.bounds.size.width, 20);
+    }
+    else{
+        //NSLog(@"---------------- iPhone ------------------");
+        self.dayLabel.frame = CGRectMake(0, 0, self.contentView.bounds.size.width, 40);
+        self.dayLabel.numberOfLines = 0;
+        self.dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    }
 }
 
 @end
