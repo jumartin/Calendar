@@ -73,6 +73,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		072E5EFE1C338559007711A0 /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		720041B91879B2B600F3C497 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		7203643A1A5567AC00BA2DCA /* OSCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OSCache.h; sourceTree = "<group>"; };
 		7203643B1A5567AC00BA2DCA /* OSCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OSCache.m; sourceTree = "<group>"; };
@@ -195,6 +196,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		072E5EFD1C338534007711A0 /* Header&Constants */ = {
+			isa = PBXGroup;
+			children = (
+				072E5EFE1C338559007711A0 /* Constant.h */,
+			);
+			name = "Header&Constants";
+			sourceTree = "<group>";
+		};
 		723345D81A3BA75300BAE7A9 /* Events view */ = {
 			isa = PBXGroup;
 			children = (
@@ -394,6 +403,7 @@
 		72CD8BAA18228A7500F12339 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				072E5EFD1C338534007711A0 /* Header&Constants */,
 				721CA1B21A9382990083F41A /* Localizable.strings */,
 				7203643A1A5567AC00BA2DCA /* OSCache.h */,
 				7203643B1A5567AC00BA2DCA /* OSCache.m */,

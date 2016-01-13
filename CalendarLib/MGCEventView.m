@@ -36,16 +36,16 @@
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-		self.visibleHeight = CGFLOAT_MAX;
-		self.backgroundColor = [UIColor grayColor];
-		self.clipsToBounds = YES;
+        self.visibleHeight = CGFLOAT_MAX;
+        self.backgroundColor = [UIColor grayColor];
+        self.clipsToBounds = YES;
     }
     return self;
 }
 
 - (void)prepareForReuse
 {
-	self.selected = NO;
+    self.selected = NO;
 }
 
 // if needed, implement in subclasses
@@ -57,8 +57,8 @@
 
 - (id)copyWithZone:(NSZone*)zone
 {
-	MGCEventView *cell = [[[self class] allocWithZone:zone] initWithFrame:self.frame];
-	return cell;
+    MGCEventView *cell = [[[self class] allocWithZone:zone] initWithFrame:self.frame];
+    return cell;
 }
 
 @end
