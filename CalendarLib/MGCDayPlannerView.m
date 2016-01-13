@@ -1794,7 +1794,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	CGPoint contentOffset = self.controllingScrollView.contentOffset;
 	if (self.scrollDirection == ScrollDirectionUnknown) {
 		// determine direction
-		if (abs(self.scrollStartOffset.x - contentOffset.x) < abs(self.scrollStartOffset.y - contentOffset.y)) {
+		if (fabs(self.scrollStartOffset.x - contentOffset.x) < fabs(self.scrollStartOffset.y - contentOffset.y)) {
 			self.scrollDirection = ScrollDirectionVertical;
 		}
 		else {

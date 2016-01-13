@@ -1,0 +1,13 @@
+PODS:
+  - OrderedDictionary (1.2)
+  - OSCache (1.2)
+
+DEPENDENCIES:
+  - OrderedDictionary (~> 1.2)
+  - OSCache (~> 1.2)
+
+SPEC CHECKSUMS:
+  OrderedDictionary: 9cc5d69c5c5314ad696ed1839190724e83d534c7
+  OSCache: 10cdb5da579364aacfb8b7612dab13cf9c7aa4dc
+
+COCOAPODS: 0.38.1

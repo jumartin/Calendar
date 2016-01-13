@@ -1,7 +1,7 @@
 //
 //  OSCache.h
 //
-//  Version 1.1.1
+//  Version 1.2
 //
 //  Created by Nick Lockwood on 01/01/2014.
 //  Copyright (C) 2014 Charcoal Design
@@ -32,11 +32,16 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
-@interface OSCache : NSCache
+@interface OSCache : NSCache <NSFastEnumeration>
 
-- (NSUInteger)count;
-- (NSUInteger)totalCost;
+@property (nonatomic, readonly) NSUInteger count;
+@property (nonatomic, readonly) NSUInteger totalCost;
+
+- (id)objectForKeyedSubscript:(id<NSCopying>)key;
+- (void)setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key;
+- (void)enumerateKeysAndObjectsUsingBlock:(void (^)(id key, id obj, BOOL *stop))block;
 
 @end
 
@@ -48,3 +53,5 @@
 - (void)cache:(OSCache *)cache willEvictObject:(id)entry;
 
 @end
+
+NS_ASSUME_NONNULL_END

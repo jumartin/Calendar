@@ -51,6 +51,12 @@
     }
 }
 
+- (BOOL)dayPlannerView:(MGCDayPlannerView*)view canMoveEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date toType:(MGCEventType)targetType date:(NSDate*)targetDate
+{
+	NSDateComponents *comps = [self.calendar components:NSWeekdayCalendarUnit fromDate:targetDate];
+	return (comps.weekday != 1 && comps.weekday != 7);
+}
+
 #pragma mark - CalendarControllerNavigation
 
 - (void)moveToDate:(NSDate*)date animated:(BOOL)animated
