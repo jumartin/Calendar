@@ -24,6 +24,7 @@
 		72707CDD18858F9600830A8E /* MGCMonthPlannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72707CDC18858F9600830A8E /* MGCMonthPlannerView.m */; };
 		72707CE2188592AC00830A8E /* MGCMonthPlannerViewDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72707CE1188592AC00830A8E /* MGCMonthPlannerViewDayCell.m */; };
 		72734BB71B32E93800B2BA49 /* main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */; };
+		7275C4A01C46E87B0036C9A3 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7275C49F1C46E87B0036C9A3 /* Launch Screen.storyboard */; };
 		727A94B218F3B9C300260D6E /* MGCEventsRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A94B118F3B9C300260D6E /* MGCEventsRowView.m */; };
 		727A94B818F3D28F00260D6E /* MGCEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A94B718F3D28F00260D6E /* MGCEventView.m */; };
 		727A94BD18F3D2E000260D6E /* MGCStandardEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A94BC18F3D2E000260D6E /* MGCStandardEventView.m */; };
@@ -106,6 +107,7 @@
 		72707CE0188592AC00830A8E /* MGCMonthPlannerViewDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCMonthPlannerViewDayCell.h; sourceTree = "<group>"; };
 		72707CE1188592AC00830A8E /* MGCMonthPlannerViewDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCMonthPlannerViewDayCell.m; sourceTree = "<group>"; };
 		72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "main-iPhone.storyboard"; sourceTree = "<group>"; };
+		7275C49F1C46E87B0036C9A3 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		727A94B018F3B9C300260D6E /* MGCEventsRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventsRowView.h; sourceTree = "<group>"; };
 		727A94B118F3B9C300260D6E /* MGCEventsRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCEventsRowView.m; sourceTree = "<group>"; };
 		727A94B618F3D28F00260D6E /* MGCEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventView.h; sourceTree = "<group>"; };
@@ -202,7 +204,7 @@
 			);
 			name = "Header&Constants";
 			sourceTree = "<group>";
-		};	
+		};
 		295C2D31E8D3969B4161337E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +363,7 @@
 				72EF07FE1A3D9DF8005699CA /* WeekViewController.m */,
 				72B5D903180D73E0004ADB86 /* Images.xcassets */,
 				72B5D8F8180D73E0004ADB86 /* Supporting Files */,
+				7275C49F1C46E87B0036C9A3 /* Launch Screen.storyboard */,
 			);
 			name = Demo;
 			path = CalendarDemo;
@@ -512,6 +515,7 @@
 			files = (
 				723925B0188B0AE800DE9578 /* README.md in Resources */,
 				720041BA1879B2B600F3C497 /* Settings.bundle in Resources */,
+				7275C4A01C46E87B0036C9A3 /* Launch Screen.storyboard in Resources */,
 				72B5D8FC180D73E0004ADB86 /* InfoPlist.strings in Resources */,
 				721CA1B41A9382990083F41A /* Localizable.strings in Resources */,
 				72B5D904180D73E0004ADB86 /* Images.xcassets in Resources */,
