@@ -63,6 +63,7 @@ typedef enum : NSUInteger
     }
     else{
         //NSLog(@"---------------- iPhone ------------------");
+        self.navigationItem.leftBarButtonItem.customView = self.currentDateLabel;
     }
 }
 
@@ -245,6 +246,7 @@ typedef enum : NSUInteger
     
     NSString *str = [self.dateFormatter stringFromDate:date];
     self.currentDateLabel.text = str;
+    [self.currentDateLabel sizeToFit];
 }
 
 - (void)calendarViewController:(CalendarViewController*)controller didSelectEvent:(EKEvent*)event
