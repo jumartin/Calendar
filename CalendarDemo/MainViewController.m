@@ -25,6 +25,7 @@ typedef enum : NSUInteger
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic) EKCalendarChooser *calendarChooser;
+@property (nonatomic) BOOL firstTimeAppears;
 
 @end
 
@@ -65,26 +66,26 @@ typedef enum : NSUInteger
         //NSLog(@"---------------- iPhone ------------------");
         self.navigationItem.leftBarButtonItem.customView = self.currentDateLabel;
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    CalendarViewController *controller = [self controllerForViewType:CalendarViewWeekType];
-    [self addChildViewController:controller];
-    [self.containerView addSubview:controller.view];
-    controller.view.frame = self.containerView.bounds;
-    [controller didMoveToParentViewController:self];
-    
-    self.calendarViewController = controller;
+	
+	CalendarViewController *controller = [self controllerForViewType:CalendarViewWeekType];
+	[self addChildViewController:controller];
+	[self.containerView addSubview:controller.view];
+	controller.view.frame = self.containerView.bounds;
+	[controller didMoveToParentViewController:self];
+	
+	self.calendarViewController = controller;
+    self.firstTimeAppears = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    NSDate *date = [self.calendar mgc_startOfWeekForDate:[NSDate date]];
-    [self.calendarViewController moveToDate:date animated:NO];
+    
+    if (self.firstTimeAppears) {
+        NSDate *date = [self.calendar mgc_startOfWeekForDate:[NSDate date]];
+        [self.calendarViewController moveToDate:date animated:NO];
+        self.firstTimeAppears = NO;
+    }
 }
 
 - (void)didReceiveMemoryWarning
