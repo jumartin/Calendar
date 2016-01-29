@@ -549,6 +549,15 @@ typedef enum : NSUInteger {
 - (NSAttributedString*)dayPlannerView:(MGCDayPlannerView*)view attributedStringForTimeMark:(MGCDayPlannerTimeMark)mark time:(NSTimeInterval)ti;
 
 /*!
+	@abstract   Asks the delegate for the attributed string of the day header for given date.
+    @param		view		The day planner view requesting the information.
+	@param		date		The date for the header.
+	@return     The attributed string to draw.
+    @discussion If nil is returned or the method is not implemented, a default string is drawn using dateFormat property.
+ */
+- (NSAttributedString*)dayPlannerView:(MGCDayPlannerView*)view attributedStringForDayHeaderAtDate:(NSDate*)date;
+
+/*!
 	@group Responding to scrolling
  */
 

@@ -1618,34 +1618,45 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 
 - (UICollectionViewCell*)dayColumnCellAtIndexPath:(NSIndexPath*)indexPath
 {
-	MGCDayColumnCell *dayCell = [self.dayColumnsView dequeueReusableCellWithReuseIdentifier:DayColumnCellReuseIdentifier forIndexPath:indexPath];
-	dayCell.headerHeight = self.dayHeaderHeight;
+    MGCDayColumnCell *dayCell = [self.dayColumnsView dequeueReusableCellWithReuseIdentifier:DayColumnCellReuseIdentifier forIndexPath:indexPath];
+    dayCell.headerHeight = self.dayHeaderHeight;
     dayCell.separatorColor = self.daySeparatorsColor;
-	dayCell.dateFormat = self.dateFormat ?: @"d MMM\neeeee";
     dayCell.dotColor = self.eventIndicatorDotColor;
+
+    NSDate *date = [self dateFromDayOffset:indexPath.section];
     
-	NSUInteger accessoryTypes = MGCDayColumnCellAccessoryBorder;
-	
-	NSDate *date = [self dateFromDayOffset:indexPath.section];
-	[dayCell setDate:date calendar:self.calendar];
-	
-	if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]])
-	{
-		accessoryTypes |= MGCDayColumnCellAccessoryMark;
-		dayCell.markColor = self.tintColor;
-	}
-	
-	if ([self.loadingDays containsObject:date]) {
-		[dayCell setActivityIndicatorVisible:YES];
-	}
-	
-	NSUInteger count = [self numberOfAllDayEventsAtDate:date] + [self numberOfTimedEventsAtDate:date];
-	if (count > 0) {
-		accessoryTypes |= MGCDayColumnCellAccessoryDot;
-	}
-	
-	dayCell.accessoryTypes = accessoryTypes;
-	return dayCell;
+    NSUInteger accessoryTypes = MGCDayColumnCellAccessoryBorder;
+    
+    NSAttributedString *attrStr = nil;
+    if ([self.delegate respondsToSelector:@selector(dayPlannerView:attributedStringForDayHeaderAtDate:)]) {
+        attrStr = [self.delegate dayPlannerView:self attributedStringForDayHeaderAtDate:date];
+    }
+    
+    if (attrStr) {
+        dayCell.dayLabel.attributedText = attrStr;
+    }
+    else {
+        dayCell.dateFormat = self.dateFormat ?: @"d MMM\neeeee";
+        [dayCell setDate:date calendar:self.calendar];
+        
+        if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]])
+        {
+            accessoryTypes |= MGCDayColumnCellAccessoryMark;
+            dayCell.markColor = self.tintColor;
+        }
+    }
+    
+    if ([self.loadingDays containsObject:date]) {
+        [dayCell setActivityIndicatorVisible:YES];
+    }
+    
+    NSUInteger count = [self numberOfAllDayEventsAtDate:date] + [self numberOfTimedEventsAtDate:date];
+    if (count > 0) {
+        accessoryTypes |= MGCDayColumnCellAccessoryDot;
+    }
+    
+    dayCell.accessoryTypes = accessoryTypes;
+    return dayCell;
 }
 
 - (UICollectionViewCell*)dequeueCellForEventOfType:(MGCEventType)type atIndexPath:(NSIndexPath*)indexPath

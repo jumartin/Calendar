@@ -8,6 +8,7 @@
 #import "WeekViewController.h"
 #import "MGCDateRange.h"
 #import "NSCalendar+MGCAdditions.h"
+#import "NSAttributedString+MGCAdditions.h"
 
 
 @implementation WeekViewController
@@ -18,7 +19,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+	    
 	self.dayPlannerView.backgroundColor = [UIColor clearColor];
 	self.dayPlannerView.backgroundView = [UIView new];
 	self.dayPlannerView.backgroundView.backgroundColor = [UIColor whiteColor];
@@ -60,7 +61,7 @@
     style.alignment = NSTextAlignmentRight;
    
     UIColor *color = mark == MGCDayPlannerTimeMarkHeader ? [UIColor lightGrayColor] : [UIColor redColor];
-    
+ 
     static NSDateFormatter *dateFormatter = nil;
     if (dateFormatter == nil) {
         dateFormatter = [NSDateFormatter new];
@@ -72,6 +73,37 @@
     return [[NSAttributedString alloc]initWithString:s attributes:@{ NSParagraphStyleAttributeName: style, NSFontAttributeName: [UIFont systemFontOfSize:12], NSForegroundColorAttributeName: color }];
 }
 */
+
+- (NSAttributedString*)dayPlannerView:(MGCDayPlannerView *)view attributedStringForDayHeaderAtDate:(NSDate *)date
+{
+    UIFont *font = [UIFont systemFontOfSize:15];
+ 
+    static NSDateFormatter *dateFormatter = nil;
+    if (dateFormatter == nil) {
+        dateFormatter = [NSDateFormatter new];
+        dateFormatter.dateFormat = @"eee d";
+    }
+    
+    NSString *dayStr = [dateFormatter stringFromDate:date];
+    
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:dayStr attributes:@{ NSFontAttributeName: font }];
+    
+    if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]]) {
+        UIFont *boldFont = [UIFont boldSystemFontOfSize:15];
+        
+        NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
+        para.alignment = NSTextAlignmentCenter;
+        
+        MGCCircleMark *mark = [MGCCircleMark new];
+        mark.yOffset = boldFont.descender - mark.margin;
+ 
+        [attrStr addAttributes:@{ NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor whiteColor], MGCCircleMarkAttributeName: mark, NSParagraphStyleAttributeName: para } range:NSMakeRange(4, dayStr.length - 4)];
+
+        [attrStr processCircleMarksInRange:NSMakeRange(0, attrStr.length)];
+    }
+    
+    return attrStr;
+}
 
 #pragma mark - CalendarControllerNavigation
 
