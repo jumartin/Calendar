@@ -283,7 +283,10 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 // public
 - (MGCDateRange*)visibleDays
 {
-	CGFloat dayWidth = self.dayColumnSize.width;
+    // make sure no layout is pending
+    [self.timedEventsView layoutIfNeeded];
+    
+    CGFloat dayWidth = self.dayColumnSize.width;
 	
 	NSUInteger first = floorf(self.timedEventsView.contentOffset.x / dayWidth);
 	NSDate *firstDay = [self dateFromDayOffset:first];
@@ -1481,8 +1484,9 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		self.allDayEventsViewLayout.dayColumnWidth = dayColumnSize.width;
 		self.allDayEventsViewLayout.eventCellHeight = self.allDayEventCellHeight;
 		
-		[self.dayColumnsView.collectionViewLayout invalidateLayout];
+		
 		[self.timedEventsViewLayout invalidateLayout];
+        [self.dayColumnsView.collectionViewLayout invalidateLayout];
 		[self.allDayEventsViewLayout invalidateLayout];
 	}
 }
