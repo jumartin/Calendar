@@ -82,6 +82,11 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 - (void)reloadEvents
 {
+    for (NSDate *date in self.daysToLoad) {
+        [self.dayPlannerView setActivityIndicatorVisible:NO forDate:date];
+    }
+    [self.daysToLoad removeAllObjects];
+
     [self.eventsCache removeAllObjects];
     [self fetchEventsInDateRange:self.dayPlannerView.visibleDays];
     [self.dayPlannerView reloadAllEvents];
@@ -527,7 +532,10 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 - (void)dayPlannerView:(MGCDayPlannerView*)view willDisplayDate:(NSDate*)date
 {
     //NSLog(@"will display %@", date);
-    [self loadEventsAtDate:date];
+    BOOL loading = [self loadEventsAtDate:date];
+    if (!loading) {
+        [self.dayPlannerView setActivityIndicatorVisible:NO forDate:date];
+    }
 }
 
 - (void)dayPlannerView:(MGCDayPlannerView*)view didEndDisplayingDate:(NSDate*)date
