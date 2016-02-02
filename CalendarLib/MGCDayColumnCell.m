@@ -52,6 +52,7 @@ static const CGFloat dotSize = 4;
     if (self = [super initWithFrame:frame]) {
 		_markColor = [UIColor blackColor];
 		_dotColor = [UIColor blueColor];
+        _separatorColor = [UIColor lightGrayColor];
 		_headerHeight = 50;
 		
 		_dayLabel = [[UILabel alloc] initWithFrame:CGRectNull];
@@ -71,7 +72,6 @@ static const CGFloat dotSize = 4;
 		[self.contentView.layer addSublayer:_dotLayer];
 		
 		_leftBorder = [CALayer layer];
-		_leftBorder.backgroundColor = [[UIColor lightGrayColor]CGColor];
 		_leftBorder.hidden = YES;
 		[self.contentView.layer addSublayer:_leftBorder];
 		
@@ -163,6 +163,8 @@ static const CGFloat dotSize = 4;
 	self.dayLabel.hidden = self.headerHeight == 0;
 	
 	self.leftBorder.frame = CGRectMake(0, self.headerHeight, 1, self.contentView.bounds.size.height);
+    self.leftBorder.backgroundColor = self.separatorColor.CGColor;
+    
 	if (self.thickBorder) {
 		self.leftBorder.frame = CGRectMake(0, 0, 2, self.contentView.bounds.size.height);
 	}

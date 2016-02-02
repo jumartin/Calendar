@@ -112,6 +112,12 @@ typedef enum : NSUInteger {
 @property (nonatomic) CGFloat dayHeaderHeight;
 
 /*!
+	@abstract	Returns the color of the vertical separator lines between days.
+	@discussion The default value is light gray.
+ */
+@property (nonatomic) UIColor *daySeparatorsColor;
+
+/*!
 	@abstract	Determines whether the day planner view shows all-day events.
 	@discussion If the value of this property is YES, the view displays a bar at the top with all-day events.
 				The default value is YES.

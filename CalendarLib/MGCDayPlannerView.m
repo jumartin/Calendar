@@ -148,6 +148,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_hourSlotHeight = 65.;
 	_timeColumnWidth = 60.;
 	_dayHeaderHeight = 40.;
+    _daySeparatorsColor = [UIColor lightGrayColor];
 	_showsAllDayEvents = YES;
 	_eventsViewInnerMargin = 45.;
 	_allDayEventCellHeight = 20;
@@ -313,6 +314,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		_dateFormat = [dateFormat copy];
 		[self.dayColumnsView reloadData];
 	}
+}
+
+// public
+- (void)setDaySeparatorsColor:(UIColor *)daySeparatorsColor
+{
+    _daySeparatorsColor = daySeparatorsColor;
+    [self.dayColumnsView reloadData];
 }
 
 #pragma mark - Private properties
@@ -1574,7 +1582,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
 	MGCDayColumnCell *dayCell = [self.dayColumnsView dequeueReusableCellWithReuseIdentifier:DayColumnCellReuseIdentifier forIndexPath:indexPath];
 	dayCell.headerHeight = self.dayHeaderHeight;
-	
+    dayCell.separatorColor = self.daySeparatorsColor;
 	dayCell.dateFormat = self.dateFormat ?: @"d MMM\neeeee";
 	
 	NSUInteger accessoryTypes = MGCDayColumnCellAccessoryBorder;
