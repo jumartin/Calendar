@@ -51,8 +51,38 @@ static const NSUInteger cacheSize = 400;	// size of the cache (in days)
 static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 
+@interface MGCEKEventViewController: EKEventViewController
+@end
 
-@interface MGCDayPlannerEKViewController () <UIPopoverControllerDelegate, UINavigationControllerDelegate, EKEventEditViewDelegate, EKEventViewDelegate>
+@implementation MGCEKEventViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    UIPopoverPresentationController *popController = self.parentViewController.popoverPresentationController;
+    BOOL isPopoverPresented = popController && popController.arrowDirection != UIPopoverArrowDirectionUnknown;
+   
+    // navigation bar is hidden by default when EKEventViewController is presented fullscreen
+    if (self.presentingViewController && !isPopoverPresented) {
+        self.navigationController.navigationBarHidden = NO;
+       // self.navigationController.toolbarHidden = YES;
+    }
+}
+
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    // this fixes a problem when EKEventViewController is pushed
+    // that causes a white bar to show on the bottom when returning to the previous view controller
+    self.navigationController.toolbarHidden = YES;
+}
+
+@end
+
+@interface MGCDayPlannerEKViewController () <UINavigationControllerDelegate, EKEventEditViewDelegate, EKEventViewDelegate>
 
 @property (nonatomic) dispatch_queue_t bgQueue;			// dispatch queue for loading events
 @property (nonatomic) NSMutableOrderedSet *daysToLoad;	// dates for months of which we want to load events
@@ -125,28 +155,34 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     
     MGCEventView *view = [self.dayPlannerView eventViewOfType:type atIndex:index date:date];
     
-    EKEventViewController *eventController = [EKEventViewController new];
+    MGCEKEventViewController *eventController = [MGCEKEventViewController new];
     eventController.event = ev;
     eventController.delegate = self;
     eventController.allowsEditing = YES;
     eventController.allowsCalendarPreview = YES;
     
-    if (isiPad) {
-        //NSLog(@"---------------- iPAD ------------------");
-        UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:eventController];
-        nc.delegate = self;
-        
-        self.eventPopover = [[UIPopoverController alloc]initWithContentViewController:nc];
-        self.eventPopover.delegate = self;
-        
-        CGRect visibleRect = CGRectIntersection(self.dayPlannerView.bounds, [self.dayPlannerView convertRect:view.bounds fromView:view]);
-        [self.eventPopover presentPopoverFromRect:visibleRect inView:self.dayPlannerView permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:NO];
-    }
-    else{
-        //NSLog(@"---------------- iPhone ------------------");
-        [self presentViewController:eventController animated:YES completion:nil];
+    UINavigationController *nc = nil;
+    if ([self.delegate respondsToSelector:@selector(navigationControllerForEKEventViewController)]) {
+        nc = [self.delegate navigationControllerForEKEventViewController];
     }
     
+    if (nc) {
+        [nc pushViewController:eventController animated:YES];
+    }
+    else {
+        nc = [[UINavigationController alloc]initWithRootViewController:eventController];
+        nc.modalPresentationStyle = UIModalPresentationPopover;
+        eventController.presentationController.delegate = self;
+        
+        [self showDetailViewController:nc sender:self];
+        
+        CGRect visibleRect = CGRectIntersection(self.dayPlannerView.bounds, [self.dayPlannerView convertRect:view.bounds fromView:view]);
+        UIPopoverPresentationController *popController = nc.popoverPresentationController;
+        popController.permittedArrowDirections = UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight;
+        popController.delegate = self;
+        popController.sourceView = self.dayPlannerView;
+        popController.sourceRect = visibleRect;
+    }
 }
 
 - (void)showPopoverForNewEvent:(EKEvent*)ev
@@ -156,25 +192,19 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     eventController.eventStore = self.eventStore;
     eventController.editViewDelegate = self; // called only when event is deleted
     eventController.modalInPopover = YES;
+    eventController.modalPresentationStyle = UIModalPresentationPopover;
+    eventController.presentationController.delegate = self;
     
-    if (isiPad) {
-        //NSLog(@"---------------- iPAD ------------------");
-        self.eventPopover = [[UIPopoverController alloc]initWithContentViewController:eventController];
-        self.eventPopover.delegate = self;
-        
-        CGRect cellRect = [self.dayPlannerView rectForNewEventOfType:self.createdEventType atDate:self.createdEventDate];
-        CGRect visibleRect = CGRectIntersection(self.dayPlannerView.bounds, cellRect);
-        
-        [self.eventPopover presentPopoverFromRect:visibleRect inView:self.dayPlannerView permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:NO];
-    }
-    else{
-        //NSLog(@"---------------- iPhone ------------------");
-        [self presentViewController:eventController animated:YES completion:nil];
-    }
+    [self showDetailViewController:eventController sender:self];
     
-    
-    
-    
+    CGRect cellRect = [self.dayPlannerView rectForNewEventOfType:self.createdEventType atDate:self.createdEventDate];
+    CGRect visibleRect = CGRectIntersection(self.dayPlannerView.bounds, cellRect);
+
+    UIPopoverPresentationController *popController = eventController.popoverPresentationController;
+    popController.permittedArrowDirections = UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight;
+    popController.delegate = self;
+    popController.sourceView = self.dayPlannerView;
+    popController.sourceRect = visibleRect;
 }
 
 #pragma mark - UIViewController
@@ -548,15 +578,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 - (void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
     [self.dayPlannerView endInteraction];
-    if (isiPad) {
-        //NSLog(@"---------------- iPAD ------------------");
-        [self.eventPopover dismissPopoverAnimated:NO];
-    }
-    else{
-        //NSLog(@"---------------- iPhone ------------------");
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
     self.createdEventDate = nil;
 }
 
@@ -565,59 +588,58 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 - (void)eventViewController:(EKEventViewController *)controller didCompleteWithAction:(EKEventViewAction)action
 {
     [self.dayPlannerView deselectEvent];
-    if (isiPad) {
-        //NSLog(@"---------------- iPAD ------------------");
-        [self.eventPopover dismissPopoverAnimated:NO]; // TODO: why does this give a warning upon event deletion ?
-    }
-    else{
-        //NSLog(@"---------------- iPhone ------------------");
+    if (controller.presentingViewController) {
         [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [controller.navigationController popViewControllerAnimated:YES];
     }
-    
 }
 
-#pragma mark - UIPopoverControllerDelegate
+#pragma mark - UIPopoverPresentationControllerDelegate
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController*)popoverController
+//- (UIViewController*)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style
+//{
+//    if ([controller.presentedViewController isKindOfClass:EKEventEditViewController.class]) {
+//        return controller.presentedViewController;
+//    }
+//    else {
+//        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:controller.presentedViewController];
+//        nc.delegate = self;
+//        return nc;
+//    }
+//}
+
+
+- (void)popoverPresentationController:(UIPopoverPresentationController *)popoverPresentationController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView *__autoreleasing  _Nonnull *)view
+{
+    CGRect cellRect;
+    if (self.createdEventDate) {
+        cellRect = [self.dayPlannerView rectForNewEventOfType:self.createdEventType atDate:self.createdEventDate];
+    }
+    else {
+        UIView *cell = self.dayPlannerView.selectedEventView;
+        cellRect = [self.dayPlannerView convertRect:cell.bounds fromView:cell];
+    }
+    CGRect visibleRect = CGRectIntersection(self.dayPlannerView.bounds, cellRect);
+    if (CGRectIsNull(visibleRect)) {
+        rect->origin.x = cellRect.origin.x;
+        rect->origin.y = fminf(cellRect.origin.y, CGRectGetMaxY(self.dayPlannerView.bounds));
+        rect->size.width = cellRect.size.width;
+    }
+    else {
+        *rect = visibleRect;
+    }
+}
+
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
 {
     [self.dayPlannerView deselectEvent];
-}
-
-- (void)popoverController:(UIPopoverController*)popoverController willRepositionPopoverToRect:(inout CGRect*)rect inView:(inout UIView *__autoreleasing*)view
-{
-    if (popoverController == self.eventPopover) {
-        CGRect cellRect;
-        if (self.createdEventDate) {
-            cellRect = [self.dayPlannerView rectForNewEventOfType:self.createdEventType atDate:self.createdEventDate];
-        }
-        else {
-            UIView *cell = self.dayPlannerView.selectedEventView;
-            cellRect = [self.dayPlannerView convertRect:cell.bounds fromView:cell];
-            
-        }
-        CGRect visibleRect = CGRectIntersection(self.dayPlannerView.bounds, cellRect);
-        if (CGRectIsNull(visibleRect)) {
-            rect->origin.x = cellRect.origin.x;
-            rect->origin.y = fminf(cellRect.origin.y, CGRectGetMaxY(self.dayPlannerView.bounds));
-            rect->size.width = cellRect.size.width;
-        }
-        else {
-            *rect = visibleRect;
-        }
-    }
 }
 
 #pragma mark - UINavigationControllerDelegate
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    // Hide navigation bar when showing events details, show it otherwise (e.g when moving to calendars or alarms controller)
-    if ([viewController isKindOfClass:[EKEventViewController class]]) {
-        [navigationController setNavigationBarHidden:YES animated:NO];
-    }
-    else {
-        [navigationController setNavigationBarHidden:NO animated:NO];
-    }
 }
 
 #pragma mark - UIAlertViewDelegate

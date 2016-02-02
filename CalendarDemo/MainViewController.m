@@ -255,6 +255,17 @@ typedef enum : NSUInteger
     //NSLog(@"calendarViewController:didSelectEvent");
 }
 
+#pragma mark - MGCDayPlannerEKViewControllerDelegate
+
+- (UINavigationController*)navigationControllerForEKEventViewController
+{
+//    if (!isiPad) {
+//        return self.navigationController;
+//    }
+    return nil;
+}
+
+
 #pragma mark - EKCalendarChooserDelegate
 
 - (void)calendarChooserSelectionDidChange:(EKCalendarChooser*)calendarChooser
