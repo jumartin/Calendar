@@ -32,16 +32,30 @@
 #import "MGCDayPlannerViewController.h"
 
 
-@interface MGCDayPlannerEKViewController : MGCDayPlannerViewController
+@protocol MGCDayPlannerEKViewControllerDelegate;
+
+
+@interface MGCDayPlannerEKViewController : MGCDayPlannerViewController<UIPopoverPresentationControllerDelegate>
 
 @property (nonatomic) NSCalendar *calendar;
 @property (nonatomic) NSSet *visibleCalendars;
 @property (nonatomic, readonly) EKEventStore *eventStore;
+@property (nonatomic, weak) id<MGCDayPlannerEKViewControllerDelegate> delegate;
 
 /** designated initializer */
 - (instancetype)initWithEventStore:(EKEventStore*)eventStore;
 - (void)accessGrantedForCalendar;
 - (void)accessDeniedForCalendar;
 - (void)reloadEvents;
+
+@end
+
+
+@protocol MGCDayPlannerEKViewControllerDelegate<NSObject>
+
+
+@optional
+
+- (UINavigationController*)navigationControllerForEKEventViewController;
 
 @end

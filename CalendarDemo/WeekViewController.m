@@ -11,6 +11,7 @@
 
 @implementation WeekViewController
 
+@dynamic delegate;
 
 #pragma mark - UIViewController
 
