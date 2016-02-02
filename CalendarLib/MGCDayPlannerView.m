@@ -149,6 +149,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_timeColumnWidth = 60.;
 	_dayHeaderHeight = 40.;
     _daySeparatorsColor = [UIColor lightGrayColor];
+    _timeSeparatorsColor = [UIColor lightGrayColor];
 	_showsAllDayEvents = YES;
 	_eventsViewInnerMargin = 45.;
 	_allDayEventCellHeight = 20;
@@ -321,6 +322,14 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
     _daySeparatorsColor = daySeparatorsColor;
     [self.dayColumnsView reloadData];
+}
+
+// public
+- (void)setTimeSeparatorsColor:(UIColor *)timeSeparatorsColor
+{
+    _timeSeparatorsColor = timeSeparatorsColor;
+    self.timeRowsView.timeColor = timeSeparatorsColor;
+    [self.timeRowsView setNeedsDisplay];
 }
 
 #pragma mark - Private properties
@@ -745,6 +754,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		_timeScrollView.scrollEnabled = NO;
 		
 		_timeRowsView = [[MGCTimeRowsView alloc]initWithFrame:CGRectZero];
+        _timeRowsView.timeColor = self.timeSeparatorsColor;
 		_timeRowsView.hourSlotHeight = self.hourSlotHeight;
 		_timeRowsView.insetsHeight = self.eventsViewInnerMargin;
 		_timeRowsView.timeColumnWidth = self.timeColumnWidth;

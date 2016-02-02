@@ -118,6 +118,13 @@ typedef enum : NSUInteger {
 @property (nonatomic) UIColor *daySeparatorsColor;
 
 /*!
+	@abstract	Returns the color of the horizontal separator lines between time slots.
+	@discussion The default value is light gray.
+                The color is also used for time labels.
+ */
+@property (nonatomic) UIColor *timeSeparatorsColor;
+
+/*!
 	@abstract	Determines whether the day planner view shows all-day events.
 	@discussion If the value of this property is YES, the view displays a bar at the top with all-day events.
 				The default value is YES.
