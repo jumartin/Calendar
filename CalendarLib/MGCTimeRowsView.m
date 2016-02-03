@@ -187,7 +187,7 @@
  		}
         
         CGContextSetStrokeColorWithColor(context, self.timeColor.CGColor);
-		
+        CGContextSetLineWidth(context, [UIScreen mainScreen].scale == 1 ? 1 : .5);
 		CGContextSetLineDash(context, 0, NULL, 0);
 		CGContextMoveToPoint(context, self.timeColumnWidth, y),
 		CGContextAddLineToPoint(context, self.timeColumnWidth + rect.size.width, y);

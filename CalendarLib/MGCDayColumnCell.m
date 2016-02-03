@@ -162,7 +162,8 @@ static const CGFloat dotSize = 4;
 	self.leftBorder.hidden = !(self.accessoryTypes & MGCDayColumnCellAccessoryBorder);
 	self.dayLabel.hidden = self.headerHeight == 0;
 	
-	self.leftBorder.frame = CGRectMake(0, self.headerHeight, 1, self.contentView.bounds.size.height);
+    CGFloat borderWidth = [UIScreen mainScreen].scale == 1 ? 1 : .5;
+	self.leftBorder.frame = CGRectMake(0, self.headerHeight, borderWidth, self.contentView.bounds.size.height);
     self.leftBorder.backgroundColor = self.separatorColor.CGColor;
     
 	if (self.thickBorder) {
