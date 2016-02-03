@@ -140,6 +140,12 @@ typedef enum : NSUInteger {
 @property (nonatomic) UIColor *currentTimeColor;
 
 /*!
+	@abstract	Returns the color of the dot in the header indicating that a day has events.
+	@discussion The default value is blue.
+ */
+@property (nonatomic) UIColor *eventIndicatorDotColor;
+
+/*!
 	@abstract	Determines whether the day planner view shows all-day events.
 	@discussion If the value of this property is YES, the view displays a bar at the top with all-day events.
 				The default value is YES.

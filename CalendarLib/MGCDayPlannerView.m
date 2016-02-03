@@ -151,6 +151,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     _daySeparatorsColor = [UIColor lightGrayColor];
     _timeSeparatorsColor = [UIColor lightGrayColor];
     _currentTimeColor = [UIColor redColor];
+    _eventIndicatorDotColor = [UIColor blueColor];
 	_showsAllDayEvents = YES;
 	_eventsViewInnerMargin = 45.;
 	_allDayEventCellHeight = 20;
@@ -339,6 +340,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     _currentTimeColor = currentTimeColor;
     self.timeRowsView.currentTimeColor = currentTimeColor;
     [self.timeRowsView setNeedsDisplay];
+}
+
+// public
+- (void)setEventIndicatorDotColor:(UIColor *)eventIndicatorDotColor
+{
+    _eventIndicatorDotColor = eventIndicatorDotColor;
+    [self.dayColumnsView reloadData];
 }
 
 #pragma mark - Private properties
@@ -1614,7 +1622,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	dayCell.headerHeight = self.dayHeaderHeight;
     dayCell.separatorColor = self.daySeparatorsColor;
 	dayCell.dateFormat = self.dateFormat ?: @"d MMM\neeeee";
-	
+    dayCell.dotColor = self.eventIndicatorDotColor;
+    
 	NSUInteger accessoryTypes = MGCDayColumnCellAccessoryBorder;
 	
 	NSDate *date = [self dateFromDayOffset:indexPath.section];
