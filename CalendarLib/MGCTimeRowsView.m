@@ -160,6 +160,7 @@
 	if (self.showsCurrentTime) {
         [markAttrStr drawInRect:rectCurTime];
 		CGRect lineRect = CGRectMake(self.timeColumnWidth - kSpacing, y, self.bounds.size.width - self.timeColumnWidth + kSpacing, 1);
+        CGContextSetFillColorWithColor(context, self.currentTimeColor.CGColor);
 		UIRectFill(lineRect);
 	}
 	

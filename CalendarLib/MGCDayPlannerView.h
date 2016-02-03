@@ -133,6 +133,13 @@ typedef enum : NSUInteger {
 @property (nonatomic) UIColor *timeSeparatorsColor;
 
 /*!
+	@abstract	Returns the color of the current time line and label.
+	@discussion The default value is red.
+    @see        dayPlannerView:attributedStringForTimeMark:time: delegate method
+ */
+@property (nonatomic) UIColor *currentTimeColor;
+
+/*!
 	@abstract	Determines whether the day planner view shows all-day events.
 	@discussion If the value of this property is YES, the view displays a bar at the top with all-day events.
 				The default value is YES.
