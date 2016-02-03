@@ -29,6 +29,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MGCDayPlannerView.h"   // for MGCDayPlannerTimeMark enum
+
+
+@protocol MGCTimeRowsViewDelegate;
 
 
 // This view is used by the day planner view to draw the time lines.
@@ -46,5 +50,15 @@
 @property (nonatomic) UIFont *font;						// font used for time marks
 @property (nonatomic) UIColor *timeColor;				// color used for time marks and lines
 @property (nonatomic) UIColor *currentTimeColor;		// color used for current time mark and line
+@property (nonatomic, weak) id<MGCTimeRowsViewDelegate> delegate;
+
+@end
+
+
+@protocol MGCTimeRowsViewDelegate<NSObject>
+
+@optional
+
+- (NSAttributedString*)timeRowsView:(MGCTimeRowsView*)view attributedStringForTimeMark:(MGCDayPlannerTimeMark)mark time:(NSTimeInterval)ti;
 
 @end

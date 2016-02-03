@@ -51,6 +51,13 @@ typedef enum : NSUInteger {
 } MGCDayPlannerScrollType;
 
 
+typedef enum : NSUInteger {
+    MGCDayPlannerTimeMarkHeader = 0,
+    MGCDayPlannerTimeMarkCurrent = 1,
+    MGCDayPlannerTimeMarkFloating = 2,
+} MGCDayPlannerTimeMark;
+
+
 /*!
  * You can use an instance of MGCDayPlannerView to display events as a schedule.
  *
@@ -120,7 +127,8 @@ typedef enum : NSUInteger {
 /*!
 	@abstract	Returns the color of the horizontal separator lines between time slots.
 	@discussion The default value is light gray.
-                The color is also used for time labels.
+                The color is also used for time labels. 
+    @see        dayPlannerView:attributedStringForTimeMark:time: delegate method
  */
 @property (nonatomic) UIColor *timeSeparatorsColor;
 
@@ -512,6 +520,20 @@ typedef enum : NSUInteger {
 @protocol MGCDayPlannerViewDelegate<NSObject>
 
 @optional
+
+/*!
+	@group Configuring appearance
+ */
+
+/*!
+	@abstract   Asks the delegate for the attributed string of time marks appearing on the left of the day planner view.
+	@param		view		The day planner view requesting the information.
+	@param		mark        The mark type being drawn.
+    @param		ti          The time for the mark.
+    @return     The attributed string to draw for the mark.
+	@discussion If nil is returned, the default mark style is used.
+ */
+- (NSAttributedString*)dayPlannerView:(MGCDayPlannerView*)view attributedStringForTimeMark:(MGCDayPlannerTimeMark)mark time:(NSTimeInterval)ti;
 
 /*!
 	@group Responding to scrolling

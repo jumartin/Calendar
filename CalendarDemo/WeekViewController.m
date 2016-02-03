@@ -7,6 +7,7 @@
 
 #import "WeekViewController.h"
 #import "MGCDateRange.h"
+#import "NSCalendar+MGCAdditions.h"
 
 
 @implementation WeekViewController
@@ -46,6 +47,31 @@
 	NSDateComponents *comps = [self.calendar components:NSWeekdayCalendarUnit fromDate:targetDate];
 	return (comps.weekday != 1 && comps.weekday != 7);
 }
+
+/*
+// test for custom time drawing
+- (NSAttributedString*)dayPlannerView:(MGCDayPlannerView *)view attributedStringForTimeMark:(MGCDayPlannerTimeMark)mark time:(NSTimeInterval)ti
+{
+    if (mark == MGCDayPlannerTimeMarkFloating) return nil;
+    
+    NSDate *date = [NSDate dateWithTimeInterval:ti sinceDate:[self.calendar mgc_startOfDayForDate:[NSDate date]]];
+    
+    NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
+    style.alignment = NSTextAlignmentRight;
+   
+    UIColor *color = mark == MGCDayPlannerTimeMarkHeader ? [UIColor lightGrayColor] : [UIColor redColor];
+    
+    static NSDateFormatter *dateFormatter = nil;
+    if (dateFormatter == nil) {
+        dateFormatter = [NSDateFormatter new];
+    }
+    dateFormatter.dateFormat = mark == MGCDayPlannerTimeMarkHeader ? @"h a" : @"h:mm a";
+    
+    
+    NSString *s = [dateFormatter stringFromDate:date];
+    return [[NSAttributedString alloc]initWithString:s attributes:@{ NSParagraphStyleAttributeName: style, NSFontAttributeName: [UIFont systemFontOfSize:12], NSForegroundColorAttributeName: color }];
+}
+*/
 
 #pragma mark - CalendarControllerNavigation
 

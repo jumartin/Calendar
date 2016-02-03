@@ -70,7 +70,7 @@ static const CGFloat kMinHourSlotHeight = 40.;
 static const CGFloat kMaxHourSlotHeight = 150.;
 
 
-@interface MGCDayPlannerView () <UICollectionViewDataSource, MGCTimedEventsViewLayoutDelegate, MGCAllDayEventsViewLayoutDelegate, UICollectionViewDelegateFlowLayout>
+@interface MGCDayPlannerView () <UICollectionViewDataSource, MGCTimedEventsViewLayoutDelegate, MGCAllDayEventsViewLayoutDelegate, UICollectionViewDelegateFlowLayout, MGCTimeRowsViewDelegate>
 
 // subviews
 @property (nonatomic, readonly) UICollectionView *timedEventsView;
@@ -754,6 +754,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		_timeScrollView.scrollEnabled = NO;
 		
 		_timeRowsView = [[MGCTimeRowsView alloc]initWithFrame:CGRectZero];
+        _timeRowsView.delegate = self;
         _timeRowsView.timeColor = self.timeSeparatorsColor;
 		_timeRowsView.hourSlotHeight = self.hourSlotHeight;
 		_timeRowsView.insetsHeight = self.eventsViewInnerMargin;
@@ -1520,6 +1521,15 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	[self updateVisibleDaysRange];
 }
 
+#pragma mark - MGCTimeRowsViewDelegate
+
+- (NSAttributedString*)timeRowsView:(MGCTimeRowsView *)view attributedStringForTimeMark:(MGCDayPlannerTimeMark)mark time:(NSTimeInterval)ti
+{
+    if ([self.delegate respondsToSelector:@selector(dayPlannerView:attributedStringForTimeMark:time:)]) {
+        return [self.delegate dayPlannerView:self attributedStringForTimeMark:mark time:ti];
+    }
+    return nil;
+}
 
 #pragma mark - UICollectionViewDataSource
 
