@@ -97,7 +97,8 @@
         MGCCircleMark *mark = [MGCCircleMark new];
         mark.yOffset = boldFont.descender - mark.margin;
  
-        [attrStr addAttributes:@{ NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor whiteColor], MGCCircleMarkAttributeName: mark, NSParagraphStyleAttributeName: para } range:NSMakeRange(4, dayStr.length - 4)];
+        NSUInteger dayStringStart = [dayStr rangeOfString:@" "].location + 1;
+        [attrStr addAttributes:@{ NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor whiteColor], MGCCircleMarkAttributeName: mark, NSParagraphStyleAttributeName: para } range:NSMakeRange(dayStringStart, dayStr.length - dayStringStart)];
 
         [attrStr processCircleMarksInRange:NSMakeRange(0, attrStr.length)];
     }
