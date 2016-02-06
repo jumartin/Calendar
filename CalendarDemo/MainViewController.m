@@ -194,24 +194,22 @@ typedef enum : NSUInteger
 
 - (IBAction)showCalendars:(id)sender
 {
-    if (![self.calendarPopover isPopoverVisible])
-    {
-        if ([self.calendarViewController respondsToSelector:@selector(visibleCalendars)]) {
-            self.calendarChooser = [[EKCalendarChooser alloc]initWithSelectionStyle:EKCalendarChooserSelectionStyleMultiple displayStyle:EKCalendarChooserDisplayAllCalendars eventStore:self.eventStore];
-            self.calendarChooser.delegate = self;
-            self.calendarChooser.showsDoneButton = YES;
-            self.calendarChooser.selectedCalendars = self.calendarViewController.visibleCalendars;
-        }
+    if ([self.calendarViewController respondsToSelector:@selector(visibleCalendars)]) {
+        self.calendarChooser = [[EKCalendarChooser alloc]initWithSelectionStyle:EKCalendarChooserSelectionStyleMultiple displayStyle:EKCalendarChooserDisplayAllCalendars eventStore:self.eventStore];
+        self.calendarChooser.delegate = self;
+        self.calendarChooser.showsDoneButton = YES;
+        self.calendarChooser.selectedCalendars = self.calendarViewController.visibleCalendars;
+    }
+    
+    if (self.calendarChooser) {
+        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:self.calendarChooser];
+        self.calendarChooser.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(calendarChooserStartEdit)];
+        nc.modalPresentationStyle = UIModalPresentationPopover;
+ 
+        [self showDetailViewController:nc sender:self];
         
-        if (self.calendarChooser) {
-            UIBarButtonItem *button = (UIBarButtonItem*)sender;
-            
-            UINavigationController *navController = [[UINavigationController alloc]initWithRootViewController:self.calendarChooser];
-            self.calendarChooser.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(calendarChooserStartEdit)];
-            
-            self.calendarPopover = [[UIPopoverController alloc]initWithContentViewController:navController];
-            [self.calendarPopover presentPopoverFromBarButtonItem:button permittedArrowDirections:UIPopoverArrowDirectionUp animated:NO];
-        }
+        UIPopoverPresentationController *popController = nc.popoverPresentationController;
+        popController.barButtonItem = (UIBarButtonItem*)sender;
     }
 }
 
@@ -277,7 +275,7 @@ typedef enum : NSUInteger
 
 - (void)calendarChooserDidFinish:(EKCalendarChooser*)calendarChooser
 {
-    [self.calendarPopover dismissPopoverAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 
