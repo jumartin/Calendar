@@ -255,7 +255,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 {
 	NSArray *events = [self fetchEventsFrom:range.start to:range.end calendars:nil];
 	
-	NSUInteger numDaysInRange = [range components:NSDayCalendarUnit forCalendar:self.calendar].day;
+	NSUInteger numDaysInRange = [range components:NSCalendarUnitDay forCalendar:self.calendar].day;
 	NSMutableDictionary *eventsPerDay = [NSMutableDictionary dictionaryWithCapacity:numDaysInRange];
 	
 	for (EKEvent *ev in events)
@@ -345,7 +345,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 	
 	MGCDateRange *visibleRange = [self visibleMonthsRange];
 	
-	NSUInteger months = [visibleRange components:NSMonthCalendarUnit forCalendar:self.calendar].month;
+	NSUInteger months = [visibleRange components:NSCalendarUnitMonth forCalendar:self.calendar].month;
 	
 	for (int i = 0; i < months; i++)
 	{
@@ -450,7 +450,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 		NSDate *start = [self.calendar mgc_startOfDayForDate:ev.startDate];
 		NSDate *end = [self.calendar mgc_nextStartOfDayForDate:ev.endDate];
 		MGCDateRange *range = [MGCDateRange dateRangeWithStart:start end:end];
-		NSInteger numDays = [range components:NSDayCalendarUnit forCalendar:self.calendar].day;
+		NSInteger numDays = [range components:NSCalendarUnitDay forCalendar:self.calendar].day;
 		
 		evCell.style = (ev.isAllDay || numDays > 1 ? MGCStandardEventViewStylePlain : MGCStandardEventViewStyleDefault|MGCStandardEventViewStyleDot);
 		evCell.style |= ev.isAllDay ?: MGCStandardEventViewStyleDetail;

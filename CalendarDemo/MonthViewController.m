@@ -30,7 +30,7 @@
 	MGCDateRange *visibleRange = [self.monthPlannerView visibleDays];
 	if (visibleRange)
 	{
-		NSUInteger dayCount = [self.calendar components:NSDayCalendarUnit fromDate:visibleRange.start toDate:visibleRange.end options:0].day;
+		NSUInteger dayCount = [self.calendar components:NSCalendarUnitDay fromDate:visibleRange.start toDate:visibleRange.end options:0].day;
 		NSDateComponents *comp = [NSDateComponents new];
 		comp.day = dayCount / 2;
 		NSDate *centerDate = [self.calendar dateByAddingComponents:comp toDate:visibleRange.start options:0];
