@@ -76,17 +76,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	[self.dayPlannerView scrollToDate:self.firstVisibleDayForRotation options:MGCDayPlannerScrollDate animated:NO];
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	self.firstVisibleDayForRotation = self.dayPlannerView.visibleDays.start;
-}
-
 /*
 #pragma mark - Navigation
 

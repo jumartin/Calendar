@@ -61,7 +61,6 @@ typedef enum : NSUInteger
 @protocol MGCAllDayEventsViewLayoutDelegate<UICollectionViewDelegate>
 
 - (NSRange)collectionView:(UICollectionView*)view layout:(MGCAllDayEventsViewLayout*)layout dayRangeForEventAtIndexPath:(NSIndexPath*)indexPath;
-- (NSRange)collectionView:(UICollectionView*)view visibleDayRangeForLayout:(MGCAllDayEventsViewLayout*)layout;
 
 @optional
 

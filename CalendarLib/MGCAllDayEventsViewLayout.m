@@ -80,7 +80,7 @@ static const CGFloat kCellInset = 4.;
 
 - (NSInteger)numberOfEventsForDayAtIndex:(NSInteger)day
 {
-	NSNumber *count = [self.eventsCount objectForKey:@(day)];
+    NSNumber *count = [self.eventsCount objectForKey:@(day)];
 	
 	if (!count) {
 		count = @([self.collectionView numberOfItemsInSection:day]);
@@ -111,33 +111,33 @@ static const CGFloat kCellInset = 4.;
 // returns a dictionary of (indexpath : range) for all visible events
 - (NSDictionary*)eventRanges
 {
-	NSMutableDictionary *eventRanges = [NSMutableDictionary new];
+    NSMutableDictionary *eventRanges = [NSMutableDictionary new];
 	
-	NSRange visibleSections = [self.delegate collectionView:self.collectionView visibleDayRangeForLayout:self];
+	NSRange visibleSections = [self visibleDayRangeForBounds:self.collectionView.bounds];
 	
-	BOOL previousDaysWithEvents = NO;
-	for (NSInteger day = visibleSections.location; day < NSMaxRange(visibleSections); day++)
-	{
-		NSInteger eventsCount = [self numberOfEventsForDayAtIndex:day];
-		for (NSInteger item = 0; item < eventsCount; item++)
-		{
-			NSIndexPath *path = [NSIndexPath indexPathForItem:item inSection:day];
-			NSRange eventRange = [self.delegate collectionView:self.collectionView layout:self dayRangeForEventAtIndexPath:path];
-			
-			// keep only those events starting at current column,
-			// or those started earlier if this is the first day of the row range
-			if (eventRange.location == day || day == visibleSections.location ||
-				// this last case means than the event started earlier but previous days may not have loaded yet, thus returning 0 event.
-				// we keep it to avoid nasty flickering when scrolling backwards
-				!previousDaysWithEvents)
-			{
-				eventRange = NSIntersectionRange(eventRange, visibleSections);
-				[eventRanges setObject:[NSValue valueWithRange:eventRange] forKey:path];
-			}
-		}
-		if (eventsCount > 0) previousDaysWithEvents = YES;
-	}
-	
+    BOOL previousDaysWithEvents = NO;
+    for (NSInteger day = visibleSections.location; day < NSMaxRange(visibleSections); day++)
+    {
+        NSInteger eventsCount = [self numberOfEventsForDayAtIndex:day];
+        for (NSInteger item = 0; item < eventsCount; item++)
+        {
+            NSIndexPath *path = [NSIndexPath indexPathForItem:item inSection:day];
+            NSRange eventRange = [self.delegate collectionView:self.collectionView layout:self dayRangeForEventAtIndexPath:path];
+            
+            // keep only those events starting at current column,
+            // or those started earlier if this is the first day of the row range
+            if (eventRange.location == day || day == visibleSections.location ||
+                // this last case means than the event started earlier but previous days may not have loaded yet, thus returning 0 event.
+                // we keep it to avoid nasty flickering when scrolling backwards
+                !previousDaysWithEvents)
+            {
+                eventRange = NSIntersectionRange(eventRange, visibleSections);
+                [eventRanges setObject:[NSValue valueWithRange:eventRange] forKey:path];
+            }
+        }
+        if (eventsCount > 0) previousDaysWithEvents = YES;
+    }
+        
 	return eventRanges;
 }
 
@@ -164,12 +164,12 @@ static const CGFloat kCellInset = 4.;
 - (void)prepareLayout
 {
 	//NSLog(@"AllDayEvents prepareLayout");
-	
+    
 	self.maxEventsInSections = 0;
 	self.eventsCount = nil;
 	self.hiddenCount = nil;
 	self.layoutInfos = [NSMutableDictionary dictionary];
-	
+    
 	NSMutableDictionary *cellInfos = [NSMutableDictionary dictionary];
 	NSMutableDictionary *moreInfos = [NSMutableDictionary dictionary];
 
@@ -304,21 +304,36 @@ static const CGFloat kCellInset = 4.;
 	return attribs;
 }
 
+- (NSRange)visibleDayRangeForBounds:(CGRect)bounds
+{
+    NSUInteger maxSection = self.collectionView.numberOfSections;
+    NSUInteger first = MAX(0, floorf(bounds.origin.x  / self.dayColumnWidth));
+    NSUInteger last = MIN(maxSection, ceilf(CGRectGetMaxX(bounds) / self.dayColumnWidth));
+    if (first >= maxSection) return NSMakeRange(0, 0);
+    return NSMakeRange(first, last - first);
+}
+
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-	BOOL shouldInvalidate = NO;
+    BOOL shouldInvalidate = NO;
 	
 	CGRect oldBounds = self.collectionView.bounds;
-	shouldInvalidate = !CGSizeEqualToSize(oldBounds.size, newBounds.size);
+    shouldInvalidate = (oldBounds.size.width != newBounds.size.width);
 
-	NSRange visibleDays = [self.delegate collectionView:self.collectionView visibleDayRangeForLayout:self];
+    NSRange visibleDays = [self visibleDayRangeForBounds:newBounds];
 	BOOL offContent = newBounds.origin.x < 0 || CGRectGetMaxX(newBounds) > self.collectionViewContentSize.width;
 	if (!NSEqualRanges(visibleDays, self.visibleSections) && !offContent) {
 		self.visibleSections = visibleDays;
 		shouldInvalidate = YES;
 	}
-	
+    
 	return shouldInvalidate;
+}
+
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
+{
+    CGFloat xOffset = roundf(proposedContentOffset.x / self.dayColumnWidth) * self.dayColumnWidth ;
+    return CGPointMake(xOffset, proposedContentOffset.y);
 }
 
 @end
