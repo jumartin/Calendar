@@ -409,7 +409,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
 	NSUInteger numDays = (2 * kDaysLoadingStep + 1) * self.numberOfVisibleDays;
 	if (self.dateRange) {
-		NSInteger diff = [self.dateRange components:NSDayCalendarUnit forCalendar:self.calendar].day;
+		NSInteger diff = [self.dateRange components:NSCalendarUnitDay forCalendar:self.calendar].day;
 		numDays = MIN(numDays, diff);  // cannot load more than the total number of scrollable days
 	}
 	return numDays;
@@ -997,7 +997,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	CGFloat x = section * self.dayColumnSize.width;
 	
 	if (type == MGCTimedEventType) {
-		NSDateComponents *comp = [self.calendar components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:date];
+		NSDateComponents *comp = [self.calendar components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:date];
         CGFloat y =  [self offsetFromTime:(comp.hour*3600. + comp.minute*60.) rounding:0];
  		CGRect rect = CGRectMake(x, y, self.dayColumnSize.width, self.hourSlotHeight);
 		return [self convertRect:rect fromView:self.timedEventsView];
@@ -1750,7 +1750,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     [eventRange intersectDateRange:dayRange];
     
     if (!eventRange.isEmpty) {
-        NSDateComponents *comp = [self.calendar components:(NSDayCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit) fromDate:eventRange.start];
+        NSDateComponents *comp = [self.calendar components:(NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:eventRange.start];
         CGFloat y = roundf((comp.hour + comp.minute / 60. - self.hourRange.location) * self.hourSlotHeight + self.eventsViewInnerMargin);
         
         NSTimeInterval ti = [eventRange.end timeIntervalSinceDate:eventRange.start];
@@ -1774,7 +1774,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		dateRange.start = self.startDate;
 	
 	NSUInteger startSection = [self dayOffsetFromDate:dateRange.start];
-	NSUInteger length = [dateRange components:NSDayCalendarUnit forCalendar:self.calendar].day;
+	NSUInteger length = [dateRange components:NSCalendarUnitDay forCalendar:self.calendar].day;
 	
 	return NSMakeRange(startSection, length);
 }
@@ -1789,7 +1789,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
 	MGCDateRange *dateRange = self.visibleDays;
 	NSUInteger startSection = [self dayOffsetFromDate:dateRange.start];
-	NSUInteger length = [dateRange components:NSDayCalendarUnit forCalendar:self.calendar].day;
+	NSUInteger length = [dateRange components:NSCalendarUnitDay forCalendar:self.calendar].day;
 	return NSMakeRange(startSection, length);
 }
 
@@ -1906,7 +1906,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	}
 	
 	if (offset) {
-		*offset = abs((int)[self.calendar components:NSDayCalendarUnit fromDate:start toDate:date options:0].day);
+		*offset = abs((int)[self.calendar components:NSCalendarUnitDay fromDate:start toDate:date options:0].day);
 	}
 	return start;
 }
@@ -1925,7 +1925,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	// this could eventually be tweaked - for now we recenter when we have less than a page on one or the other side
 	if (xOffset < xPageSize || xOffset + 2 * xPageSize > xContentSize) {
 		NSDate *newStart = [self startDateForFirstVisibleDate:self.visibleDays.start dayOffset:nil];
-		NSInteger diff = [self.calendar components:NSDayCalendarUnit fromDate:self.startDate toDate:newStart options:0].day;
+		NSInteger diff = [self.calendar components:NSCalendarUnitDay fromDate:self.startDate toDate:newStart options:0].day;
 		
 		if (diff != 0) {
 			self.startDate = newStart;

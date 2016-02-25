@@ -334,7 +334,7 @@ typedef enum
 - (NSUInteger)numberOfDaysForMonthAtIndex:(NSUInteger)month
 {
 	NSDate *date = [self dateStartingMonthAtIndex:month];
-	NSRange range = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSMonthCalendarUnit forDate:date];
+	NSRange range = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:date];
 	return range.length;
 }
 

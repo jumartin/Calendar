@@ -87,7 +87,7 @@ static CGFloat kSpace = 2;
 		[as appendAttributedString:detail];
 	}
 	
-	NSTextTab *t = [[NSTextTab alloc]initWithTextAlignment:NSTextAlignmentRight location:rect.size.width options:nil];
+	NSTextTab *t = [[NSTextTab alloc]initWithTextAlignment:NSTextAlignmentRight location:rect.size.width options:[[NSDictionary alloc] init]];
 	NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
 	style.tabStops = @[t];
 	//style.hyphenationFactor = .4;
