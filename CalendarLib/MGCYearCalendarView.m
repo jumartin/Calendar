@@ -292,7 +292,7 @@ static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for t
 		start = self.maxStartDate;
 	}
 	
-	NSUInteger diff = abs((int)[self.calendar components:NSYearCalendarUnit fromDate:start toDate:date options:0].year);
+	NSUInteger diff = abs((int)[self.calendar components:NSCalendarUnitYear fromDate:start toDate:date options:0].year);
 	
 	self.startDate = start;
 	return diff;
@@ -403,7 +403,7 @@ static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for t
 	NSInteger numSections = 2 * kYearsLoadingStep + 1;
 	if (self.dateRange)
 	{
-		NSInteger diff = [self.calendar components:NSYearCalendarUnit fromDate:self.startDate toDate:self.dateRange.end options:0].year;
+		NSInteger diff = [self.calendar components:NSCalendarUnitYear fromDate:self.startDate toDate:self.dateRange.end options:0].year;
 		if (diff < 3 * kYearsLoadingStep + 1)
 			numSections = diff;
 	}

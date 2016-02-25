@@ -63,7 +63,7 @@
 {
 	MGCDateRange *visibleRange = [self.yearCalendarView visibleMonthsRange];
 	if (visibleRange) {
-		NSUInteger monthCount = [self.calendar components:NSMonthCalendarUnit fromDate:visibleRange.start toDate:visibleRange.end options:0].month;
+		NSUInteger monthCount = [self.calendar components:NSCalendarUnitMonth fromDate:visibleRange.start toDate:visibleRange.end options:0].month;
 		NSDateComponents *comp = [NSDateComponents new];
 		comp.month = monthCount / 2;
 		NSDate *centerDate = [self.calendar dateByAddingComponents:comp toDate:visibleRange.start options:0];
