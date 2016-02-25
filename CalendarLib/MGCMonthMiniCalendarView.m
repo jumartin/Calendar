@@ -133,7 +133,7 @@ static const CGFloat kDefaultHeaderFontSize = 16;
 	if (yearWise)
 		numRows += [self.calendar maximumRangeOfUnit:NSCalendarUnitWeekOfMonth].length;
 	else
-		numRows += [self.calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSCalendarUnitMonth forDate:self.date].length;
+		numRows += [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:self.date].length;
 	
 	CGSize viewSize = CGSizeMake(numCols * dayCellSize + (numCols - 1) * space, numRows * dayCellSize + (numRows - 1) * space);
 	
@@ -224,7 +224,7 @@ static const CGFloat kDefaultHeaderFontSize = 16;
 	
 	// draw day cells
 	NSDate *firstDayInMonth = [self.calendar mgc_startOfMonthForDate:self.date];
-	NSUInteger days = [self.calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSCalendarUnitMonth forDate:firstDayInMonth].length;
+	NSUInteger days = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:firstDayInMonth].length;
 	NSUInteger firstCol = [self firstDayColumn];
 	
 	x = rect.origin.x + firstCol * (dayCellSize + space);

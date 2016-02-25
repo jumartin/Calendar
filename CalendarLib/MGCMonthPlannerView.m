@@ -334,7 +334,7 @@ typedef enum
 - (NSUInteger)numberOfDaysForMonthAtIndex:(NSUInteger)month
 {
 	NSDate *date = [self dateStartingMonthAtIndex:month];
-	NSRange range = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSMonthCalendarUnit forDate:date];
+	NSRange range = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:date];
 	return range.length;
 }
 
@@ -1099,7 +1099,7 @@ typedef enum
 		NSDate *date = [self dateStartingMonthAtIndex:indexPath.section];
 		NSUInteger firstColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section]];
 		NSUInteger lastColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section + 1]];
-		NSUInteger numRows = [self.calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSCalendarUnitMonth forDate:date].length;
+		NSUInteger numRows = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date].length;
 		
 		MGCMonthPlannerBackgroundView *view = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthBackgroundViewKind withReuseIdentifier:MonthBackgroundViewIdentifier forIndexPath:indexPath];
 		view.numberOfColumns = 7;
