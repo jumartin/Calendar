@@ -29,6 +29,7 @@
 //
 
 #import <EventKit/EventKit.h>
+#import <EventKitUI/EventKitUI.h>
 #import "MGCDayPlannerViewController.h"
 
 
@@ -44,8 +45,6 @@
 
 /** designated initializer */
 - (instancetype)initWithEventStore:(EKEventStore*)eventStore;
-- (void)accessGrantedForCalendar;
-- (void)accessDeniedForCalendar;
 - (void)reloadEvents;
 
 @end
@@ -56,6 +55,7 @@
 
 @optional
 
-- (UINavigationController*)navigationControllerForEKEventViewController;
+- (void)dayPlannerEKEViewController:(MGCDayPlannerEKViewController*)vc willPresentEventViewController:(EKEventViewController*)eventViewController;                                     
+- (UINavigationController*)dayPlannerEKViewController:(MGCDayPlannerEKViewController*)vc navigationControllerForPresentingEventViewController:(EKEventViewController*)eventViewController;
 
 @end

@@ -35,6 +35,7 @@
 #import "NSCalendar+MGCAdditions.h"
 #import "MGCDateRange.h"
 #import "OSCache.h"
+#import "MGCEventKitSupport.h"
 
 
 typedef enum {
@@ -44,53 +45,16 @@ typedef enum {
 } EventType;
 
 
-typedef void(^EventSaveCompletionBlockType)(BOOL);
-
-
 static const NSUInteger cacheSize = 400;	// size of the cache (in days)
 static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 
-@interface MGCEKEventViewController: EKEventViewController
-@end
-
-@implementation MGCEKEventViewController
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    UIPopoverPresentationController *popController = self.parentViewController.popoverPresentationController;
-    BOOL isPopoverPresented = popController && popController.arrowDirection != UIPopoverArrowDirectionUnknown;
-   
-    // navigation bar is hidden by default when EKEventViewController is presented fullscreen
-    if (self.presentingViewController && !isPopoverPresented) {
-        self.navigationController.navigationBarHidden = NO;
-       // self.navigationController.toolbarHidden = YES;
-    }
-}
-
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    // this fixes a problem when EKEventViewController is pushed
-    // that causes a white bar to show on the bottom when returning to the previous view controller
-    self.navigationController.toolbarHidden = YES;
-}
-
-@end
-
 @interface MGCDayPlannerEKViewController () <UINavigationControllerDelegate, EKEventEditViewDelegate, EKEventViewDelegate>
 
+@property (nonatomic) MGCEventKitSupport *eventKitSupport;
 @property (nonatomic) dispatch_queue_t bgQueue;			// dispatch queue for loading events
 @property (nonatomic) NSMutableOrderedSet *daysToLoad;	// dates for months of which we want to load events
 @property (nonatomic) NSCache *eventsCache;
-@property EKEvent* savedEvent;
-@property (nonatomic, copy) EventSaveCompletionBlockType saveCompletion;
-@property (nonatomic) BOOL accessGranted;
-@property (nonatomic) UIPopoverController *eventPopover;
 @property (nonatomic) NSUInteger createdEventType;
 @property (nonatomic, copy) NSDate *createdEventDate;
 
@@ -99,13 +63,12 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 @implementation MGCDayPlannerEKViewController
 
-@synthesize eventStore = _eventStore;
 @synthesize calendar = _calendar;
 
 - (instancetype)initWithEventStore:(EKEventStore*)eventStore
 {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _eventStore = eventStore;
+        _eventKitSupport = [[MGCEventKitSupport alloc]initWithEventStore:eventStore];
     }
     return self;
 }
@@ -122,33 +85,6 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     [self.dayPlannerView reloadAllEvents];
 }
 
-- (void)saveEvent:(EKEvent*)event completion:(void (^)(BOOL saved))completion
-{
-    if (event.hasRecurrenceRules) {
-        self.savedEvent = event;
-        self.saveCompletion = completion;
-        
-        NSString *title = NSLocalizedString(@"This is a repeating event.", nil);
-        NSString *msg = NSLocalizedString(@"What do you want to modify?", nil);
-        UIAlertView *sheet = [[UIAlertView alloc]initWithTitle:title message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"This event only", nil), NSLocalizedString(@"All future events", nil), nil];
-        
-        [sheet show];
-    }
-    else {
-        NSError *error;
-        
-        BOOL saved = [self.eventStore saveEvent:event span:EKSpanThisEvent commit:YES error:&error];
-        if (!saved) {
-            NSLog(@"Error - Could not save event: %@", error.description);
-        }
-        
-        if (completion != nil) {
-            completion(saved);
-        }
-        self.saveCompletion = nil;
-    }
-}
-
 - (void)showEditControllerForEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date
 {
     EKEvent *ev = [self eventOfType:type atIndex:index date:date];
@@ -162,8 +98,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     eventController.allowsCalendarPreview = YES;
     
     UINavigationController *nc = nil;
-    if ([self.delegate respondsToSelector:@selector(navigationControllerForEKEventViewController)]) {
-        nc = [self.delegate navigationControllerForEKEventViewController];
+    if ([self.delegate respondsToSelector:@selector(dayPlannerEKViewController:navigationControllerForPresentingEventViewController:)]) {
+        nc = [self.delegate dayPlannerEKViewController:self navigationControllerForPresentingEventViewController:eventController];
     }
     
     if (nc) {
@@ -209,6 +145,11 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 #pragma mark - UIViewController
 
+- (id)initWithNibName:(NSString*)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil
+{
+    return [self initWithEventStore:nil];
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
@@ -226,7 +167,13 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     
     self.bgQueue = dispatch_queue_create("MGCDayPlannerEKViewController.bgQueue", NULL);
     
-    [self checkEventStoreAccessForCalendar];
+    [self.eventKitSupport checkEventStoreAccessForCalendar:^(BOOL granted) {
+        if (granted) {
+            NSArray *calendars = [self.eventStore calendarsForEntityType:EKEntityTypeEvent];
+            self.visibleCalendars = [NSSet setWithArray:calendars];
+            [self reloadEvents];
+        }
+    }];
     
     self.dayPlannerView.calendar = self.calendar;
     [self.dayPlannerView registerClass:MGCStandardEventView.class forEventViewWithReuseIdentifier:EventCellReuseIdentifier];
@@ -255,10 +202,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 - (EKEventStore*)eventStore
 {
-    if (_eventStore == nil) {
-        _eventStore = [[EKEventStore alloc]init];
-    }
-    return _eventStore;
+    return self.eventKitSupport.eventStore;
 }
 
 - (void)setVisibleCalendars:(NSSet*)visibleCalendars
@@ -285,7 +229,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 {
     NSPredicate *predicate = [self.eventStore predicateForEventsWithStartDate:startDate endDate:endDate calendars:calendars];
     
-    if (self.accessGranted) {
+    if (self.eventKitSupport.accessGranted) {
         NSArray *events = [self.eventStore eventsMatchingPredicate:predicate];
         if (events) {
             return [events sortedArrayUsingSelector:@selector(compareStartDateWithEvent:)];
@@ -397,59 +341,6 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     return NO;
 }
 
-#pragma mark - Calendar access authorization
-
-- (void)checkEventStoreAccessForCalendar
-{
-    EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
-    
-    switch (status) {
-        case EKAuthorizationStatusAuthorized:
-            [self accessGrantedForCalendar];
-            break;
-            
-        case EKAuthorizationStatusNotDetermined:
-            [self requestCalendarAccess];
-            break;
-            
-        case EKAuthorizationStatusDenied:
-        case EKAuthorizationStatusRestricted:
-            [self accessDeniedForCalendar];
-    }
-}
-
-// Prompt the user for access to their Calendar
-- (void)requestCalendarAccess
-{
-    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-        if (granted) {
-            MGCDayPlannerEKViewController * __weak weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf accessGrantedForCalendar];
-            });
-        }
-    }];
-}
-
-// This method is called when the user has granted permission to Calendar
-- (void)accessGrantedForCalendar
-{
-    self.accessGranted = YES;
-    
-    NSArray *calendars = [self.eventStore calendarsForEntityType:EKEntityTypeEvent];
-    self.visibleCalendars = [NSSet setWithArray:calendars];
-    
-    [self reloadEvents];
-}
-
-- (void)accessDeniedForCalendar
-{
-    NSString *title = NSLocalizedString(@"Warning", nil);
-    NSString *msg = NSLocalizedString(@"Access to the calendar was not authorized", nil);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
-}
-
 #pragma mark - MGCDayPlannerViewDataSource
 
 - (NSInteger)dayPlannerView:(MGCDayPlannerView*)weekView numberOfEventsOfType:(MGCEventType)type atDate:(NSDate*)date
@@ -521,7 +412,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
         ev.startDate = targetDate;
         ev.endDate = end;
         
-        [self saveEvent:ev completion:^(BOOL completion) {
+        [self.eventKitSupport saveEvent:ev completion:^(BOOL completion) {
             [self.dayPlannerView endInteraction];
         }];
     }
@@ -638,44 +529,9 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 #pragma mark - UINavigationControllerDelegate
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-}
-
-#pragma mark - UIAlertViewDelegate
-
-// Called when a button is clicked. The view will be automatically dismissed after this call returns
-- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSAssert(self.savedEvent, @"Saved event is nil");
-    
-    BOOL saved = NO;
-    
-    if (buttonIndex != 0) {
-        EKSpan span = EKSpanThisEvent;
-        
-        if (buttonIndex == 1) {
-            span = EKSpanThisEvent;
-        }
-        else if (buttonIndex == 2) {
-            span = EKSpanFutureEvents;
-        }
-        
-        NSError *error;
-        
-        saved = [self.eventStore saveEvent:self.savedEvent span:span commit:YES error:&error];
-        if (!saved) {
-            NSLog(@"Error - Could not save event: %@", error.description);
-        }
-    }
-    
-    if (self.saveCompletion != nil) {
-        self.saveCompletion(saved);
-    }
-    
-    self.saveCompletion = nil;
-    self.savedEvent = nil;
-}
+//- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+//{
+//}
 
 @end
 

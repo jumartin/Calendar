@@ -34,15 +34,15 @@
 #import "MGCStandardEventView.h"
 #import "NSCalendar+MGCAdditions.h"
 #import "OSCache.h"
-
-typedef void(^EventSaveCompletionBlockType)(BOOL);
+#import "MGCEventKitSupport.h"
 
 
 static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 
-@interface MGCMonthPlannerEKViewController ()<UIPopoverControllerDelegate, UINavigationControllerDelegate, EKEventEditViewDelegate, EKEventViewDelegate>
+@interface MGCMonthPlannerEKViewController ()<UINavigationControllerDelegate, EKEventEditViewDelegate, EKEventViewDelegate>
 
+@property (nonatomic) MGCEventKitSupport *eventKitSupport;
 @property (nonatomic) NSCache *cachedMonths;						// cache of events:  { month_startDate: { day: [events] } }
 @property (nonatomic) dispatch_queue_t bgQueue;						// dispatch queue for loading events
 @property (nonatomic) NSMutableOrderedSet *datesForMonthsToLoad;	// dates for months of which we want to load events
@@ -50,9 +50,6 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 @property (nonatomic) NSUInteger selectedEventIndex;				// index of currently selected event cell
 @property (nonatomic) NSDate *selectedEventDate;					// date of currently selected event cell
 @property (nonatomic) EKEvent *movedEvent;
-@property EKEvent* savedEvent;
-@property (nonatomic, copy) EventSaveCompletionBlockType saveCompletion;
-@property (nonatomic) BOOL accessGranted;
 @property (nonatomic) NSDateFormatter *dateFormatter;
 
 @end
@@ -64,20 +61,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 - (instancetype)initWithEventStore:(EKEventStore*)eventStore
 {
     if (self = [super initWithNibName:nil bundle:nil]) {
-        _eventStore = eventStore;
-        if (eventStore == nil) {
-            _eventStore = [[EKEventStore alloc]init];
-        }
+        _eventKitSupport = [[MGCEventKitSupport alloc]initWithEventStore:eventStore];
         
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadEvents) name:EKEventStoreChangedNotification object:self.eventStore];
-        
-        _cachedMonths = [[OSCache alloc]init];
-        _bgQueue = dispatch_queue_create("MGCMonthPlannerEKViewController.bgQueue", NULL);
-        _dateFormatter = [NSDateFormatter new];
-        _dateFormatter.dateStyle = NSDateFormatterNoStyle;
-        _dateFormatter.timeStyle = NSDateFormatterShortStyle;
-        
-        [self checkEventStoreAccessForCalendar];
     }
     return self;
 }
@@ -88,72 +73,41 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     [self loadEventsIfNeeded];
 }
 
-- (void)saveEvent:(EKEvent*)event completion:(void (^)(BOOL saved))completion
-{
-    if (event.hasRecurrenceRules) {
-        self.savedEvent = event;
-        self.saveCompletion = completion;
-        
-        NSString *title = NSLocalizedString(@"This is a repeating event.", nil);
-        NSString *msg = NSLocalizedString(@"What do you want to modify?", nil);
-        UIAlertView *sheet = [[UIAlertView alloc]initWithTitle:title message:msg delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"This event only", nil), NSLocalizedString(@"All future events", nil), nil];
-        
-        [sheet show];
-    }
-    else {
-        NSError *error;
-        
-        BOOL saved = [self.eventStore saveEvent:event span:EKSpanThisEvent commit:YES error:&error];
-        if (!saved) {
-            NSLog(@"Error - Could not save event: %@", error.description);
-        }
-        
-        if (completion != nil) {
-            completion(saved);
-        }
-        self.saveCompletion = nil;
-    }
-}
-
 - (void)showEditControllerForEventAtIndex:(NSUInteger)index date:(NSDate*)date rect:(CGRect)rect
 {
     EKEvent *ev = [self eventAtIndex:index date:date];
-    if (ev)
-    {
-        EKEventViewController *eventController = [EKEventViewController new];
-        eventController.event = ev;
-        eventController.delegate = self;
-        eventController.allowsEditing = YES;
-        eventController.allowsCalendarPreview = YES;
+    if (!ev) return;
+    
+    MGCEKEventViewController *eventController = [MGCEKEventViewController new];
+    eventController.event = ev;
+    eventController.delegate = self;
+    eventController.allowsEditing = YES;
+    eventController.allowsCalendarPreview = YES;
         
-        if (isiPad) {
-            //NSLog(@"---------------- iPAD ------------------");
-            UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:eventController];
-            nc.delegate = self;
-            nc.navigationBarHidden = YES;
-            
-            self.eventPopover = [[UIPopoverController alloc]initWithContentViewController:nc];
-            self.eventPopover.delegate = self;
-            
-            [self.eventPopover presentPopoverFromRect:rect inView:self.monthPlannerView permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
-        }
-        else{
-            //NSLog(@"---------------- iPhone ------------------");
-            [self presentViewController:eventController animated:YES completion:nil];
-        }
+    UINavigationController *nc = nil;
+//    if ([self.delegate respondsToSelector:@selector(dayPlannerEKViewController:navigationControllerForPresentingEventViewController:)]) {
+//        nc = [self.delegate dayPlannerEKViewController:self navigationControllerForPresentingEventViewController:eventController];
+//    }
+//    
+    if (nc) {
+        [nc pushViewController:eventController animated:YES];
+    }
+    else {
+        nc = [[UINavigationController alloc]initWithRootViewController:eventController];
+        nc.modalPresentationStyle = UIModalPresentationPopover;
+        eventController.presentationController.delegate = self;
         
+        [self showDetailViewController:nc sender:self];
         
+        //CGRect visibleRect = CGRectIntersection(self.monthPlannerView.bounds, [self.monthPlannerView convertRect:view.bounds fromView:view]);
+        UIPopoverPresentationController *popController = nc.popoverPresentationController;
+        popController.permittedArrowDirections = UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight;
+        popController.delegate = self;
+        popController.sourceView = self.monthPlannerView;
+        popController.sourceRect = rect;
     }
 }
 
-/*
- if (isiPad) {
- //NSLog(@"---------------- iPAD ------------------");
- }
- else{
- //NSLog(@"---------------- iPhone ------------------");
- }
- */
 - (void)showPopoverForNewEvent:(EKEvent*)ev withCell:(MGCEventView*)cell
 {
     EKEventEditViewController *eventController = [EKEventEditViewController new];
@@ -161,21 +115,16 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     eventController.eventStore = self.eventStore;
     eventController.editViewDelegate = self; // called only when event is deleted
     eventController.modalInPopover = YES;
+    eventController.modalPresentationStyle = UIModalPresentationPopover;
+    eventController.presentationController.delegate = self;
     
-    if (isiPad) {
-        //NSLog(@"---------------- iPAD ------------------");
-        self.eventPopover = [[UIPopoverController alloc]initWithContentViewController:eventController];
-        self.eventPopover.delegate = self;
-        
-        [self.eventPopover presentPopoverFromRect:cell.bounds inView:cell permittedArrowDirections:UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight animated:NO];
-    }
-    else{
-        //NSLog(@"---------------- iPhone ------------------");
-        [self presentViewController:eventController animated:YES completion:nil];
-    }
+    [self showDetailViewController:eventController sender:self];
     
-    
-    
+    UIPopoverPresentationController *popController = eventController.popoverPresentationController;
+    popController.permittedArrowDirections = UIPopoverArrowDirectionLeft|UIPopoverArrowDirectionRight;
+    popController.delegate = self;
+    popController.sourceView = cell;
+    popController.sourceRect = cell.bounds;
 }
 
 #pragma mark - UIViewController
@@ -193,6 +142,24 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(reloadEvents) name:EKEventStoreChangedNotification object:self.eventStore];
+    
+    self.cachedMonths = [[OSCache alloc]init];
+    
+    self.bgQueue = dispatch_queue_create("MGCMonthPlannerEKViewController.bgQueue", NULL);
+    
+    self.dateFormatter = [NSDateFormatter new];
+    self.dateFormatter.dateStyle = NSDateFormatterNoStyle;
+    self.dateFormatter.timeStyle = NSDateFormatterShortStyle;
+    
+    [self.eventKitSupport checkEventStoreAccessForCalendar:^(BOOL granted) {
+        if (granted) {
+            NSArray *calendars = [self.eventStore calendarsForEntityType:EKEntityTypeEvent];
+            self.visibleCalendars = [NSSet setWithArray:calendars];
+            [self reloadEvents];
+        }
+    }];
     
     self.monthPlannerView.calendar = self.calendar;
     [self.monthPlannerView registerClass:MGCStandardEventView.class forEventCellReuseIdentifier:EventCellReuseIdentifier];
@@ -213,11 +180,17 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 #pragma mark - Properties
 
+
 - (void)setCalendar:(NSCalendar *)calendar
 {
     _calendar = calendar;
     self.dateFormatter.calendar = calendar;
     self.monthPlannerView.calendar = calendar;
+}
+
+- (EKEventStore*)eventStore
+{
+    return self.eventKitSupport.eventStore;
 }
 
 - (void)setVisibleCalendars:(NSSet*)visibleCalendars
@@ -268,7 +241,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 {
     NSPredicate *predicate = [self.eventStore predicateForEventsWithStartDate:startDate endDate:endDate calendars:calendars];
     
-    if (self.accessGranted) {
+    if (self.eventKitSupport.accessGranted) {
         NSArray *events = [self.eventStore eventsMatchingPredicate:predicate];
         if (events) {
             return [events sortedArrayUsingSelector:@selector(compareStartDateWithEvent:)];
@@ -383,59 +356,6 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
         if (![self.cachedMonths objectForKey:date])
             [self addMonthToLoadingQueue:date];
     }
-}
-
-#pragma mark - Calendar access authorization
-
-- (void)checkEventStoreAccessForCalendar
-{
-    EKAuthorizationStatus status = [EKEventStore authorizationStatusForEntityType:EKEntityTypeEvent];
-    
-    switch (status) {
-        case EKAuthorizationStatusAuthorized:
-            [self accessGrantedForCalendar];
-            break;
-            
-        case EKAuthorizationStatusNotDetermined:
-            [self requestCalendarAccess];
-            break;
-            
-        case EKAuthorizationStatusDenied:
-        case EKAuthorizationStatusRestricted:
-            [self accessDeniedForCalendar];
-    }
-}
-
-// Prompt the user for access to their Calendar
-- (void)requestCalendarAccess
-{
-    [self.eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
-        if (granted) {
-            MGCMonthPlannerEKViewController * __weak weakSelf = self;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf accessGrantedForCalendar];
-            });
-        }
-    }];
-}
-
-// This method is called when the user has granted permission to Calendar
-- (void)accessGrantedForCalendar
-{
-    self.accessGranted = YES;
-    
-    NSArray *calendars = [self.eventStore calendarsForEntityType:EKEntityTypeEvent];
-    self.visibleCalendars = [NSSet setWithArray:calendars];
-    
-    [self reloadEvents];
-}
-
-- (void)accessDeniedForCalendar
-{
-    NSString *title = NSLocalizedString(@"Warning", nil);
-    NSString *msg = NSLocalizedString(@"Access to the calendar was not authorized", nil);
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title message:msg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    [alert show];
 }
 
 #pragma mark - MGCMonthPlannerViewDataSource
@@ -564,7 +484,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     self.movedEvent.endDate = endNew;
     
     //NSLog(@"will move ev from %@ to %@", dateOld, dateNew);
-    [self saveEvent:self.movedEvent completion:^(BOOL completion) {
+    [self.eventKitSupport saveEvent:self.movedEvent completion:^(BOOL completion) {
         [self.monthPlannerView endInteraction];
     }];
     
@@ -577,17 +497,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 - (void)eventEditViewController:(EKEventEditViewController *)controller didCompleteWithAction:(EKEventEditViewAction)action
 {
+    [self dismissViewControllerAnimated:YES completion:nil];
     [self.monthPlannerView endInteraction];
-    if (isiPad) {
-        //NSLog(@"---------------- iPAD ------------------");
-        
-        [self.eventPopover dismissPopoverAnimated:NO];
-    }
-    else{
-        //NSLog(@"---------------- iPhone ------------------");
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    
 }
 
 #pragma mark - EKEventViewDelegate
@@ -595,31 +506,29 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 - (void)eventViewController:(EKEventViewController *)controller didCompleteWithAction:(EKEventViewAction)action
 {
     //[self.monthView endSelection];
-    if (isiPad) {
-        //NSLog(@"---------------- iPAD ------------------");
-        [self.eventPopover dismissPopoverAnimated:NO]; // TODO: why does this give a warning upon event deletion ?
-    }
-    else{
-        //NSLog(@"---------------- iPhone ------------------");
+    if (controller.presentingViewController) {
         [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [controller.navigationController popViewControllerAnimated:YES];
     }
-    
 }
 
-#pragma mark - UIPopoverControllerDelegate
+#pragma mark - UIPopoverPresentationControllerDelegate
 
-- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController*)popoverController
-{
-    [self.monthPlannerView deselectEventCellAtIndex:self.selectedEventIndex date:self.selectedEventDate];
-    return YES;
-}
+//- (UIViewController*)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style
+//{
+//    if ([controller.presentedViewController isKindOfClass:EKEventEditViewController.class]) {
+//        return controller.presentedViewController;
+//    }
+//    else {
+//        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:controller.presentedViewController];
+//        nc.delegate = self;
+//        return nc;
+//    }
+//}
 
-- (void)popoverControllerDidDismissPopover:(UIPopoverController*)popoverController
-{
-    [self.monthPlannerView endInteraction];
-}
 
-- (void)popoverController:(UIPopoverController*)popoverController willRepositionPopoverToRect:(inout CGRect*)rect inView:(inout UIView**)view
+- (void)popoverPresentationController:(UIPopoverPresentationController *)popoverPresentationController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView *__autoreleasing  _Nonnull *)view
 {
     MGCEventView *cell = [self.monthPlannerView cellForEventAtIndex:self.selectedEventIndex date:self.selectedEventDate];
     if (cell)
@@ -629,52 +538,21 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     }
 }
 
+- (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
+{
+    [self.monthPlannerView deselectEventCellAtIndex:self.selectedEventIndex date:self.selectedEventDate];
+    return YES;
+}
+
+- (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
+{
+    [self.monthPlannerView endInteraction];
+}
+
 #pragma mark - UINavigationControllerDelegate
 
-- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    if ([viewController isKindOfClass:[EKEventViewController class]]) {
-        [navigationController setNavigationBarHidden:YES animated:NO];
-    }
-    else {
-        [navigationController setNavigationBarHidden:NO animated:NO];
-    }
-}
-
-#pragma mark - UIAlertViewDelegate
-
-// Called when a button is clicked. The view will be automatically dismissed after this call returns
-- (void)alertView:(UIAlertView*)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    NSAssert(self.savedEvent, @"Saved event is nil");
-    
-    BOOL saved = NO;
-    
-    if (buttonIndex != 0) {
-        EKSpan span = EKSpanThisEvent;
-        
-        if (buttonIndex == 1) {
-            span = EKSpanThisEvent;
-        }
-        else if (buttonIndex == 2) {
-            span = EKSpanFutureEvents;
-        }
-        
-        NSError *error;
-        
-        saved = [self.eventStore saveEvent:self.savedEvent span:span commit:YES error:&error];
-        if (!saved) {
-            NSLog(@"Error - Could not save event: %@", error.description);
-        }
-    }
-    
-    if (self.saveCompletion != nil) {
-        self.saveCompletion(saved);
-    }
-    
-    self.saveCompletion = nil;
-    self.savedEvent = nil;
-}
-
+//- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+//{
+//}
 
 @end

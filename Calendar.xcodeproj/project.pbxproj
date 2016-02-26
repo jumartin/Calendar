@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		530ECA845D98535FF8755554 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7BE5C64587768DCB42C743 /* libPods.a */; };
 		720041BA1879B2B600F3C497 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 720041B91879B2B600F3C497 /* Settings.bundle */; };
+		720DAE551C66531300DF8AAA /* MGCEventKitSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 720DAE541C66531300DF8AAA /* MGCEventKitSupport.m */; };
 		721CA1B41A9382990083F41A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 721CA1B21A9382990083F41A /* Localizable.strings */; };
 		721DC18918219C4D00F9470C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721DC18818219C4D00F9470C /* MainViewController.m */; };
 		72271A521815C33600DE96FE /* MGCDateRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 72271A511815C33600DE96FE /* MGCDateRange.m */; };
@@ -77,6 +78,8 @@
 		4BD4FF5BA99D8512B30A7BFC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		573F000BCFFB8BD1BB11115F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		720041B91879B2B600F3C497 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		720DAE541C66531300DF8AAA /* MGCEventKitSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCEventKitSupport.m; sourceTree = "<group>"; };
+		720DAE561C66534A00DF8AAA /* MGCEventKitSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MGCEventKitSupport.h; sourceTree = "<group>"; };
 		721CA1B31A9382990083F41A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		721CA1B51A9382A80083F41A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		721DC18718219C4D00F9470C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -228,6 +231,8 @@
 		723925AB188B040200DE9578 /* EventKit */ = {
 			isa = PBXGroup;
 			children = (
+				720DAE541C66531300DF8AAA /* MGCEventKitSupport.m */,
+				720DAE561C66534A00DF8AAA /* MGCEventKitSupport.h */,
 				72E82BBB1A80E197008B3E2F /* MGCDayPlannerEKViewController.h */,
 				72E82BBC1A80E197008B3E2F /* MGCDayPlannerEKViewController.m */,
 				72E82BC91A83A3FF008B3E2F /* MGCMonthPlannerEKViewController.h */,
@@ -577,6 +582,7 @@
 				722A55F91892B58B0097B8FB /* MGCMonthPlannerViewLayout.m in Sources */,
 				723A2BAD181449F500834697 /* NSCalendar+MGCAdditions.m in Sources */,
 				72707CDD18858F9600830A8E /* MGCMonthPlannerView.m in Sources */,
+				720DAE551C66531300DF8AAA /* MGCEventKitSupport.m in Sources */,
 				7248241818D36DFE0067D0D7 /* MGCYearCalendarMonthHeaderView.m in Sources */,
 				72271A521815C33600DE96FE /* MGCDateRange.m in Sources */,
 				72E8D25918FC474500024582 /* MGCReusableObjectQueue.m in Sources */,
