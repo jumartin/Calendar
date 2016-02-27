@@ -10,6 +10,7 @@
 		530ECA845D98535FF8755554 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD7BE5C64587768DCB42C743 /* libPods.a */; };
 		720041BA1879B2B600F3C497 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 720041B91879B2B600F3C497 /* Settings.bundle */; };
 		720DAE531C6269D900DF8AAA /* NSAttributedString+MGCAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 720DAE521C6269D900DF8AAA /* NSAttributedString+MGCAdditions.m */; };
+		720DAE551C66531300DF8AAA /* MGCEventKitSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 720DAE541C66531300DF8AAA /* MGCEventKitSupport.m */; };
 		721CA1B41A9382990083F41A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 721CA1B21A9382990083F41A /* Localizable.strings */; };
 		721DC18918219C4D00F9470C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721DC18818219C4D00F9470C /* MainViewController.m */; };
 		72271A521815C33600DE96FE /* MGCDateRange.m in Sources */ = {isa = PBXBuildFile; fileRef = 72271A511815C33600DE96FE /* MGCDateRange.m */; };
@@ -24,6 +25,8 @@
 		7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7258E8B01A5A98DD007F88AF /* WeekSettingsViewController.m */; };
 		72707CDD18858F9600830A8E /* MGCMonthPlannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72707CDC18858F9600830A8E /* MGCMonthPlannerView.m */; };
 		72707CE2188592AC00830A8E /* MGCMonthPlannerViewDayCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72707CE1188592AC00830A8E /* MGCMonthPlannerViewDayCell.m */; };
+		72734BB71B32E93800B2BA49 /* main-iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */; };
+		7275C4A01C46E87B0036C9A3 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7275C49F1C46E87B0036C9A3 /* Launch Screen.storyboard */; };
 		727A94B218F3B9C300260D6E /* MGCEventsRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A94B118F3B9C300260D6E /* MGCEventsRowView.m */; };
 		727A94B818F3D28F00260D6E /* MGCEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A94B718F3D28F00260D6E /* MGCEventView.m */; };
 		727A94BD18F3D2E000260D6E /* MGCStandardEventView.m in Sources */ = {isa = PBXBuildFile; fileRef = 727A94BC18F3D2E000260D6E /* MGCStandardEventView.m */; };
@@ -44,7 +47,7 @@
 		72B5D917180D73E0004ADB86 /* CalendarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B5D916180D73E0004ADB86 /* CalendarTests.m */; };
 		72B5D922180D73F3004ADB86 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B5D920180D73F3004ADB86 /* EventKit.framework */; };
 		72B5D923180D73F3004ADB86 /* EventKitUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B5D921180D73F3004ADB86 /* EventKitUI.framework */; };
-		72B5D928180D7476004ADB86 /* main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72B5D927180D7476004ADB86 /* main.storyboard */; };
+		72B5D928180D7476004ADB86 /* main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72B5D927180D7476004ADB86 /* main-iPad.storyboard */; };
 		72B5D92E180D7840004ADB86 /* MGCEventCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B5D92D180D7840004ADB86 /* MGCEventCell.m */; };
 		72B5D953180D9A93004ADB86 /* MGCTimedEventsViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 72B5D952180D9A93004ADB86 /* MGCTimedEventsViewLayout.m */; };
 		72DD627618155AAD00D270DB /* MGCDayPlannerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72DD627518155AAD00D270DB /* MGCDayPlannerView.m */; };
@@ -72,11 +75,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		072E5EFE1C338559007711A0 /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
 		4BD4FF5BA99D8512B30A7BFC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		573F000BCFFB8BD1BB11115F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		720041B91879B2B600F3C497 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		720DAE511C6269D900DF8AAA /* NSAttributedString+MGCAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSAttributedString+MGCAdditions.h"; sourceTree = "<group>"; };
 		720DAE521C6269D900DF8AAA /* NSAttributedString+MGCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+MGCAdditions.m"; sourceTree = "<group>"; };
+		720DAE541C66531300DF8AAA /* MGCEventKitSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCEventKitSupport.m; sourceTree = "<group>"; };
+		720DAE561C66534A00DF8AAA /* MGCEventKitSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MGCEventKitSupport.h; sourceTree = "<group>"; };
 		721CA1B31A9382990083F41A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		721CA1B51A9382A80083F41A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		721DC18718219C4D00F9470C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -106,6 +112,8 @@
 		72707CDC18858F9600830A8E /* MGCMonthPlannerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCMonthPlannerView.m; sourceTree = "<group>"; };
 		72707CE0188592AC00830A8E /* MGCMonthPlannerViewDayCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCMonthPlannerViewDayCell.h; sourceTree = "<group>"; };
 		72707CE1188592AC00830A8E /* MGCMonthPlannerViewDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCMonthPlannerViewDayCell.m; sourceTree = "<group>"; };
+		72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "main-iPhone.storyboard"; sourceTree = "<group>"; };
+		7275C49F1C46E87B0036C9A3 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		727A94B018F3B9C300260D6E /* MGCEventsRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventsRowView.h; sourceTree = "<group>"; };
 		727A94B118F3B9C300260D6E /* MGCEventsRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCEventsRowView.m; sourceTree = "<group>"; };
 		727A94B618F3D28F00260D6E /* MGCEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventView.h; sourceTree = "<group>"; };
@@ -136,7 +144,7 @@
 		72B5D916180D73E0004ADB86 /* CalendarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalendarTests.m; sourceTree = "<group>"; };
 		72B5D920180D73F3004ADB86 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		72B5D921180D73F3004ADB86 /* EventKitUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKitUI.framework; path = System/Library/Frameworks/EventKitUI.framework; sourceTree = SDKROOT; };
-		72B5D927180D7476004ADB86 /* main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = main.storyboard; sourceTree = "<group>"; };
+		72B5D927180D7476004ADB86 /* main-iPad.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "main-iPad.storyboard"; sourceTree = "<group>"; };
 		72B5D92C180D7840004ADB86 /* MGCEventCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventCell.h; sourceTree = "<group>"; };
 		72B5D92D180D7840004ADB86 /* MGCEventCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCEventCell.m; sourceTree = "<group>"; };
 		72B5D951180D9A93004ADB86 /* MGCTimedEventsViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCTimedEventsViewLayout.h; sourceTree = "<group>"; };
@@ -195,6 +203,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		072E5EFD1C338534007711A0 /* Header&Constants */ = {
+			isa = PBXGroup;
+			children = (
+				072E5EFE1C338559007711A0 /* Constant.h */,
+			);
+			name = "Header&Constants";
+			sourceTree = "<group>";
+		};
 		295C2D31E8D3969B4161337E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -218,6 +234,8 @@
 		723925AB188B040200DE9578 /* EventKit */ = {
 			isa = PBXGroup;
 			children = (
+				720DAE541C66531300DF8AAA /* MGCEventKitSupport.m */,
+				720DAE561C66534A00DF8AAA /* MGCEventKitSupport.h */,
 				72E82BBB1A80E197008B3E2F /* MGCDayPlannerEKViewController.h */,
 				72E82BBC1A80E197008B3E2F /* MGCDayPlannerEKViewController.m */,
 				72E82BC91A83A3FF008B3E2F /* MGCMonthPlannerEKViewController.h */,
@@ -341,7 +359,8 @@
 				72B5D901180D73E0004ADB86 /* AppDelegate.m */,
 				721DC18718219C4D00F9470C /* MainViewController.h */,
 				721DC18818219C4D00F9470C /* MainViewController.m */,
-				72B5D927180D7476004ADB86 /* main.storyboard */,
+				72B5D927180D7476004ADB86 /* main-iPad.storyboard */,
+				72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */,
 				72EF080B1A3DB8C6005699CA /* MonthViewController.h */,
 				72EF080C1A3DB8C6005699CA /* MonthViewController.m */,
 				72EF080D1A3DB8C6005699CA /* YearViewController.h */,
@@ -352,6 +371,7 @@
 				72EF07FE1A3D9DF8005699CA /* WeekViewController.m */,
 				72B5D903180D73E0004ADB86 /* Images.xcassets */,
 				72B5D8F8180D73E0004ADB86 /* Supporting Files */,
+				7275C49F1C46E87B0036C9A3 /* Launch Screen.storyboard */,
 			);
 			name = Demo;
 			path = CalendarDemo;
@@ -404,6 +424,7 @@
 		72CD8BAA18228A7500F12339 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				072E5EFD1C338534007711A0 /* Header&Constants */,
 				721CA1B21A9382990083F41A /* Localizable.strings */,
 				72E8D25718FC474500024582 /* MGCReusableObjectQueue.h */,
 				72E8D25818FC474500024582 /* MGCReusableObjectQueue.m */,
@@ -504,10 +525,12 @@
 			files = (
 				723925B0188B0AE800DE9578 /* README.md in Resources */,
 				720041BA1879B2B600F3C497 /* Settings.bundle in Resources */,
+				7275C4A01C46E87B0036C9A3 /* Launch Screen.storyboard in Resources */,
 				72B5D8FC180D73E0004ADB86 /* InfoPlist.strings in Resources */,
 				721CA1B41A9382990083F41A /* Localizable.strings in Resources */,
 				72B5D904180D73E0004ADB86 /* Images.xcassets in Resources */,
-				72B5D928180D7476004ADB86 /* main.storyboard in Resources */,
+				72B5D928180D7476004ADB86 /* main-iPad.storyboard in Resources */,
+				72734BB71B32E93800B2BA49 /* main-iPhone.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,6 +587,7 @@
 				722A55F91892B58B0097B8FB /* MGCMonthPlannerViewLayout.m in Sources */,
 				723A2BAD181449F500834697 /* NSCalendar+MGCAdditions.m in Sources */,
 				72707CDD18858F9600830A8E /* MGCMonthPlannerView.m in Sources */,
+				720DAE551C66531300DF8AAA /* MGCEventKitSupport.m in Sources */,
 				7248241818D36DFE0067D0D7 /* MGCYearCalendarMonthHeaderView.m in Sources */,
 				72271A521815C33600DE96FE /* MGCDateRange.m in Sources */,
 				720DAE531C6269D900DF8AAA /* NSAttributedString+MGCAdditions.m in Sources */,
@@ -674,7 +698,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -705,7 +729,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -726,7 +750,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -745,7 +769,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

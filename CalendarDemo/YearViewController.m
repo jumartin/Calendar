@@ -20,41 +20,41 @@
 
 - (MGCYearCalendarView*)yearCalendarView
 {
-	return (MGCYearCalendarView*)self.view;
+    return (MGCYearCalendarView*)self.view;
 }
 
 - (NSDateFormatter*)dateFormatter
 {
-	if (!_dateFormatter) {
-		_dateFormatter = [NSDateFormatter new];
-		_dateFormatter.calendar = self.calendar;
-		_dateFormatter.dateFormat = @"yyyy";
-	}
-	return _dateFormatter;
+    if (!_dateFormatter) {
+        _dateFormatter = [NSDateFormatter new];
+        _dateFormatter.calendar = self.calendar;
+        _dateFormatter.dateFormat = @"yyyy";
+    }
+    return _dateFormatter;
 }
 
 - (void)setCalendar:(NSCalendar*)calendar
 {
-	_calendar = calendar;
-	self.yearCalendarView.calendar = calendar;
-	self.dateFormatter.calendar = calendar;
+    _calendar = calendar;
+    self.yearCalendarView.calendar = calendar;
+    self.dateFormatter.calendar = calendar;
 }
 
 #pragma mark - MGCYearCalendarViewDelegate
 
 - (void)calendarYearViewDidScroll:(MGCYearCalendarView*)view
 {
-	NSDate *date = [self.yearCalendarView dateForMonthAtPoint:self.yearCalendarView.center];
-	if (date) {
-		[self.delegate calendarViewController:self didShowDate:date];
-	}
+    NSDate *date = [self.yearCalendarView dateForMonthAtPoint:self.yearCalendarView.center];
+    if (date) {
+        [self.delegate calendarViewController:self didShowDate:date];
+    }
 }
 
 - (void)calendarYearView:(MGCYearCalendarView *)view didSelectMonthAtDate:(NSDate*)date
 {
-	if ([self.delegate respondsToSelector:@selector(yearViewController:didSelectMonthAtDate:)]) {
-		[self.delegate yearViewController:self didSelectMonthAtDate:date];
-	}
+    if ([self.delegate respondsToSelector:@selector(yearViewController:didSelectMonthAtDate:)]) {
+        [self.delegate yearViewController:self didSelectMonthAtDate:date];
+    }
 }
 
 #pragma mark - CalendarControllerNavigation
@@ -74,40 +74,40 @@
 
 - (void)moveToDate:(NSDate*)date animated:(BOOL)animated
 {
-	[self.yearCalendarView scrollToDate:date animated:animated];
+    [self.yearCalendarView scrollToDate:date animated:animated];
 }
 
 - (void)moveToNextPageAnimated:(BOOL)animated
 {
-	NSDateComponents *comps = [NSDateComponents new];
-	comps.year = 1;
-	NSDate *date = [self.calendar dateByAddingComponents:comps toDate:[self.yearCalendarView visibleMonthsRange].start options:0];
-	[self moveToDate:date animated:animated];
+    NSDateComponents *comps = [NSDateComponents new];
+    comps.year = 1;
+    NSDate *date = [self.calendar dateByAddingComponents:comps toDate:[self.yearCalendarView visibleMonthsRange].start options:0];
+    [self moveToDate:date animated:animated];
 }
 
 - (void)moveToPreviousPageAnimated:(BOOL)animated
 {
-	NSDateComponents *comps = [NSDateComponents new];
-	comps.year = -1;
-	NSDate *date = [self.calendar dateByAddingComponents:comps toDate:[self.yearCalendarView visibleMonthsRange].start options:0];
-	[self moveToDate:date animated:animated];
+    NSDateComponents *comps = [NSDateComponents new];
+    comps.year = -1;
+    NSDate *date = [self.calendar dateByAddingComponents:comps toDate:[self.yearCalendarView visibleMonthsRange].start options:0];
+    [self moveToDate:date animated:animated];
 }
 
 #pragma mark - UIViewController
 
 - (void)loadView
 {
-	MGCYearCalendarView *view = [[MGCYearCalendarView alloc]initWithFrame:CGRectNull];
-	view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-	self.view = view;
+    MGCYearCalendarView *view = [[MGCYearCalendarView alloc]initWithFrame:CGRectNull];
+    view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    self.view = view;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-		
-	self.yearCalendarView.delegate = self;
-	self.yearCalendarView.calendar = self.calendar;
+    
+    self.yearCalendarView.delegate = self;
+    self.yearCalendarView.calendar = self.calendar;
 }
 
 - (void)didReceiveMemoryWarning
@@ -118,42 +118,58 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	[self.yearCalendarView setNeedsLayout];
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.yearCalendarView setNeedsLayout];
 }
 
 #pragma mark - CalendYearViewDelegate
 
 - (CGFloat)heightForYearHeaderInCalendarYearView:(MGCYearCalendarView *)view
 {
-	return 60;
+    return 60;
 }
 
 - (NSAttributedString*)calendarYearView:(MGCYearCalendarView *)view headerTextForYearAtDate:(NSDate*)date
 {
-	UIFont *font = [UIFont fontWithName:@"HelveticaNeue-light" size:46];
-	self.dateFormatter.dateFormat = @"yyyy";
-	NSString *year = [self.dateFormatter stringFromDate:date];
-	
-	NSMutableParagraphStyle* para = [NSMutableParagraphStyle new];
-	para.firstLineHeadIndent = 10;
-	para.lineBreakMode = NSLineBreakByWordWrapping;
-	
-	NSMutableAttributedString* str = [[NSMutableAttributedString alloc]initWithString:year attributes:@{ NSFontAttributeName:font, NSParagraphStyleAttributeName: para }];
-	return str;
+    UIFont *font ;
+    if (isiPad) {
+        //NSLog(@"---------------- iPAD ------------------");
+        font = [UIFont fontWithName:@"HelveticaNeue-light" size:46];
+    }
+    else{
+        //NSLog(@"---------------- iPhone ------------------");
+        font = [UIFont fontWithName:@"HelveticaNeue-light" size:20];
+    }
+    self.dateFormatter.dateFormat = @"yyyy";
+    NSString *year = [self.dateFormatter stringFromDate:date];
+    
+    NSMutableParagraphStyle* para = [NSMutableParagraphStyle new];
+    para.firstLineHeadIndent = 10;
+    para.lineBreakMode = NSLineBreakByWordWrapping;
+    
+    NSMutableAttributedString* str = [[NSMutableAttributedString alloc]initWithString:year attributes:@{ NSFontAttributeName:font, NSParagraphStyleAttributeName: para }];
+    return str;
 }
 
 - (NSAttributedString*)calendarYearView:(MGCYearCalendarView *)view headerTextForMonthAtDate:(NSDate*)date
 {
-	self.dateFormatter.dateFormat = @"MMMM";
-	NSString *month = [[self.dateFormatter stringFromDate:date]uppercaseString];
-	
-	NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
-	para.lineBreakMode = NSLineBreakByTruncatingTail;
-
-	UIFont *font = [UIFont fontWithName:@"HelveticaNeue" size:22];
-	NSMutableAttributedString* str = [[NSMutableAttributedString alloc]initWithString:month attributes:@{ NSFontAttributeName:font, NSForegroundColorAttributeName:[UIColor blueColor], NSParagraphStyleAttributeName: para }];
-	return str;
+    self.dateFormatter.dateFormat = @"MMMM";
+    NSString *month = [[self.dateFormatter stringFromDate:date]uppercaseString];
+    
+    NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
+    para.lineBreakMode = NSLineBreakByTruncatingTail;
+    
+    UIFont *font;
+    if (isiPad) {
+        //NSLog(@"---------------- iPAD ------------------");
+        font = [UIFont fontWithName:@"HelveticaNeue" size:22];
+    }
+    else{
+        //NSLog(@"---------------- iPhone ------------------");
+        font  = [UIFont fontWithName:@"HelveticaNeue" size:10];
+    }
+    NSMutableAttributedString* str = [[NSMutableAttributedString alloc]initWithString:month attributes:@{ NSFontAttributeName:font, NSForegroundColorAttributeName:[UIColor blueColor], NSParagraphStyleAttributeName: para }];
+    return str;
 }
 
 

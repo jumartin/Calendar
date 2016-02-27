@@ -9,8 +9,13 @@
 #import "MainViewController.h"
 
 
+@protocol WeekViewControllerDelegate <MGCDayPlannerEKViewControllerDelegate, CalendarViewControllerDelegate, UIViewControllerTransitioningDelegate>
+
+@end
+
+
 @interface WeekViewController : MGCDayPlannerEKViewController <CalendarViewControllerNavigation>
 
-@property (nonatomic, weak) id<CalendarViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<WeekViewControllerDelegate> delegate;
 
 @end

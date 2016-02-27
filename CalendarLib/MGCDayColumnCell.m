@@ -82,50 +82,50 @@ static const CGFloat dotSize = 4;
 
 - (void)setActivityIndicatorVisible:(BOOL)visible
 {
-	if (!visible) {
-		[self.activityIndicatorView stopAnimating];
-	}
-	else {
-		if (!self.activityIndicatorView) {
-			self.activityIndicatorView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-			self.activityIndicatorView.color = [UIColor blackColor];
-			self.activityIndicatorView.transform = CGAffineTransformMakeScale(0.6, 0.6);
-			[self.contentView addSubview:self.activityIndicatorView];
-			//[self setNeedsLayout];
-		}
-		[self.activityIndicatorView startAnimating];
-	}
+    if (!visible) {
+        [self.activityIndicatorView stopAnimating];
+    }
+    else {
+        if (!self.activityIndicatorView) {
+            self.activityIndicatorView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+            self.activityIndicatorView.color = [UIColor blackColor];
+            self.activityIndicatorView.transform = CGAffineTransformMakeScale(0.6, 0.6);
+            [self.contentView addSubview:self.activityIndicatorView];
+            //[self setNeedsLayout];
+        }
+        [self.activityIndicatorView startAnimating];
+    }
 }
 
 - (void)setDate:(NSDate*)date calendar:(NSCalendar*)calendar
 {
-	self.dateFormatter.calendar = calendar;
-	self.dateFormatter.dateFormat = self.dateFormat ?: @"d MMM\neeeee";//@"eee d";
-	self.dayLabel.text = [self.dateFormatter stringFromDate:date];
-	
-	NSUInteger weekDay = [calendar components:NSCalendarUnitWeekday fromDate:date].weekday;
-
-	self.thickBorder = (weekDay == calendar.firstWeekday);
-	
-	// isDateInWeekend is only in iOS 8 and later
-	if ([calendar respondsToSelector:@selector(isDateInWeekend:)] && [calendar isDateInWeekend:date]) {
-		self.grayedText = [calendar isDateInWeekend:date];
-	}
-	else {
-		self.grayedText = (weekDay == 7 || weekDay == 1);
-	}
-	
-	[self setNeedsLayout];
+    self.dateFormatter.calendar = calendar;
+    self.dateFormatter.dateFormat = self.dateFormat ?: @"d MMM\neeeee";//@"eee d";
+    self.dayLabel.text = [self.dateFormatter stringFromDate:date];
+    
+    NSUInteger weekDay = [calendar components:NSCalendarUnitWeekday fromDate:date].weekday;
+    
+    self.thickBorder = (weekDay == calendar.firstWeekday);
+    
+    // isDateInWeekend is only in iOS 8 and later
+    if ([calendar respondsToSelector:@selector(isDateInWeekend:)] && [calendar isDateInWeekend:date]) {
+        self.grayedText = [calendar isDateInWeekend:date];
+    }
+    else {
+        self.grayedText = (weekDay == 7 || weekDay == 1);
+    }
+    
+    [self setNeedsLayout];
 }
 
 - (void)prepareForReuse
 {
-	[super prepareForReuse];
-	self.accessoryTypes = MGCDayColumnCellAccessoryNone;
-	self.grayedText = NO;
-	self.markColor = [UIColor blackColor];
-	[self setActivityIndicatorVisible:NO];
-	//[self setNeedsLayout];
+    [super prepareForReuse];
+    self.accessoryTypes = MGCDayColumnCellAccessoryNone;
+    self.grayedText = NO;
+    self.markColor = [UIColor blackColor];
+    [self setActivityIndicatorVisible:NO];
+    //[self setNeedsLayout];
 }
 
 - (void)layoutSubviews
@@ -175,20 +175,20 @@ static const CGFloat dotSize = 4;
 
 - (void)setSelected:(BOOL)selected
 {
-	[super setSelected:selected];
-	
-	if (selected) {
-		self.accessoryTypes |= MGCDayColumnCellAccessoryMark;
-	}
-	else {
-		self.accessoryTypes &= ~MGCDayColumnCellAccessoryMark;
-	}
+    [super setSelected:selected];
+    
+    if (selected) {
+        self.accessoryTypes |= MGCDayColumnCellAccessoryMark;
+    }
+    else {
+        self.accessoryTypes &= ~MGCDayColumnCellAccessoryMark;
+    }
 }
 
 - (void)setAccessoryTypes:(MGCDayColumnCellAccessoryType)accessoryTypes
 {
-	_accessoryTypes = accessoryTypes;
-	[self setNeedsLayout];
+    _accessoryTypes = accessoryTypes;
+    [self setNeedsLayout];
 }
 
 @end

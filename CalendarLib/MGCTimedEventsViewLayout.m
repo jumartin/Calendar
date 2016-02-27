@@ -250,14 +250,23 @@
 	return allAttribs;
 }
 
-#ifdef BUG_FIX
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
+{
+    CGFloat x = roundf(proposedContentOffset.x / self.dayColumnSize.width) * self.dayColumnSize.width;
+    return CGPointMake(x, proposedContentOffset.y);
+}
 
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-	//NSLog(@"shouldInvalidateLayoutForBoundsChange %@", NSStringFromCGRect(newBounds));
-	return self.shouldInvalidate;
-}
-
+    //NSLog(@"shouldInvalidateLayoutForBoundsChange %@", NSStringFromCGRect(newBounds));
+    
+    CGRect oldBounds = self.collectionView.bounds;
+    
+    return
+#ifdef BUG_FIX
+        self.shouldInvalidate ||
 #endif
+        oldBounds.size.width != newBounds.size.width;
+}
 
 @end

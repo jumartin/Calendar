@@ -59,13 +59,6 @@
 
 - (void)loadView
 {
-	if (self.nibName)
-	{
-		[super loadView];
-		NSAssert(self.dayPlannerView != nil, @"NIB file did not set dayPlannerView property.");
-		return;
-	}
-	
 	MGCDayPlannerView *dayPlannerView = [[MGCDayPlannerView alloc]initWithFrame:CGRectZero];
 	dayPlannerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 	self.dayPlannerView = dayPlannerView;
@@ -81,17 +74,6 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	[self.dayPlannerView scrollToDate:self.firstVisibleDayForRotation options:MGCDayPlannerScrollDate animated:NO];
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-	[super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-	self.firstVisibleDayForRotation = self.dayPlannerView.visibleDays.start;
 }
 
 /*

@@ -45,11 +45,19 @@ static const CGFloat kDefaultDayFontSize = 13;			// default font size for the da
 static const CGFloat kDefaultMonthHeaderFontSize = 20;	// default font size for the month headers
 static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for the year headers
 
+static const NSUInteger kYearsLoadingStepiPhone = 10;			// number of years in a loaded page = 2 * kYearsLoadingStep  + 1
+static const CGFloat kCellMinimumSpacingiPhone = 0;			// minimum distance between month cells
+static const CGFloat kDefaultDayFontSizeiPhone = 7;			// default font size for the day ordinals
+static const CGFloat kDefaultMonthHeaderFontSizeiPhone = 12;	// default font size for the month headers
+static const CGFloat kDefaultYearHeaderFontSizeiPhone = 20;	// deafult font size for the year headers
+
 
 // forward declaration needed by YearEventsView
 @interface MGCYearCalendarView(Scrolling)
 
 - (BOOL)reloadCollectionViewIfNeeded;
+
+
 
 @end
 
@@ -68,8 +76,8 @@ static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for t
 
 - (void)layoutSubviews
 {
-	[super layoutSubviews];
-	[self.yearView reloadCollectionViewIfNeeded];
+    [super layoutSubviews];
+    [self.yearView reloadCollectionViewIfNeeded];
 }
 
 @end
@@ -96,98 +104,107 @@ static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for t
 
 - (void)setup
 {
-	_calendar = [NSCalendar currentCalendar];
-	_startDate = [_calendar mgc_startOfYearForDate:[NSDate date]];
-	_dateFormatter = [NSDateFormatter new];
-	_dateFormatter.calendar = _calendar;
-	_daysFont = [UIFont systemFontOfSize:kDefaultDayFontSize];
-	_headerFont = [UIFont boldSystemFontOfSize:kDefaultMonthHeaderFontSize];
-	
-	self.backgroundColor = [UIColor clearColor];
+    _calendar = [NSCalendar currentCalendar];
+    _startDate = [_calendar mgc_startOfYearForDate:[NSDate date]];
+    _dateFormatter = [NSDateFormatter new];
+    _dateFormatter.calendar = _calendar;
+    if (isiPad) {
+        //NSLog(@"---------------- iPAD ------------------");
+        _daysFont = [UIFont systemFontOfSize:kDefaultDayFontSize];
+        _headerFont = [UIFont boldSystemFontOfSize:kDefaultMonthHeaderFontSize];
+    }
+    else{
+        //NSLog(@"---------------- iPhone ------------------");
+        _daysFont = [UIFont systemFontOfSize:kDefaultDayFontSizeiPhone];
+        _headerFont = [UIFont boldSystemFontOfSize:kDefaultMonthHeaderFontSizeiPhone];
+    }
+    
+    
+    self.backgroundColor = [UIColor clearColor];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-	if (self = [super initWithCoder:aDecoder])
-	{
-		[self setup];
-	}
-	return self;
+    if (self = [super initWithCoder:aDecoder])
+    {
+        [self setup];
+    }
+    return self;
 }
 
 - (id)initWithFrame:(CGRect)frame
 {
-	if (self = [super initWithFrame:frame])
-	{
-		[self setup];
-	}
-	return self;
+    if (self = [super initWithFrame:frame])
+    {
+        [self setup];
+    }
+    return self;
 }
 
 - (void)setCalendar:(NSCalendar *)calendar
 {
-	_calendar = calendar;
-	
+    _calendar = calendar;
+    
 }
 
 #pragma mark - Properties
 
 - (UICollectionViewFlowLayout*)layout
 {
-	return (UICollectionViewFlowLayout*)self.eventsView.collectionViewLayout;
+    return (UICollectionViewFlowLayout*)self.eventsView.collectionViewLayout;
 }
 
 - (void)setDateRange:(MGCDateRange *)dateRange
 {
-	// nil dateRange means 'inifinite' scrolling
-	if (dateRange == nil)
-	{
-		_dateRange = nil;
-		self.maxStartDate = nil;
-		return;
-	}
-	
-	// adjust start and end date on year boundaries (always first day of year)
-	NSDate *start = [self.calendar mgc_startOfYearForDate:dateRange.start];
-	
-	NSDateComponents *comps = [NSDateComponents new];
-	comps.year = 1;
-	NSDate *end = [self.calendar dateByAddingComponents:comps toDate:[self.calendar mgc_startOfYearForDate:dateRange.end] options:0];
-	
-	_dateRange = [MGCDateRange dateRangeWithStart:start end:end];
-	
-	// calc max start date
-	comps.year = -(2 * kYearsLoadingStep + 1);
-	self.maxStartDate = [self.calendar dateByAddingComponents:comps toDate:_dateRange.end options:0];
-	if ([self.maxStartDate compare:_dateRange.start] == NSOrderedAscending)
-		self.maxStartDate = _dateRange.start;
-	
-	// adjust startDate if not in new range
-	if (![_dateRange containsDate:self.startDate])
-		self.startDate = _dateRange.start;
-	
-	// reload ?
+    // nil dateRange means 'inifinite' scrolling
+    if (dateRange == nil)
+    {
+        _dateRange = nil;
+        self.maxStartDate = nil;
+        return;
+    }
+    
+    // adjust start and end date on year boundaries (always first day of year)
+    NSDate *start = [self.calendar mgc_startOfYearForDate:dateRange.start];
+    
+    NSDateComponents *comps = [NSDateComponents new];
+    comps.year = 1;
+    NSDate *end = [self.calendar dateByAddingComponents:comps toDate:[self.calendar mgc_startOfYearForDate:dateRange.end] options:0];
+    
+    _dateRange = [MGCDateRange dateRangeWithStart:start end:end];
+    
+    // calc max start date
+    comps.year = -(2 * kYearsLoadingStep + 1);
+    self.maxStartDate = [self.calendar dateByAddingComponents:comps toDate:_dateRange.end options:0];
+    if ([self.maxStartDate compare:_dateRange.start] == NSOrderedAscending)
+        self.maxStartDate = _dateRange.start;
+    
+    // adjust startDate if not in new range
+    if (![_dateRange containsDate:self.startDate])
+        self.startDate = _dateRange.start;
+    
+    // reload ?
 }
 
 - (MGCDateRange*)visibleMonthsRange
 {
-	MGCDateRange *range = nil;
-	
-	NSArray *visible = [[self.eventsView indexPathsForVisibleItems]sortedArrayUsingSelector:@selector(compare:)];
-	if (visible.count)
-	{
-		NSDate *first = [self dateForIndexPath:[visible firstObject]];
-		NSDate *last = [self dateForIndexPath:[visible lastObject]];
-		
-		// end date of the range is excluded, so set it to next month
-		NSDateComponents *comps = [NSDateComponents new];
-		comps.month = 1;
-		last = [self.calendar dateByAddingComponents:comps toDate:last options:0];
-		
-		range = [MGCDateRange dateRangeWithStart:first end:last];
-	}
-	
-	return range;
+    MGCDateRange *range = nil;
+    
+    NSArray *visible = [[self.eventsView indexPathsForVisibleItems]sortedArrayUsingSelector:@selector(compare:)];
+    if (visible.count)
+    {
+        NSDate *first = [self dateForIndexPath:[visible firstObject]];
+        NSDate *last = [self dateForIndexPath:[visible lastObject]];
+        
+        // end date of the range is excluded, so set it to next month
+        NSDateComponents *comps = [NSDateComponents new];
+        comps.month = 1;
+        last = [self.calendar dateByAddingComponents:comps toDate:last options:0];
+        
+        range = [MGCDateRange dateRangeWithStart:first end:last];
+    }
+    
+    return range;
 }
 
 
@@ -195,82 +212,82 @@ static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for t
 
 - (NSDate*)dateForIndexPath:(NSIndexPath*)indexPath
 {
-	NSDateComponents *comp = [NSDateComponents new];
-	comp.year = indexPath.section;
-	comp.month = indexPath.item;
-	return [self.calendar dateByAddingComponents:comp toDate:self.startDate options:0];
+    NSDateComponents *comp = [NSDateComponents new];
+    comp.year = indexPath.section;
+    comp.month = indexPath.item;
+    return [self.calendar dateByAddingComponents:comp toDate:self.startDate options:0];
 }
 
 - (NSInteger)numberOfMonthsForYearAtIndex:(NSInteger)year
 {
-	NSDate *date = [self dateForIndexPath:[NSIndexPath indexPathForItem:0 inSection:year]];
-	return [self.calendar rangeOfUnit:NSCalendarUnitMonth inUnit:NSCalendarUnitYear forDate:date].length;
+    NSDate *date = [self dateForIndexPath:[NSIndexPath indexPathForItem:0 inSection:year]];
+    return [self.calendar rangeOfUnit:NSCalendarUnitMonth inUnit:NSCalendarUnitYear forDate:date].length;
 }
 
 - (CGRect)rectForYearAtIndex:(NSUInteger)year
 {
-	NSIndexPath *first = [NSIndexPath indexPathForItem:0 inSection:year];
-	
-	CGFloat top = [self.eventsView layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:first].frame.origin.y;
-	
-	NSDate *date = [self dateForIndexPath:first];
-	NSUInteger lastMonth = [self.calendar rangeOfUnit:NSCalendarUnitMonth inUnit:NSCalendarUnitYear forDate:date].length - 1;
-	
-	NSIndexPath *last = [NSIndexPath indexPathForItem:lastMonth inSection:year];
-	CGFloat bottom = CGRectGetMaxY([self.eventsView layoutAttributesForItemAtIndexPath:last].frame) + self.layout.sectionInset.bottom;
-	
-	return CGRectMake(0, top, self.bounds.size.width, bottom - top);
+    NSIndexPath *first = [NSIndexPath indexPathForItem:0 inSection:year];
+    
+    CGFloat top = [self.eventsView layoutAttributesForSupplementaryElementOfKind:UICollectionElementKindSectionHeader atIndexPath:first].frame.origin.y;
+    
+    NSDate *date = [self dateForIndexPath:first];
+    NSUInteger lastMonth = [self.calendar rangeOfUnit:NSCalendarUnitMonth inUnit:NSCalendarUnitYear forDate:date].length - 1;
+    
+    NSIndexPath *last = [NSIndexPath indexPathForItem:lastMonth inSection:year];
+    CGFloat bottom = CGRectGetMaxY([self.eventsView layoutAttributesForItemAtIndexPath:last].frame) + self.layout.sectionInset.bottom;
+    
+    return CGRectMake(0, top, self.bounds.size.width, bottom - top);
 }
 
 - (NSAttributedString*)headerTextForMonthAtIndexPath:(NSIndexPath*)indexPath
 {
-	NSDate *date = [self dateForIndexPath:indexPath];
-	
-	if ([self.delegate respondsToSelector:@selector(calendarYearView:headerTextForMonthAtDate:)])
-	{
-		return [self.delegate calendarYearView:self headerTextForMonthAtDate:date];
-	}
-	else
-	{
-		self.dateFormatter.dateFormat = @"MMMM";
-		NSString *dateStr = [[self.dateFormatter stringFromDate:date]uppercaseString];
-		return [[NSAttributedString alloc]initWithString:dateStr attributes:@{ NSFontAttributeName:self.headerFont }];
-	}
+    NSDate *date = [self dateForIndexPath:indexPath];
+    
+    if ([self.delegate respondsToSelector:@selector(calendarYearView:headerTextForMonthAtDate:)])
+    {
+        return [self.delegate calendarYearView:self headerTextForMonthAtDate:date];
+    }
+    else
+    {
+        self.dateFormatter.dateFormat = @"MMMM";
+        NSString *dateStr = [[self.dateFormatter stringFromDate:date]uppercaseString];
+        return [[NSAttributedString alloc]initWithString:dateStr attributes:@{ NSFontAttributeName:self.headerFont }];
+    }
 }
 
 #pragma mark - Public
 
 - (NSDate*)dateForMonthAtPoint:(CGPoint)pt
 {
-	pt = [self.eventsView convertPoint:pt fromView:self];
-	NSIndexPath *path = [self.eventsView indexPathForItemAtPoint:pt];
-	if (path)
-	{
-		return [self dateForIndexPath:path];
-	}
-	return nil;
+    pt = [self.eventsView convertPoint:pt fromView:self];
+    NSIndexPath *path = [self.eventsView indexPathForItemAtPoint:pt];
+    if (path)
+    {
+        return [self dateForIndexPath:path];
+    }
+    return nil;
 }
 
 -(void)scrollToDate:(NSDate*)date animated:(BOOL)animated
 {
-	// check if date in range
-	if (self.dateRange && ![self.dateRange containsDate:date])
-		[NSException raise:@"Invalid parameter" format:@"date %@ is not in range %@ for this calendar view", date, self.dateRange];
-	
-	NSDate *firstInYear = [self.calendar mgc_startOfYearForDate:date];
-	
-	// calc new startDate
-	NSInteger diff = [self adjustStartDate:firstInYear byNumberOfYears:-kYearsLoadingStep];
-	
-	[self.eventsView reloadData];
-	
-	NSIndexPath *top = [NSIndexPath indexPathForItem:0 inSection:diff];
-	[self.eventsView scrollToItemAtIndexPath:top atScrollPosition:UICollectionViewScrollPositionTop animated:animated];
-	
-	if ([self.delegate respondsToSelector:@selector(calendarYearViewDidScroll:)])
-	{
-		[self.delegate calendarYearViewDidScroll:self];
-	}
+    // check if date in range
+    if (self.dateRange && ![self.dateRange containsDate:date])
+        [NSException raise:@"Invalid parameter" format:@"date %@ is not in range %@ for this calendar view", date, self.dateRange];
+    
+    NSDate *firstInYear = [self.calendar mgc_startOfYearForDate:date];
+    
+    // calc new startDate
+    NSInteger diff = [self adjustStartDate:firstInYear byNumberOfYears:-kYearsLoadingStep];
+    
+    [self.eventsView reloadData];
+    
+    NSIndexPath *top = [NSIndexPath indexPathForItem:0 inSection:diff];
+    [self.eventsView scrollToItemAtIndexPath:top atScrollPosition:UICollectionViewScrollPositionTop animated:animated];
+    
+    if ([self.delegate respondsToSelector:@selector(calendarYearViewDidScroll:)])
+    {
+        [self.delegate calendarYearViewDidScroll:self];
+    }
 }
 
 #pragma mark - Scrolling
@@ -301,99 +318,120 @@ static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for t
 // returns new corresponding offset
 - (CGFloat)reloadForTargetContentOffset:(CGFloat)yOffset
 {
-	CGFloat newYOffset = yOffset;
-	
-	NSUInteger diff;
-	if (yOffset < 0)
-	{
-		if ((diff = [self adjustStartDate:self.startDate byNumberOfYears:-kYearsLoadingStep]) != 0)
-		{
-			[self.eventsView reloadData];
-			// strangely, layout is not invalidated immediately.
-			// we have to call prepareLayout ourselves, otherwise layoutAttributesForItemAtIndexPath: will fail (in rectForYearAtIndex:)
-			[self.layout invalidateLayout];
-			[self.layout prepareLayout];
-			newYOffset = [self rectForYearAtIndex:diff].origin.y + yOffset;
-		}
-	}
-	else if (CGRectGetMaxY(self.eventsView.bounds))
-	{
-		if ((diff = [self adjustStartDate:self.startDate byNumberOfYears:kYearsLoadingStep]) != 0)
-		{
-			newYOffset = yOffset - [self rectForYearAtIndex:diff].origin.y;
-			[self.eventsView reloadData];
-		}
-	}
-	return newYOffset;
+    CGFloat newYOffset = yOffset;
+    
+    NSUInteger diff;
+    if (yOffset < 0)
+    {
+        if ((diff = [self adjustStartDate:self.startDate byNumberOfYears:-kYearsLoadingStep]) != 0)
+        {
+            [self.eventsView reloadData];
+            // strangely, layout is not invalidated immediately.
+            // we have to call prepareLayout ourselves, otherwise layoutAttributesForItemAtIndexPath: will fail (in rectForYearAtIndex:)
+            [self.layout invalidateLayout];
+            [self.layout prepareLayout];
+            newYOffset = [self rectForYearAtIndex:diff].origin.y + yOffset;
+        }
+    }
+    else if (CGRectGetMaxY(self.eventsView.bounds))
+    {
+        if ((diff = [self adjustStartDate:self.startDate byNumberOfYears:kYearsLoadingStep]) != 0)
+        {
+            newYOffset = yOffset - [self rectForYearAtIndex:diff].origin.y;
+            [self.eventsView reloadData];
+        }
+    }
+    return newYOffset;
 }
 
 // returns YES if collection views were reloaded
 - (BOOL)reloadCollectionViewIfNeeded
 {
-	CGPoint contentOffset = self.eventsView.contentOffset;
-	
-	if (contentOffset.y < 0.0f || CGRectGetMaxY(self.eventsView.bounds) > self.eventsView.contentSize.height)
-	{
-		CGPoint offset = self.eventsView.contentOffset;
-		offset.y = [self reloadForTargetContentOffset:offset.y];
-		[self.eventsView setContentOffset:offset];
-		return YES;
-	}
-	return NO;
+    CGPoint contentOffset = self.eventsView.contentOffset;
+    
+    if (contentOffset.y < 0.0f || CGRectGetMaxY(self.eventsView.bounds) > self.eventsView.contentSize.height)
+    {
+        CGPoint offset = self.eventsView.contentOffset;
+        offset.y = [self reloadForTargetContentOffset:offset.y];
+        [self.eventsView setContentOffset:offset];
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - Subviews
 
 - (UICollectionView*)eventsView
 {
-	if (!_eventsView)
-	{
-		UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
-		layout.scrollDirection = UICollectionViewScrollDirectionVertical;
-				
-		_eventsView = [[YearEventsView alloc]initWithFrame:CGRectNull collectionViewLayout:layout];
-		_eventsView.yearView = self;
-		_eventsView.backgroundColor = [UIColor whiteColor];
-		_eventsView.dataSource = self;
-		_eventsView.delegate = self;
-		_eventsView.showsVerticalScrollIndicator = NO;
-		_eventsView.scrollsToTop = NO;
-		_eventsView.contentInset = UIEdgeInsetsMake(0, 60, 0, 60);
-
-		[_eventsView registerClass:MGCYearCalendarMonthCell.class forCellWithReuseIdentifier:MonthCellReuseIdentifier];
-		[_eventsView registerClass:MGCYearCalendarMonthHeaderView.class forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:YearHeaderReuseIdentifier];
-	}
-	return _eventsView;
+    if (!_eventsView)
+    {
+        UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
+        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
+        
+        _eventsView = [[YearEventsView alloc]initWithFrame:CGRectNull collectionViewLayout:layout];
+        _eventsView.yearView = self;
+        _eventsView.backgroundColor = [UIColor whiteColor];
+        _eventsView.dataSource = self;
+        _eventsView.delegate = self;
+        _eventsView.showsVerticalScrollIndicator = NO;
+        _eventsView.scrollsToTop = NO;
+        if(isiPad) {
+            //NSLog(@"---------------- iPAD ------------------");
+            _eventsView.contentInset = UIEdgeInsetsMake(0, 60, 0, 60);
+        }
+        else{
+            //NSLog(@"---------------- iPhone ------------------");
+            _eventsView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        }
+        
+        
+        [_eventsView registerClass:MGCYearCalendarMonthCell.class forCellWithReuseIdentifier:MonthCellReuseIdentifier];
+        [_eventsView registerClass:MGCYearCalendarMonthHeaderView.class forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:YearHeaderReuseIdentifier];
+    }
+    return _eventsView;
 }
 
 #pragma mark - UIView
 
 - (void)layoutSubviews
 {
-	self.eventsView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-		
-	MGCMonthMiniCalendarView *cal = [MGCMonthMiniCalendarView new];
-	cal.calendar = self.calendar;
-	cal.daysFont = self.daysFont;
-	cal.headerText = [self headerTextForMonthAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-	CGSize cellSize =  [cal preferredSizeYearWise:YES];
-
-	self.layout.itemSize = cellSize;
-	self.layout.sectionInset = UIEdgeInsetsMake(10, 0, 50, 0);
-	self.layout.minimumInteritemSpacing = kCellMinimumSpacing;
-	self.layout.minimumLineSpacing = kCellMinimumSpacing;
-	
-	self.layout.headerReferenceSize = CGSizeMake(self.bounds.size.width, 60);
-	if ([self.delegate respondsToSelector:@selector(heightForYearHeaderInCalendarYearView:)])
-	{
-		CGFloat height = [self.delegate heightForYearHeaderInCalendarYearView:self];
-		self.layout.headerReferenceSize = CGSizeMake(0, height);
-	}
-
-	if (!self.eventsView.superview)
-	{
-		[self addSubview:self.eventsView];
-	}
+    self.eventsView.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    
+    MGCMonthMiniCalendarView *cal = [MGCMonthMiniCalendarView new];
+    cal.calendar = self.calendar;
+    cal.daysFont = self.daysFont;
+    cal.headerText = [self headerTextForMonthAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    CGSize cellSize =  [cal preferredSizeYearWise:YES];
+    
+    self.layout.itemSize = cellSize;
+    
+    if (isiPad) {
+        //NSLog(@"---------------- iPAD ------------------");
+        self.layout.sectionInset = UIEdgeInsetsMake(10, 0, 50, 0);
+        self.layout.minimumInteritemSpacing = kCellMinimumSpacing;
+        self.layout.minimumLineSpacing = kCellMinimumSpacing;
+    }
+    else{
+        //NSLog(@"---------------- iPhone ------------------");
+        self.layout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 0);
+        self.layout.minimumInteritemSpacing = kCellMinimumSpacingiPhone;
+        self.layout.minimumLineSpacing = kCellMinimumSpacingiPhone;
+    }
+    
+    
+    
+    
+    self.layout.headerReferenceSize = CGSizeMake(self.bounds.size.width, 60);
+    if ([self.delegate respondsToSelector:@selector(heightForYearHeaderInCalendarYearView:)])
+    {
+        CGFloat height = [self.delegate heightForYearHeaderInCalendarYearView:self];
+        self.layout.headerReferenceSize = CGSizeMake(0, height);
+    }
+    
+    if (!self.eventsView.superview)
+    {
+        [self addSubview:self.eventsView];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource
@@ -412,31 +450,31 @@ static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for t
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-	return [self numberOfMonthsForYearAtIndex:section];
+    return [self numberOfMonthsForYearAtIndex:section];
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-	NSDate *date = [self dateForIndexPath:indexPath];
-	
-	MGCYearCalendarMonthCell* cell = [self.eventsView dequeueReusableCellWithReuseIdentifier:MonthCellReuseIdentifier forIndexPath:indexPath];
-	
-	cell.calendarView.calendar = self.calendar;
-	cell.calendarView.date = date;
-	cell.calendarView.daysFont = self.daysFont;
-	cell.calendarView.delegate = self;
-	cell.calendarView.headerText = [self headerTextForMonthAtIndexPath:indexPath];
-	
-	cell.calendarView.highlightedDays = nil;
-	if ([self.calendar mgc_isDate:date sameMonthAsDate:[NSDate date]])
-	{
-		NSUInteger i = [self.calendar components:NSCalendarUnitDay fromDate:date toDate:[NSDate date] options:0].day + 1;
-		cell.calendarView.highlightedDays = [NSIndexSet indexSetWithIndex:i];
-		cell.calendarView.highlightColor = [UIColor redColor];
-	}
-	
-	[cell.calendarView setNeedsDisplay];
-	return cell;
+    NSDate *date = [self dateForIndexPath:indexPath];
+    
+    MGCYearCalendarMonthCell* cell = [self.eventsView dequeueReusableCellWithReuseIdentifier:MonthCellReuseIdentifier forIndexPath:indexPath];
+    
+    cell.calendarView.calendar = self.calendar;
+    cell.calendarView.date = date;
+    cell.calendarView.daysFont = self.daysFont;
+    cell.calendarView.delegate = self;
+    cell.calendarView.headerText = [self headerTextForMonthAtIndexPath:indexPath];
+    
+    cell.calendarView.highlightedDays = nil;
+    if ([self.calendar mgc_isDate:date sameMonthAsDate:[NSDate date]])
+    {
+        NSUInteger i = [self.calendar components:NSCalendarUnitDay fromDate:date toDate:[NSDate date] options:0].day + 1;
+        cell.calendarView.highlightedDays = [NSIndexSet indexSetWithIndex:i];
+        cell.calendarView.highlightColor = [UIColor redColor];
+    }
+    
+    [cell.calendarView setNeedsDisplay];
+    return cell;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
@@ -444,27 +482,34 @@ static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for t
     UICollectionReusableView *reusableview = nil;
     
     if (kind == UICollectionElementKindSectionHeader)
-	{
-		MGCYearCalendarMonthHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:YearHeaderReuseIdentifier forIndexPath:indexPath];
-		
-		NSDate *date = [self dateForIndexPath:indexPath];
-		if ([self.delegate respondsToSelector:@selector(calendarYearView:headerTextForYearAtDate:)])
-		{
-			NSAttributedString *str = [self.delegate calendarYearView:self headerTextForYearAtDate:date];
-			headerView.label.attributedText = str;
-		}
-		else
-		{
-			self.dateFormatter.dateFormat = @"yyyy";
-			NSString *str = [self.dateFormatter stringFromDate:date];
-			headerView.label.font = [UIFont systemFontOfSize:kDefaultYearHeaderFontSize];
-			headerView.label.text = str;
-		}
-		
-		[headerView setNeedsDisplay];
+    {
+        MGCYearCalendarMonthHeaderView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:YearHeaderReuseIdentifier forIndexPath:indexPath];
+        
+        NSDate *date = [self dateForIndexPath:indexPath];
+        if ([self.delegate respondsToSelector:@selector(calendarYearView:headerTextForYearAtDate:)])
+        {
+            NSAttributedString *str = [self.delegate calendarYearView:self headerTextForYearAtDate:date];
+            headerView.label.attributedText = str;
+        }
+        else
+        {
+            self.dateFormatter.dateFormat = @"yyyy";
+            NSString *str = [self.dateFormatter stringFromDate:date];
+            if (isiPad) {
+                //NSLog(@"---------------- iPAD ------------------");
+                headerView.label.font = [UIFont systemFontOfSize:kDefaultYearHeaderFontSize];
+            }
+            else{
+                //NSLog(@"---------------- iPhone ------------------");
+                headerView.label.font = [UIFont systemFontOfSize:kDefaultYearHeaderFontSizeiPhone];
+            }
+            headerView.label.text = str;
+        }
+        
+        [headerView setNeedsDisplay];
         reusableview = headerView;
     }
-
+    
     return reusableview;
 }
 
@@ -473,19 +518,19 @@ static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for t
 
 - (void)scrollViewDidScroll:(UIScrollView*)scrollview
 {
-	if ([self.delegate respondsToSelector:@selector(calendarYearViewDidScroll:)])
-	{
-		[self.delegate calendarYearViewDidScroll:self];
-	}
+    if ([self.delegate respondsToSelector:@selector(calendarYearViewDidScroll:)])
+    {
+        [self.delegate calendarYearViewDidScroll:self];
+    }
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-	if ([self.delegate respondsToSelector:@selector(calendarYearView:didSelectMonthAtDate:)])
-	{
-		NSDate *date = [self dateForIndexPath:indexPath];
-		[self.delegate calendarYearView:self didSelectMonthAtDate:date];
-	}
+    if ([self.delegate respondsToSelector:@selector(calendarYearView:didSelectMonthAtDate:)])
+    {
+        NSDate *date = [self dateForIndexPath:indexPath];
+        [self.delegate calendarYearView:self didSelectMonthAtDate:date];
+    }
 }
 
 #pragma mark - MonthCalendarDelegate

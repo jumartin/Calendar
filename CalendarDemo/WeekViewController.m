@@ -13,18 +13,28 @@
 
 @implementation WeekViewController
 
+@dynamic delegate;
 
 #pragma mark - UIViewController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	    
-	self.dayPlannerView.backgroundColor = [UIColor clearColor];
-	self.dayPlannerView.backgroundView = [UIView new];
-	self.dayPlannerView.backgroundView.backgroundColor = [UIColor whiteColor];
-	self.dayPlannerView.dateFormat = @"eeeee\nd MMM";
-	self.dayPlannerView.dayHeaderHeight = 50;
+    
+    self.dayPlannerView.backgroundColor = [UIColor clearColor];
+    self.dayPlannerView.backgroundView = [UIView new];
+    self.dayPlannerView.backgroundView.backgroundColor = [UIColor whiteColor];
+    
+    if (isiPad) {
+        //NSLog(@"---------------- iPAD ------------------");
+        self.dayPlannerView.dateFormat = @"eee\nd MMM";
+        self.dayPlannerView.dayHeaderHeight = 50;
+    }
+    else{
+        //NSLog(@"---------------- iPhone ------------------");
+        self.dayPlannerView.dateFormat = @"eee\nd \nMMM";
+        self.dayPlannerView.dayHeaderHeight = 60;
+    }
 }
 
 #pragma mark - MGCDayPlannerViewController
@@ -37,10 +47,10 @@
 
 - (void)dayPlannerView:(MGCDayPlannerView*)view didScroll:(MGCDayPlannerScrollType)scrollType
 {
-	NSDate *date = [view dateAtPoint:view.center rounded:YES];
-	if (date && [self.delegate respondsToSelector:@selector(calendarViewController:didShowDate:)]) {
-		[self.delegate calendarViewController:self didShowDate:date];
-	}
+    NSDate *date = [view dateAtPoint:view.center rounded:YES];
+    if (date && [self.delegate respondsToSelector:@selector(calendarViewController:didShowDate:)]) {
+        [self.delegate calendarViewController:self didShowDate:date];
+    }
 }
 
 - (BOOL)dayPlannerView:(MGCDayPlannerView*)view canMoveEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date toType:(MGCEventType)targetType date:(NSDate*)targetDate
@@ -110,29 +120,29 @@
 
 - (void)moveToDate:(NSDate*)date animated:(BOOL)animated
 {
-	if (!self.dayPlannerView.dateRange || [self.dayPlannerView.dateRange containsDate:date]) {
-		[self.dayPlannerView scrollToDate:date options:MGCDayPlannerScrollDateTime animated:animated];
-	}
+    if (!self.dayPlannerView.dateRange || [self.dayPlannerView.dateRange containsDate:date]) {
+        [self.dayPlannerView scrollToDate:date options:MGCDayPlannerScrollDateTime animated:animated];
+    }
 }
 
 - (void)moveToNextPageAnimated:(BOOL)animated
 {
-	NSDate *date;
-	[self.dayPlannerView pageForwardAnimated:animated date:&date];
-	//NSLog(@"paging forward to %@", date);
+    NSDate *date;
+    [self.dayPlannerView pageForwardAnimated:animated date:&date];
+    //NSLog(@"paging forward to %@", date);
 }
 
 - (void)moveToPreviousPageAnimated:(BOOL)animated
 {
-	NSDate *date;
-	[self.dayPlannerView pageBackwardsAnimated:animated date:&date];
-	//NSLog(@"paging backwards to %@", date);
+    NSDate *date;
+    [self.dayPlannerView pageBackwardsAnimated:animated date:&date];
+    //NSLog(@"paging backwards to %@", date);
 }
 
 - (NSDate*)centerDate
 {
-	NSDate *date = [self.dayPlannerView dateAtPoint:self.dayPlannerView.center rounded:NO];
-	return date;
+    NSDate *date = [self.dayPlannerView dateAtPoint:self.dayPlannerView.center rounded:NO];
+    return date;
 }
 
 @end

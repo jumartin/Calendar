@@ -1,5 +1,5 @@
 //
-//  MGCEventView.m
+//  MGCEventKitSupport.h
 //  Graphical Calendars Library for iOS
 //
 //  Distributed under the MIT License
@@ -28,37 +28,25 @@
 //  SOFTWARE.
 //
 
-#import "MGCEventView.h"
+
+#import <EventKitUI/EventKitUI.h>
 
 
-@implementation MGCEventView
+typedef void(^EventSaveCompletionBlockType)(BOOL);
 
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    if (self = [super initWithFrame:frame]) {
-        self.visibleHeight = CGFLOAT_MAX;
-        self.backgroundColor = [UIColor grayColor];
-        self.clipsToBounds = YES;
-    }
-    return self;
-}
 
-- (void)prepareForReuse
-{
-    self.selected = NO;
-}
+@interface MGCEventKitSupport : NSObject
 
-// if needed, implement in subclasses
-- (void)didTransitionToEventType:(MGCEventType)toType
-{
-}
+@property (nonatomic, readonly) EKEventStore *eventStore;
+@property (nonatomic, readonly) BOOL accessGranted;
 
-#pragma mark - NSCopying protocol
+- (instancetype)initWithEventStore:(EKEventStore*)eventStore;
+- (void)checkEventStoreAccessForCalendar:(void (^)(BOOL accessGranted))completion;
+- (void)saveEvent:(EKEvent*)event completion:(void (^)(BOOL saved))completion;
 
-- (id)copyWithZone:(NSZone*)zone
-{
-    MGCEventView *cell = [[[self class] allocWithZone:zone] initWithFrame:self.frame];
-    return cell;
-}
+@end
+
+
+@interface MGCEKEventViewController: EKEventViewController
 
 @end

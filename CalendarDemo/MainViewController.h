@@ -47,8 +47,6 @@ typedef  UIViewController<CalendarViewControllerNavigation> CalendarViewControll
 @property (nonatomic, weak) IBOutlet UIBarButtonItem *settingsButtonItem;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *viewChooser;
 
-@property (nonatomic) UIPopoverController *calendarPopover;
-
 @property (nonatomic) NSCalendar *calendar;
 @property (nonatomic) EKEventStore *eventStore;
 
