@@ -36,27 +36,27 @@
 + (NSCalendar*)mgc_calendarFromPreferenceString:(NSString*)string
 {
 	if ([string isEqualToString:@"gregorian"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSGregorianCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 	else if ([string isEqualToString:@"buddhist"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSBuddhistCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierBuddhist];
 	else if ([string isEqualToString:@"chinese"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSChineseCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierChinese];
 	else if ([string isEqualToString:@"hebrew"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSHebrewCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierHebrew];
 	else if ([string isEqualToString:@"islamic"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSIslamicCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierIslamic];
 	else if ([string isEqualToString:@"islamicCivil"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSIslamicCivilCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierIslamicCivil];
 	else if ([string isEqualToString:@"japanese"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSJapaneseCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierJapanese];
 	else if ([string isEqualToString:@"republicOfChina"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSRepublicOfChinaCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierRepublicOfChina];
 	else if ([string isEqualToString:@"persian"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSPersianCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierPersian];
 	else if ([string isEqualToString:@"indian"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSIndianCalendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierIndian];
 	else if ([string isEqualToString:@"iso8601"])
-		return [[NSCalendar alloc]initWithCalendarIdentifier:NSISO8601Calendar];
+		return [[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierISO8601];
 	return [NSCalendar currentCalendar];
 }
 
@@ -64,7 +64,7 @@
 {
 	if (![self respondsToSelector:@selector(startOfDayForDate:)]) {
 		// keep only day, month and year components
-		NSDateComponents* comps = [self components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+		NSDateComponents* comps = [self components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
 		return [self dateFromComponents:comps];
 	}
 	// startOfDayForDate: is only available in iOS 8 and later

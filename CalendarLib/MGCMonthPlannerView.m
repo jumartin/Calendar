@@ -263,7 +263,7 @@ typedef enum
 {
 	NSUInteger numMonths = (2 * kMonthsLoadingStep + 1);
 	if (self.dateRange) {
-		NSInteger diff = [self.dateRange components:NSMonthCalendarUnit forCalendar:self.calendar].month;
+		NSInteger diff = [self.dateRange components:NSCalendarUnitMonth forCalendar:self.calendar].month;
 		numMonths = MIN(numMonths, diff);  // cannot load more than the total number of scrollable months
 	}
 	return numMonths;
@@ -334,7 +334,7 @@ typedef enum
 - (NSUInteger)numberOfDaysForMonthAtIndex:(NSUInteger)month
 {
 	NSDate *date = [self dateStartingMonthAtIndex:month];
-	NSRange range = [self.calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:date];
+	NSRange range = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:date];
 	return range.length;
 }
 
@@ -342,7 +342,7 @@ typedef enum
 {
 	NSDate *date = [self dateForDayAtIndexPath:indexPath];
 	
-	NSUInteger weekday = [self.calendar components:NSWeekdayCalendarUnit fromDate:date].weekday;
+	NSUInteger weekday = [self.calendar components:NSCalendarUnitWeekday fromDate:date].weekday;
 	// zero-based, 0 is the first day of week of current calendar
 	weekday = (weekday + 7 - self.calendar.firstWeekday) % 7;
 	return weekday;
@@ -423,7 +423,7 @@ typedef enum
 {
 	for (MGCEventsRowView *rowView in [self visibleEventRows])
 	{
-		NSUInteger day = [self.calendar components:NSDayCalendarUnit fromDate:rowView.referenceDate toDate:date options:0].day;
+		NSUInteger day = [self.calendar components:NSCalendarUnitDay fromDate:rowView.referenceDate toDate:date options:0].day;
 		if (NSLocationInRange(day, rowView.daysRange))
 		{
 			return [rowView cellAtIndexPath:[NSIndexPath indexPathForItem:index inSection:day]];
@@ -534,7 +534,7 @@ typedef enum
 		start = self.maxStartDate;
 	}
 	
-	NSUInteger diff = abs((int)[self.calendar components:NSMonthCalendarUnit fromDate:start toDate:date options:0].month);
+	NSUInteger diff = abs((int)[self.calendar components:NSCalendarUnitMonth fromDate:start toDate:date options:0].month);
 	
 	self.startDate = start;
 	return diff;
@@ -743,8 +743,8 @@ typedef enum
 		eventsView = (MGCEventsRowView*)[self.reuseQueue dequeueReusableObjectWithReuseIdentifier:EventsRowViewIdentifier];
 		
 		NSDate *referenceDate = [self.calendar mgc_startOfMonthForDate:rowStart];
-		NSUInteger first = [self.calendar components:NSDayCalendarUnit fromDate:referenceDate toDate:rowStart options:0].day;
-		NSUInteger numDays = [self.calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSWeekOfMonthCalendarUnit forDate:rowStart].length;
+		NSUInteger first = [self.calendar components:NSCalendarUnitDay fromDate:referenceDate toDate:rowStart options:0].day;
+		NSUInteger numDays = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitWeekOfMonth forDate:rowStart].length;
 		
 		eventsView.referenceDate = referenceDate;
 		eventsView.scrollEnabled = NO;
@@ -875,7 +875,7 @@ typedef enum
 	
 		NSDate *touchDate = [self dayAtPoint:pt];
 		NSDate *eventDayStart = [self.calendar mgc_startOfDayForDate:self.dragEventDateRange.start];
-		self.dragEventTouchDayOffset = [self.calendar components:NSDayCalendarUnit fromDate:touchDate toDate:eventDayStart options:0].day;
+		self.dragEventTouchDayOffset = [self.calendar components:NSCalendarUnitDay fromDate:touchDate toDate:eventDayStart options:0].day;
 		
 		[self highlightDaysInRange:self.dragEventDateRange];
 
@@ -932,7 +932,7 @@ typedef enum
 		}
 		else
 		{
-			comps.day = [[self daysRangeFromDateRange:self.dragEventDateRange]components:NSDayCalendarUnit forCalendar:self.calendar].day;
+			comps.day = [[self daysRangeFromDateRange:self.dragEventDateRange]components:NSCalendarUnitDay forCalendar:self.calendar].day;
 		}
 		NSDate *highlightEnd = [self.calendar dateByAddingComponents:comps toDate:highlightStart options:0];
 		MGCDateRange *highlight = [MGCDateRange dateRangeWithStart:highlightStart end:highlightEnd];
@@ -1099,7 +1099,7 @@ typedef enum
 		NSDate *date = [self dateStartingMonthAtIndex:indexPath.section];
 		NSUInteger firstColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section]];
 		NSUInteger lastColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section + 1]];
-		NSUInteger numRows = [self.calendar rangeOfUnit:NSWeekCalendarUnit inUnit:NSMonthCalendarUnit forDate:date].length;
+		NSUInteger numRows = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date].length;
 		
 		MGCMonthPlannerBackgroundView *view = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthBackgroundViewKind withReuseIdentifier:MonthBackgroundViewIdentifier forIndexPath:indexPath];
 		view.numberOfColumns = 7;
