@@ -11,6 +11,7 @@ MGC Graphical Calendars Library (CalendarLib) is a set of views and controllers 
 - Create and schedule events with iCal-like views and controllers
 - 3 kinds of views are available (a day planner view, a month planner view and a year view)
 - Scroll infinitely through days / months, or restrict scrolling to a given date range
+- Restrict range of displayed hours in the day planner view
 - Page through weeks in the day planner view
 - Use a standard view for event cells or create your own custom views
 - Easily customize appearance and layout (date format, size of headers, number of visible days...)
@@ -25,9 +26,7 @@ MGC Graphical Calendars Library (CalendarLib) is a set of views and controllers 
 
 # Compatibility #
 
-iPad with iOS 7 or higher.
-
-The views work on the iPhone but the EventKit controllers still need a bit of work.
+iPad / iPhone with iOS 8 or higher.
 
 # Installation #
 
@@ -58,13 +57,6 @@ See the demo project to get an idea of how to use the library.
 
 Have a look at the CalendarDocs folder for (incomplete) documentation on the day planner view.
 
-# Todo #
-
-- make the EventKit controllers work on the iPhone
-- make a demo app for the iPhone
-
 # License #
 
 MGC Graphical Calendars Library is available under the MIT license. See the LICENSE file.
-
-An email telling me in what kind of application you're using it would be welcome!
