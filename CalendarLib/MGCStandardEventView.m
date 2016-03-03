@@ -74,13 +74,13 @@ static CGFloat kSpace = 2;
 	UIFont *boldFont = [UIFont fontWithDescriptor:[[self.font fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold] size:self.font.pointSize];
 	NSMutableAttributedString *as = [[NSMutableAttributedString alloc]initWithString:s attributes:@{NSFontAttributeName: boldFont ?: self.font }];
 	
-	if (self.subtitle && self.style & MGCStandardEventViewStyleSubtitle) {
+	if (self.subtitle && self.subtitle.length > 0 && self.style & MGCStandardEventViewStyleSubtitle) {
 		NSMutableString *s  = [NSMutableString stringWithFormat:@"\n%@", self.subtitle];
 		NSMutableAttributedString *subtitle = [[NSMutableAttributedString alloc]initWithString:s attributes:@{NSFontAttributeName:self.font}];
 		[as appendAttributedString:subtitle];
 	}
 	
-	if (self.detail && self.style & MGCStandardEventViewStyleDetail) {
+	if (self.detail && self.detail.length > 0 && self.style & MGCStandardEventViewStyleDetail) {
 		UIFont *smallFont = [UIFont fontWithDescriptor:[self.font fontDescriptor] size:self.font.pointSize - 2];
 		NSMutableString *s = [NSMutableString stringWithFormat:@"\t%@", self.detail];
 		NSMutableAttributedString *detail = [[NSMutableAttributedString alloc]initWithString:s attributes:@{NSFontAttributeName:smallFont}];
@@ -163,11 +163,11 @@ static CGFloat kSpace = 2;
 	
 	[self redrawStringInRect:drawRect];
 	
-	CGRect boundingRect = [self.attrString boundingRectWithSize:drawRect.size options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+	CGRect boundingRect = [self.attrString boundingRectWithSize:CGSizeMake(drawRect.size.width, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
 	drawRect.size.height = fminf(drawRect.size.height, self.visibleHeight);
 	
 	if (boundingRect.size.height > drawRect.size.height) {
-		[self.attrString.mutableString replaceOccurrencesOfString:@"\n" withString:@" " options:NSCaseInsensitiveSearch range:NSMakeRange(0, self.attrString.length)];
+		[self.attrString.mutableString replaceOccurrencesOfString:@"\n" withString:@"  " options:NSCaseInsensitiveSearch range:NSMakeRange(0, self.attrString.length)];
 	}
 
 	[self.attrString drawWithRect:drawRect options:NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin context:nil];
