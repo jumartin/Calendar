@@ -141,6 +141,7 @@
 				if (visibleHeight > self.minimumVisibleHeight) {
 					covered = attribs2;
 					covered.visibleHeight = visibleHeight;
+                    attribs1.zIndex = attribs2.zIndex + 1;
 					break;
 				}
 				else {
