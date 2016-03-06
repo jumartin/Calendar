@@ -1690,7 +1690,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 
     NSDate *date = [self dateFromDayOffset:indexPath.section];
     
-    NSUInteger accessoryTypes = MGCDayColumnCellAccessoryBorder;
+    NSUInteger weekDay = [self.calendar components:NSCalendarUnitWeekday fromDate:date].weekday;
+    NSUInteger accessoryTypes = weekDay == self.calendar.firstWeekday ? MGCDayColumnCellAccessorySeparator : MGCDayColumnCellAccessoryBorder;
     
     NSAttributedString *attrStr = nil;
     if ([self.delegate respondsToSelector:@selector(dayPlannerView:attributedStringForDayHeaderAtDate:)]) {
@@ -1701,14 +1702,30 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         dayCell.dayLabel.attributedText = attrStr;
     }
     else {
-        dayCell.dateFormat = self.dateFormat ?: @"d MMM\neeeee";
-        [dayCell setDate:date calendar:self.calendar];
         
-        if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]])
-        {
+        static NSDateFormatter *dateFormatter = nil;
+        if (dateFormatter == nil) {
+            dateFormatter = [NSDateFormatter new];
+        }
+        dateFormatter.dateFormat = self.dateFormat ?: @"d MMM\neeeee";
+
+        NSString *s = [dateFormatter stringFromDate:date];
+        
+        NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
+        para.alignment = NSTextAlignmentCenter;
+        
+        UIFont *font = [UIFont systemFontOfSize:14];
+        UIColor *color = [self.calendar isDateInWeekend:date] ? [UIColor lightGrayColor] : [UIColor blackColor];
+        
+        if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]]) {
             accessoryTypes |= MGCDayColumnCellAccessoryMark;
             dayCell.markColor = self.tintColor;
+            color = [UIColor whiteColor];
+            font = [UIFont boldSystemFontOfSize:14];
         }
+        
+        NSAttributedString *as = [[NSAttributedString alloc]initWithString:s attributes:@{ NSParagraphStyleAttributeName: para, NSFontAttributeName: font, NSForegroundColorAttributeName: color }];
+        dayCell.dayLabel.attributedText = as;
     }
     
     if ([self.loadingDays containsObject:date]) {

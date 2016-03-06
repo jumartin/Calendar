@@ -86,7 +86,6 @@
 
 - (NSAttributedString*)dayPlannerView:(MGCDayPlannerView *)view attributedStringForDayHeaderAtDate:(NSDate *)date
 {
-    UIFont *font = [UIFont systemFontOfSize:15];
  
     static NSDateFormatter *dateFormatter = nil;
     if (dateFormatter == nil) {
@@ -96,22 +95,24 @@
     
     NSString *dayStr = [dateFormatter stringFromDate:date];
     
+    UIFont *font = [UIFont systemFontOfSize:15];
     NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:dayStr attributes:@{ NSFontAttributeName: font }];
     
     if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]]) {
         UIFont *boldFont = [UIFont boldSystemFontOfSize:15];
         
-        NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
-        para.alignment = NSTextAlignmentCenter;
-        
         MGCCircleMark *mark = [MGCCircleMark new];
         mark.yOffset = boldFont.descender - mark.margin;
  
         NSUInteger dayStringStart = [dayStr rangeOfString:@" "].location + 1;
-        [attrStr addAttributes:@{ NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor whiteColor], MGCCircleMarkAttributeName: mark, NSParagraphStyleAttributeName: para } range:NSMakeRange(dayStringStart, dayStr.length - dayStringStart)];
+        [attrStr addAttributes:@{ NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor whiteColor], MGCCircleMarkAttributeName: mark } range:NSMakeRange(dayStringStart, dayStr.length - dayStringStart)];
 
         [attrStr processCircleMarksInRange:NSMakeRange(0, attrStr.length)];
     }
+    
+    NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
+    para.alignment = NSTextAlignmentCenter;
+    [attrStr addAttribute:NSParagraphStyleAttributeName value:para range:NSMakeRange(0, attrStr.length)];
     
     return attrStr;
 }
