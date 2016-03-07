@@ -62,6 +62,12 @@
 @property (nonatomic) CGFloat headerHeight;
 
 /*!
+	@abstract	Returns the height of the header in day cells which displays the date.
+	@discussion The default value is 30.
+ */
+@property (nonatomic) CGFloat dayCellHeaderHeight;
+
+/*!
 	@abstract	Returns the height of event cells.
 	@discussion The default value is 16.
  */

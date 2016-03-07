@@ -30,12 +30,15 @@
 
 #import "MGCMonthPlannerViewDayCell.h"
 
+static const CGFloat kHeaderMargin = 1;
+
 
 @implementation MGCMonthPlannerViewDayCell
 
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
+        self.headerHeight = 20;
         self.backgroundColor = [UIColor whiteColor];
         
         self.dayLabel = [[UILabel alloc]initWithFrame:CGRectNull];
@@ -62,20 +65,18 @@
     self.dayLabel.layer.cornerRadius = marked ? 10. : 0.;
 }
 
+- (void)setHeaderHeight:(CGFloat)headerHeight
+{
+    _headerHeight = headerHeight;
+    [self setNeedsLayout];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
     
-    if (isiPad) {
-        //NSLog(@"---------------- iPAD ------------------");
-        self.dayLabel.frame = CGRectMake(0, 0, self.contentView.bounds.size.width, 20);
-    }
-    else{
-        //NSLog(@"---------------- iPhone ------------------");
-        self.dayLabel.frame = CGRectMake(0, 0, self.contentView.bounds.size.width, 40);
-        self.dayLabel.numberOfLines = 0;
-        self.dayLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    }
+    CGRect frame = CGRectMake(0, 0, self.contentView.bounds.size.width, self.headerHeight);
+    self.dayLabel.frame =  CGRectInset(frame, kHeaderMargin, kHeaderMargin);
 }
 
 @end

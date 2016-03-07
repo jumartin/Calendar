@@ -33,6 +33,7 @@
 
 @interface MGCMonthPlannerViewDayCell : UICollectionViewCell
 
+@property (nonatomic) CGFloat headerHeight;
 @property (nonatomic) UILabel *dayLabel;
 @property (nonatomic, getter = isMarked) BOOL marked;
 

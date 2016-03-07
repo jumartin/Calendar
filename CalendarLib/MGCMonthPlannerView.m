@@ -116,7 +116,7 @@ typedef enum
         _rowHeight = 60.;
     }
     
-    
+    _dayCellHeaderHeight = 30;
     _headerHeight = 35;
     _itemHeight = 16;
     _reuseQueue = [MGCReusableObjectQueue new];
@@ -170,6 +170,14 @@ typedef enum
 - (MGCMonthPlannerViewLayout*)layout
 {
     return (MGCMonthPlannerViewLayout*)self.eventsView.collectionViewLayout;
+}
+
+// public
+- (void)setDayCellHeaderHeight:(CGFloat)dayCellHeaderHeight
+{
+    _dayCellHeaderHeight = dayCellHeaderHeight;
+    self.layout.dayHeaderHeight = dayCellHeaderHeight;
+    [self.eventsView reloadData];
 }
 
 // public
@@ -597,6 +605,7 @@ typedef enum
     if (!_eventsView) {
         MGCMonthPlannerViewLayout *layout = [MGCMonthPlannerViewLayout new];
         layout.rowHeight = self.rowHeight;
+        layout.dayHeaderHeight = self.dayCellHeaderHeight;
         layout.delegate = self;
         
         _eventsView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
@@ -1085,6 +1094,8 @@ typedef enum
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
 {
     MGCMonthPlannerViewDayCell* cell = [self.eventsView dequeueReusableCellWithReuseIdentifier:DayCellIdentifier forIndexPath:indexPath];
+    cell.headerHeight = self.dayCellHeaderHeight;
+    
     NSDate *date = [self dateForDayAtIndexPath:indexPath];
     
     if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]])
