@@ -68,6 +68,13 @@
 @property (nonatomic) CGFloat dayCellHeaderHeight;
 
 /*!
+	@abstract	String format for dates displayed on top of day cells.
+	@discussion If the value of this property is nil, a default format of @"d MMM\neeeee" is used.
+	@see		NSDateFormatter dateFormat
+ */
+@property (nonatomic, copy) NSString *dateFormat;
+
+/*!
 	@abstract	Returns the height of event cells.
 	@discussion The default value is 16.
  */
@@ -139,6 +146,14 @@
 @protocol MGCMonthPlannerViewDelegate<NSObject>
 
 @optional
+
+/*!
+	@abstract   Asks the delegate for the attributed string of the day header for given date.
+    @param		view		The month planner view requesting the information.
+	@param		date		The date for the header.
+	@return     The attributed string to draw.
+ */
+- (NSAttributedString*)monthPlannerView:(MGCMonthPlannerView*)view attributedStringForDayHeaderAtDate:(NSDate*)date;
 
 - (void)monthPlannerViewDidScroll:(MGCMonthPlannerView*)view;
 - (BOOL)monthPlannerView:(MGCMonthPlannerView*)view shouldSelectEventAtIndex:(NSUInteger)index date:(NSDate*)date;

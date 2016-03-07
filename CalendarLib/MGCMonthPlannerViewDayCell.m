@@ -42,8 +42,7 @@ static const CGFloat kHeaderMargin = 1;
         self.backgroundColor = [UIColor whiteColor];
         
         self.dayLabel = [[UILabel alloc]initWithFrame:CGRectNull];
-        self.dayLabel.textAlignment = NSTextAlignmentCenter;
-        self.dayLabel.font = [UIFont systemFontOfSize:10];
+        self.dayLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
         [self.contentView addSubview:self.dayLabel];
         
         UIView *view = [UIView new];

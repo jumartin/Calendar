@@ -52,6 +52,7 @@ static const NSUInteger kMonthsLoadingStep = 2;
 static const NSUInteger kRowCacheSize = 40;			// number of rows to cache (cells / layout)
 static const CGFloat kDragScrollOffset = 20.;
 static const CGFloat kDragScrollZoneSize = 20.;
+static NSString *kDefaultDateFormat = @"d MMM\neeeee";
 
 
 #pragma mark -
@@ -104,18 +105,8 @@ typedef enum
     _calendar = [NSCalendar currentCalendar];
     _dateFormatter = [NSDateFormatter new];
     _dateFormatter.calendar = _calendar;
-    _dateFormatter.timeStyle = NSDateFormatterNoStyle;
-    if (isiPad) {
-        //NSLog(@"---------------- iPAD ------------------");
-        _dateFormatter.dateStyle = NSDateFormatterMediumStyle;
-        _rowHeight = 140.;
-    }
-    else{
-        //NSLog(@"---------------- iPhone ------------------");
-        _dateFormatter.dateFormat =@"d MMM YYYY";
-        _rowHeight = 60.;
-    }
-    
+    _dateFormatter.dateFormat = kDefaultDateFormat;
+    _rowHeight = isiPad ? 140. : 60.;
     _dayCellHeaderHeight = 30;
     _headerHeight = 35;
     _itemHeight = 16;
@@ -170,6 +161,18 @@ typedef enum
 - (MGCMonthPlannerViewLayout*)layout
 {
     return (MGCMonthPlannerViewLayout*)self.eventsView.collectionViewLayout;
+}
+
+// public
+- (void)setDateFormat:(NSString*)dateFormat
+{
+    self.dateFormatter.dateFormat = dateFormat ?: kDefaultDateFormat;
+    [self.eventsView reloadData];
+}
+
+- (NSString*)dateFormat
+{
+    return self.dateFormatter.dateFormat;
 }
 
 // public
@@ -1098,8 +1101,25 @@ typedef enum
     
     NSDate *date = [self dateForDayAtIndexPath:indexPath];
     
-    if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]])
-        cell.marked = YES;
+    NSAttributedString *attrStr = nil;
+    if ([self.delegate respondsToSelector:@selector(monthPlannerView:attributedStringForDayHeaderAtDate:)]) {
+        attrStr = [self.delegate monthPlannerView:self attributedStringForDayHeaderAtDate:date];
+    }
+    
+    if (!attrStr) {
+        NSString *str = [self.dateFormatter stringFromDate:date];
+        
+        NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
+        para.alignment = NSTextAlignmentCenter;
+        
+        attrStr = [[NSAttributedString alloc]initWithString:str attributes:@{ NSParagraphStyleAttributeName: para }];
+        
+        if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]]) {
+            cell.marked = YES;
+        }
+    }
+    
+    cell.dayLabel.attributedText = attrStr;
     
     // isDateInWeekend is only in iOS 8 and later
     if ([self.calendar respondsToSelector:@selector(isDateInWeekend:)] && [self.calendar isDateInWeekend:date]) {
@@ -1109,7 +1129,6 @@ typedef enum
         cell.backgroundColor = [UIColor whiteColor/*clearColor*/];
     }
     
-    cell.dayLabel.text = [self.dateFormatter stringFromDate:date];
     return cell;
 }
 

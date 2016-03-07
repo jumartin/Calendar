@@ -7,6 +7,7 @@
 
 #import "MonthViewController.h"
 #import "NSCalendar+MGCAdditions.h"
+#import "NSAttributedString+MGCAdditions.h"
 
 
 @implementation MonthViewController
@@ -29,6 +30,48 @@
 	if (date && [self.delegate respondsToSelector:@selector(calendarViewController:didShowDate:)]) {
 		[self.delegate calendarViewController:self didShowDate:date];
 	}
+}
+
+- (NSAttributedString*)monthPlannerView:(MGCMonthPlannerView *)view attributedStringForDayHeaderAtDate:(NSDate *)date
+{
+    //return nil;
+    
+    static NSDateFormatter *dateFormatter = nil;
+    if (dateFormatter == nil) {
+        dateFormatter = [NSDateFormatter new];
+    }
+    
+    dateFormatter.dateFormat = @"d";
+    NSString *dayStr = [dateFormatter stringFromDate:date];
+    
+    NSString *str = dayStr;
+    
+    if (dayStr.integerValue == 1) {
+        dateFormatter.dateFormat = @"MMM d";
+        str = [dateFormatter stringFromDate:date];
+    }
+    
+    UIFont *font = [UIFont systemFontOfSize:isiPad ? 15 : 12];
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:str attributes:@{ NSFontAttributeName: font }];
+    
+   if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]]) {
+        UIFont *boldFont = [UIFont boldSystemFontOfSize:isiPad ? 15 : 12];
+        
+        MGCCircleMark *mark = [MGCCircleMark new];
+        mark.yOffset = boldFont.descender - mark.margin;
+       
+       [attrStr addAttributes:@{ NSFontAttributeName: boldFont, NSForegroundColorAttributeName: [UIColor whiteColor], MGCCircleMarkAttributeName: mark} range:[str rangeOfString:dayStr]];
+        
+       [attrStr processCircleMarksInRange:NSMakeRange(0, attrStr.length)];
+   }
+
+    NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
+    para.alignment = NSTextAlignmentRight;
+    para.tailIndent = -6;
+    
+    [attrStr addAttributes:@{ NSParagraphStyleAttributeName: para } range:NSMakeRange(0, attrStr.length)];
+
+    return attrStr;
 }
 
 #pragma mark - CalendarViewControllerNavigation
