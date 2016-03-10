@@ -11,6 +11,7 @@
 #import "YearViewController.h"
 #import "NSCalendar+MGCAdditions.h"
 #import "WeekSettingsViewController.h"
+#import "MonthSettingsViewController.h"
 
 
 typedef enum : NSUInteger
@@ -96,12 +97,15 @@ typedef enum : NSUInteger
 
 - (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"ShowSettings"])
-    {
+    if ([segue.identifier isEqualToString:@"dayPlannerSettingsSegue"]) {
         WeekSettingsViewController *settingsViewController = [segue destinationViewController];
-        
         WeekViewController *weekController = (WeekViewController*)self.calendarViewController;
         settingsViewController.dayPlannerView = weekController.dayPlannerView;
+    }
+    else if ([segue.identifier isEqualToString:@"monthPlannerSettingsSegue"]) {
+        MonthSettingsViewController *settingsViewController = [segue destinationViewController];
+        MonthViewController *monthController = (MonthViewController*)self.calendarViewController;
+        settingsViewController.monthPlannerView = monthController.monthPlannerView;
     }
 }
 
@@ -172,7 +176,8 @@ typedef enum : NSUInteger
     CalendarViewController *controller = [self controllerForViewType:sender.selectedSegmentIndex];
     [self moveToNewController:controller atDate:date];
     
-    if ([controller isKindOfClass:WeekViewController.class]) {
+    
+    if ([controller isKindOfClass:WeekViewController.class] || [controller isKindOfClass:MonthViewController.class]) {
         self.settingsButtonItem.enabled = YES;
     }
 }
@@ -210,6 +215,16 @@ typedef enum : NSUInteger
         
         UIPopoverPresentationController *popController = nc.popoverPresentationController;
         popController.barButtonItem = (UIBarButtonItem*)sender;
+    }
+}
+
+- (IBAction)showSettings:(id)sender
+{
+    if ([self.calendarViewController isKindOfClass:WeekViewController.class]) {
+        [self performSegueWithIdentifier:@"dayPlannerSettingsSegue" sender:nil];
+    }
+    else if ([self.calendarViewController isKindOfClass:MonthViewController.class]) {
+        [self performSegueWithIdentifier:@"monthPlannerSettingsSegue" sender:nil];
     }
 }
 

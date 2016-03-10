@@ -57,6 +57,9 @@
 		72E82BCB1A83A3FF008B3E2F /* MGCMonthPlannerEKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E82BCA1A83A3FF008B3E2F /* MGCMonthPlannerEKViewController.m */; };
 		72E8D24F18F98F1C00024582 /* MGCMonthMiniCalendarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E8D24E18F98F1C00024582 /* MGCMonthMiniCalendarView.m */; };
 		72E8D25918FC474500024582 /* MGCReusableObjectQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E8D25818FC474500024582 /* MGCReusableObjectQueue.m */; };
+		72E9B9101C8E34020070EDD3 /* MGCMonthPlannerHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E9B90F1C8E34020070EDD3 /* MGCMonthPlannerHeaderView.m */; };
+		72E9B9161C919EF20070EDD3 /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72E9B9151C919EF20070EDD3 /* settings.storyboard */; };
+		72E9B9191C91E3520070EDD3 /* MonthSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E9B9181C91E3520070EDD3 /* MonthSettingsViewController.m */; };
 		72EF07F41A3D8D13005699CA /* MGCDayPlannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EF07F31A3D8D13005699CA /* MGCDayPlannerViewController.m */; };
 		72EF07FF1A3D9DF8005699CA /* WeekViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EF07FE1A3D9DF8005699CA /* WeekViewController.m */; };
 		72EF08051A3DA597005699CA /* MGCMonthPlannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EF08041A3DA597005699CA /* MGCMonthPlannerViewController.m */; };
@@ -163,6 +166,11 @@
 		72E8D24E18F98F1C00024582 /* MGCMonthMiniCalendarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCMonthMiniCalendarView.m; sourceTree = "<group>"; };
 		72E8D25718FC474500024582 /* MGCReusableObjectQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCReusableObjectQueue.h; sourceTree = "<group>"; };
 		72E8D25818FC474500024582 /* MGCReusableObjectQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCReusableObjectQueue.m; sourceTree = "<group>"; };
+		72E9B90E1C8E34020070EDD3 /* MGCMonthPlannerHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCMonthPlannerHeaderView.h; sourceTree = "<group>"; };
+		72E9B90F1C8E34020070EDD3 /* MGCMonthPlannerHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCMonthPlannerHeaderView.m; sourceTree = "<group>"; };
+		72E9B9151C919EF20070EDD3 /* settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = settings.storyboard; sourceTree = "<group>"; };
+		72E9B9171C91E3520070EDD3 /* MonthSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthSettingsViewController.h; sourceTree = "<group>"; };
+		72E9B9181C91E3520070EDD3 /* MonthSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthSettingsViewController.m; sourceTree = "<group>"; };
 		72EF07F21A3D8D13005699CA /* MGCDayPlannerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCDayPlannerViewController.h; sourceTree = "<group>"; };
 		72EF07F31A3D8D13005699CA /* MGCDayPlannerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCDayPlannerViewController.m; sourceTree = "<group>"; };
 		72EF07FD1A3D9DF8005699CA /* WeekViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeekViewController.h; sourceTree = "<group>"; };
@@ -296,6 +304,8 @@
 				72E13E8E18EDA1A200F1D740 /* MGCMonthPlannerBackgroundView.m */,
 				72E13E9318EE0D7A00F1D740 /* MGCMonthPlannerWeekView.h */,
 				72E13E9418EE0D7A00F1D740 /* MGCMonthPlannerWeekView.m */,
+				72E9B90E1C8E34020070EDD3 /* MGCMonthPlannerHeaderView.h */,
+				72E9B90F1C8E34020070EDD3 /* MGCMonthPlannerHeaderView.m */,
 			);
 			name = cells;
 			sourceTree = "<group>";
@@ -361,14 +371,17 @@
 				721DC18818219C4D00F9470C /* MainViewController.m */,
 				72B5D927180D7476004ADB86 /* main-iPad.storyboard */,
 				72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */,
+				72E9B9151C919EF20070EDD3 /* settings.storyboard */,
 				72EF080B1A3DB8C6005699CA /* MonthViewController.h */,
 				72EF080C1A3DB8C6005699CA /* MonthViewController.m */,
 				72EF080D1A3DB8C6005699CA /* YearViewController.h */,
 				72EF080E1A3DB8C6005699CA /* YearViewController.m */,
-				7258E8AF1A5A98DD007F88AF /* WeekSettingsViewController.h */,
-				7258E8B01A5A98DD007F88AF /* WeekSettingsViewController.m */,
 				72EF07FD1A3D9DF8005699CA /* WeekViewController.h */,
 				72EF07FE1A3D9DF8005699CA /* WeekViewController.m */,
+				7258E8AF1A5A98DD007F88AF /* WeekSettingsViewController.h */,
+				7258E8B01A5A98DD007F88AF /* WeekSettingsViewController.m */,
+				72E9B9171C91E3520070EDD3 /* MonthSettingsViewController.h */,
+				72E9B9181C91E3520070EDD3 /* MonthSettingsViewController.m */,
 				72B5D903180D73E0004ADB86 /* Images.xcassets */,
 				72B5D8F8180D73E0004ADB86 /* Supporting Files */,
 				7275C49F1C46E87B0036C9A3 /* Launch Screen.storyboard */,
@@ -525,6 +538,7 @@
 			files = (
 				723925B0188B0AE800DE9578 /* README.md in Resources */,
 				720041BA1879B2B600F3C497 /* Settings.bundle in Resources */,
+				72E9B9161C919EF20070EDD3 /* settings.storyboard in Resources */,
 				7275C4A01C46E87B0036C9A3 /* Launch Screen.storyboard in Resources */,
 				72B5D8FC180D73E0004ADB86 /* InfoPlist.strings in Resources */,
 				721CA1B41A9382990083F41A /* Localizable.strings in Resources */,
@@ -592,9 +606,11 @@
 				72271A521815C33600DE96FE /* MGCDateRange.m in Sources */,
 				720DAE531C6269D900DF8AAA /* NSAttributedString+MGCAdditions.m in Sources */,
 				72E8D25918FC474500024582 /* MGCReusableObjectQueue.m in Sources */,
+				72E9B9191C91E3520070EDD3 /* MonthSettingsViewController.m in Sources */,
 				72EF07FF1A3D9DF8005699CA /* WeekViewController.m in Sources */,
 				72B5D953180D9A93004ADB86 /* MGCTimedEventsViewLayout.m in Sources */,
 				72AE502A1A641419004DAF44 /* MGCInteractiveEventView.m in Sources */,
+				72E9B9101C8E34020070EDD3 /* MGCMonthPlannerHeaderView.m in Sources */,
 				72E8D24F18F98F1C00024582 /* MGCMonthMiniCalendarView.m in Sources */,
 				72B5D92E180D7840004ADB86 /* MGCEventCell.m in Sources */,
 				72E82BCB1A83A3FF008B3E2F /* MGCMonthPlannerEKViewController.m in Sources */,
@@ -747,7 +763,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CalendarDemo/Calendar-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/CalendarDemo/Calendar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -766,7 +782,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CalendarDemo/Calendar-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/CalendarDemo/Calendar-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";

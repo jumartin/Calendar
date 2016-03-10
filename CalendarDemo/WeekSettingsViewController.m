@@ -215,14 +215,6 @@
 	return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-	if (section == 2 && [self.startDatePicker.date compare:self.endDatePicker.date] != NSOrderedAscending) {
-		return 20;
-	}
-	return 0;
-}
-
 - (void)tableView:(UITableView*)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath*)indexPath
 {
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
