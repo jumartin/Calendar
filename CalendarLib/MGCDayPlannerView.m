@@ -228,9 +228,15 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	NSAssert(numberOfVisibleDays > 0, @"numberOfVisibleDays in day planner view cannot be set to 0");
 	
 	if (_numberOfVisibleDays != numberOfVisibleDays) {
-		_numberOfVisibleDays = numberOfVisibleDays;
-	
-		[self reloadCollectionViews];
+		NSDate* date = self.visibleDays.start;
+        
+        _numberOfVisibleDays = numberOfVisibleDays;
+        
+        if (self.dateRange && [self.dateRange components:NSCalendarUnitDay forCalendar:self.calendar].day < numberOfVisibleDays)
+            return;
+        
+        [self reloadCollectionViews];
+        [self scrollToDate:date options:MGCDayPlannerScrollDate animated:NO];
 	}
 }
 
@@ -277,12 +283,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         [self.allDayEventsView reloadData];
         [self.dayColumnsView reloadData];   // for dots indicating events
         
-        [self setupSubviews];
+        [self.dayColumnsView performBatchUpdates:^{} completion:^(BOOL finished){
+            [self setupSubviews];
+        }];
 	}
 }
 
 // public
-
 - (NSCalendar*)calendar
 {
 	if (_calendar == nil) {
@@ -320,7 +327,6 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		}
 		
 		[self reloadCollectionViews];
-		
 		[self scrollToDate:firstDate options:MGCDayPlannerScrollDate animated:NO];
 	}
 }
@@ -703,9 +709,10 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 // nil if the day planner has no date range.
 - (NSDate*)maxScrollableDate
 {
-	if (self.dateRange != nil) {
+    if (self.dateRange != nil) {
+        NSUInteger numVisible = MIN(self.numberOfVisibleDays, [self.dateRange components:NSCalendarUnitDay forCalendar:self.calendar].day);
 		NSDateComponents *comps = [NSDateComponents new];
-		comps.day = -self.numberOfVisibleDays;
+		comps.day = -numVisible;
 		return [self.calendar dateByAddingComponents:comps toDate:self.dateRange.end options:0];
 	}
 	return nil;
@@ -1404,15 +1411,26 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 #pragma mark - Reloading content
 
 // this is called whenever we recenter the views during scrolling
+// or when the number of visible days or the date range changes
 - (void)reloadCollectionViews
 {
 	//NSLog(@"reloadCollectionsViews");
 	
 	[self deselectEventWithDelegate:YES];
-	
-	[self.dayColumnsView reloadData];
+    
+    CGSize dayColumnSize = self.dayColumnSize;
+    
+    self.timedEventsViewLayout.dayColumnSize = dayColumnSize;
+    self.allDayEventsViewLayout.dayColumnWidth = dayColumnSize.width;
+    self.allDayEventsViewLayout.eventCellHeight = self.allDayEventCellHeight;
+    
+    [self.dayColumnsView reloadData];
 	[self.timedEventsView reloadData];
-	[self.allDayEventsView reloadData];
+    [self.allDayEventsView reloadData];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self setupSubviews];
+    });
 }
 
 // public
@@ -1519,7 +1537,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 
 - (void)setupSubviews
 {
-	CGFloat allDayEventsViewHeight = 2;
+    CGFloat allDayEventsViewHeight = 2;
 	if (self.showsAllDayEvents) {
 		allDayEventsViewHeight = fmaxf(self.allDayEventCellHeight + 4, self.allDayEventsView.contentSize.height);
 		allDayEventsViewHeight = fminf(allDayEventsViewHeight, self.allDayEventCellHeight * 2.5 + 6);
@@ -1675,6 +1693,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		return [self.dataSource dayPlannerView:self numberOfEventsOfType:MGCTimedEventType atDate:date];
 	}
 	else if (collectionView == self.allDayEventsView) {
+        if (!self.showsAllDayEvents) return 0;
 		NSDate *date = [self dateFromDayOffset:section];
 		return [self.dataSource dayPlannerView:self numberOfEventsOfType:MGCAllDayEventType atDate:date];
 	}

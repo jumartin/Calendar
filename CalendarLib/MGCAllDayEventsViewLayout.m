@@ -308,8 +308,7 @@ static const CGFloat kCellInset = 4.;
 {
     NSUInteger maxSection = self.collectionView.numberOfSections;
     NSUInteger first = MAX(0, floorf(bounds.origin.x  / self.dayColumnWidth));
-    NSUInteger last = MIN(maxSection, ceilf(CGRectGetMaxX(bounds) / self.dayColumnWidth));
-    if (first >= maxSection) return NSMakeRange(0, 0);
+    NSUInteger last =  MIN(MAX(first, ceilf(CGRectGetMaxX(bounds) / self.dayColumnWidth)), maxSection);
     return NSMakeRange(first, last - first);
 }
 

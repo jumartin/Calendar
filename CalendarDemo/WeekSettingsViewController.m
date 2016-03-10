@@ -237,7 +237,6 @@
 - (IBAction)stepperChanged:(UIStepper*)sender
 {
     if (sender == self.visibleDaysStepper) {
-        NSDate* date = self.dayPlannerView.visibleDays.start;
         self.visibleDaysLabel.text = [NSString stringWithFormat:@"%1.0f", sender.value];
         self.dayPlannerView.numberOfVisibleDays  = sender.value;
         if (sender.value <= 3) {
@@ -246,7 +245,6 @@
         else {
             self.dayPlannerView.dateFormat = @"eeeee\nd MMM";
         }
-        [self.dayPlannerView scrollToDate:date options:MGCDayPlannerScrollDate animated:NO];
     }
     else if (sender == self.firstHourStepper) {
         self.lastHourStepper.minimumValue = self.firstHourStepper.value + 1;

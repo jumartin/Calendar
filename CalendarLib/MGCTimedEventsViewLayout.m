@@ -231,8 +231,8 @@
 	// determine first and last day intersecting rect
 	NSUInteger maxSection = self.collectionView.numberOfSections;
 	NSUInteger first = MAX(0, floorf(rect.origin.x  / self.dayColumnSize.width));
-	NSUInteger last = MIN(maxSection, ceilf(CGRectGetMaxX(rect) / self.dayColumnSize.width));
-	
+    NSUInteger last =  MIN(MAX(first, ceilf(CGRectGetMaxX(rect) / self.dayColumnSize.width)), maxSection);
+    
 	for (NSInteger day = first; day < last; day++) {
 		NSArray *attribs = [self layoutAttributesForSection:day];
 		
