@@ -34,6 +34,7 @@
 static NSString* DayCellKind = @"DayCellKind";
 static NSString* const MonthBackgroundViewKind = @"MonthBackgroundViewKind";
 static NSString* const MonthRowViewKind = @"MonthRowViewKind";
+static NSString* const MonthHeaderViewKind = @"MonthHeaderViewKind";
 
 
 @protocol MGCMonthPlannerViewLayoutDelegate;
@@ -45,6 +46,7 @@ static NSString* const MonthRowViewKind = @"MonthRowViewKind";
 @property (nonatomic) UIEdgeInsets monthInsets;
 @property (nonatomic) CGFloat rowHeight;
 @property (nonatomic) CGFloat dayHeaderHeight;
+@property (nonatomic) BOOL alignMonthHeaders;
 
 - (CGFloat)widthForColumnRange:(NSRange)range;
 - (CGFloat)columnWidth:(NSUInteger)colIndex;

@@ -17,7 +17,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.monthPlannerView.dayCellHeaderHeight = 30;
+    //self.monthPlannerView.dateFormat = @"dd MMM\nYYYY";
 }
 
 #pragma mark - MGCMonthPlannerViewController

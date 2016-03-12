@@ -38,6 +38,20 @@
 @protocol MGCMonthPlannerViewDelegate;
 
 
+typedef enum : NSUInteger {
+    MGCMonthHeaderStyleDefault = 0,
+    MGCMonthHeaderStyleShort = 1 << 0,
+    MGCMonthHeaderStyleHidden = 1 << 1
+} MGCMonthHeaderStyle;
+
+typedef enum : NSUInteger {
+    MGCMonthPlannerGridStyleFill = 1 << 0,
+    MGCMonthPlannerGridStyleVerticalLines = 1 << 1,
+    MGCMonthPlannerGridStyleHorizontalLines = 1 << 2,
+    MGCMonthPlannerGridStyleDefault = (MGCMonthPlannerGridStyleHorizontalLines|MGCMonthPlannerGridStyleVerticalLines)
+} MGCMonthPlannerGridStyle;
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 // MGCMonthPlannerView
 @interface MGCMonthPlannerView : UIView
@@ -68,8 +82,31 @@
 @property (nonatomic) CGFloat dayCellHeaderHeight;
 
 /*!
+	@abstract	The distance between each months and between the months and the edge of the view.
+ */
+@property (nonatomic) UIEdgeInsets monthInsets;
+
+/*!
+	@abstract	Returns the style for the months headers.
+	@discussion If set to MGCMonthHeaderStyleDefault, the header displays the month name and the year.
+                If set to MGCMonthHeaderStyleShort, the header only displays the month name.
+                If set to MGCMonthHeaderStyleHidden, the header is hidden
+    @discussion The alignment of the header changes depending on the value of the gridStyle property.
+    @see        gridStyle
+ 
+ */
+@property (nonatomic) MGCMonthHeaderStyle monthHeaderStyle;
+
+/*!
+	@abstract	Returns the style of the months' background grid.
+    @discussion If MGCMonthPlannerGridStyleFill is set, the view fills the grid for the first and last week of the month, and the month header, if displayed, is center-aligned.
+                Otherwise, the grid covers only the days of the months, and the month header, if displayed, is aligned on the first day.
+*/
+@property (nonatomic) MGCMonthPlannerGridStyle gridStyle;
+
+/*!
 	@abstract	String format for dates displayed on top of day cells.
-	@discussion If the value of this property is nil, a default format of @"d MMM\neeeee" is used.
+	@discussion If the value of this property is nil, a default format of @"d MMM YYYY" is used.
 	@see		NSDateFormatter dateFormat
  */
 @property (nonatomic, copy) NSString *dateFormat;

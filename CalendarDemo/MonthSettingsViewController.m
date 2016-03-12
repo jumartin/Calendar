@@ -26,6 +26,11 @@
 
 @property (nonatomic) BOOL showsStartDatePicker, showsEndDatePicker;
 
+@property (nonatomic) IBOutlet UISwitch *fillGridSwitch;
+@property (nonatomic) IBOutlet UISwitch *horzLinesSwitch;
+@property (nonatomic) IBOutlet UISwitch *vertLinesSwitch;
+@property (nonatomic) IBOutlet UISwitch *monthHeadersSwitch;
+
 @end
 
 
@@ -51,6 +56,15 @@
 	return view;
 }
 
+- (void)setStyle
+{
+    MGCMonthPlannerGridStyle gridStyle = 0;
+    if (self.fillGridSwitch.on) gridStyle |= MGCMonthPlannerGridStyleFill;
+    if (self.horzLinesSwitch.on) gridStyle |= MGCMonthPlannerGridStyleHorizontalLines;
+    if (self.vertLinesSwitch.on) gridStyle |= MGCMonthPlannerGridStyleVerticalLines;
+    self.monthPlannerView.gridStyle = gridStyle;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -73,9 +87,16 @@
 		self.endDateCell.accessoryView = [self makeCancelAccessoryView];
 	}
 		
+    self.fillGridSwitch.on = self.monthPlannerView.gridStyle & MGCMonthPlannerGridStyleFill;
+    self.horzLinesSwitch.on = self.monthPlannerView.gridStyle & MGCMonthPlannerGridStyleHorizontalLines;
+    self.vertLinesSwitch.on = self.monthPlannerView.gridStyle & MGCMonthPlannerGridStyleVerticalLines;
+    
+    self.monthHeadersSwitch.on = !(self.monthPlannerView.monthHeaderStyle & MGCMonthHeaderStyleHidden);
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
 }
+
 
 #pragma mark - Utilities
 
@@ -163,6 +184,18 @@
 		self.endDateCell.accessoryView = nil;
 		[self setDateRange];
 	}
+}
+
+#pragma mark - Actions
+
+- (IBAction)switchToggled:(UISwitch*)sender
+{
+    if (sender == self.fillGridSwitch || sender == self.horzLinesSwitch || sender == self.vertLinesSwitch) {
+        [self setStyle];
+    }
+    else if (sender == self.monthHeadersSwitch) {
+        self.monthPlannerView.monthHeaderStyle = self.monthHeadersSwitch.on ? MGCMonthHeaderStyleShort : MGCMonthHeaderStyleHidden;
+    }
 }
 
 - (IBAction)dateAction:(id)sender

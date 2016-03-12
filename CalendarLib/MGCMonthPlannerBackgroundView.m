@@ -39,6 +39,9 @@
 		self.backgroundColor = [UIColor clearColor];
 		self.userInteractionEnabled = NO;
 		self.gridColor = [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.];
+        self.lastColumn = 7;
+        self.drawHorizontalLines = YES;
+        self.drawVerticalLines = YES;
 	}
     return self;
 }
@@ -63,24 +66,28 @@
     
 	CGFloat x1, y1, x2, y2;
 	
-	for (int i = 0; i <= self.numberOfRows && self.numberOfRows != 0; i++) {
-		y2 = y1 = rowHeight * i;
-		x1 = i == 0 ? self.firstColumn * colWidth : 0;
-		x2 = i == self.numberOfRows ? self.lastColumn * colWidth : CGRectGetMaxX(rect);
+    if (self.drawHorizontalLines) {
+        for (int i = 0; i <= self.numberOfRows && self.numberOfRows != 0; i++) {
+            y2 = y1 = rowHeight * i;
+            x1 = i == 0 ? self.firstColumn * colWidth : 0;
+            x2 = i == self.numberOfRows ? self.lastColumn * colWidth : CGRectGetMaxX(rect);
 	
-		CGContextMoveToPoint(c, x1, y1);
-		CGContextAddLineToPoint(c, x2, y2);
-	}
+            CGContextMoveToPoint(c, x1, y1);
+            CGContextAddLineToPoint(c, x2, y2);
+        }
+    }
 	
-	for (int j = 1; j < self.numberOfColumns; j++) {
-		x2 = x1 = colWidth * j;
-		y1 = j < self.firstColumn ? rowHeight : 0;
-		y2 = j <= self.lastColumn ? self.numberOfRows * rowHeight : (self.numberOfRows - 1) * rowHeight;
+    if (self.drawVerticalLines) {
+        for (int j = 0; j <= self.numberOfColumns; j++) {
+            x2 = x1 = colWidth * j;
+            y1 = j < self.firstColumn ? rowHeight : 0;
+            y2 = j <= self.lastColumn ? self.numberOfRows * rowHeight : (self.numberOfRows - 1) * rowHeight;
 		
-		CGContextMoveToPoint(c, x1, y1);
-		CGContextAddLineToPoint(c, x2, y2);
-	}
-							  
+            CGContextMoveToPoint(c, x1, y1);
+            CGContextAddLineToPoint(c, x2, y2);
+        }
+    }
+    
 	CGContextStrokePath(c);
 }
 

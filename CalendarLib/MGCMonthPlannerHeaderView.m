@@ -1,5 +1,5 @@
 //
-//  MGCMonthPlannerViewDayCell.m
+//  MGCMonthPlannerHeaderView.m
 //  Graphical Calendars Library for iOS
 //
 //  Distributed under the MIT License
@@ -28,55 +28,25 @@
 //  SOFTWARE.
 //
 
-#import "MGCMonthPlannerViewDayCell.h"
 
-static const CGFloat kHeaderMargin = 1;
+#import "MGCMonthPlannerHeaderView.h"
+#import "MGCMonthPlannerViewLayout.h"
 
 
-@implementation MGCMonthPlannerViewDayCell
+@implementation MGCMonthPlannerHeaderView
 
 - (id)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
-        self.headerHeight = 20;
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [UIColor clearColor];
+        self.autoresizesSubviews = YES;
         
-        self.dayLabel = [[UILabel alloc]initWithFrame:CGRectNull];
-        self.dayLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
-        self.dayLabel.numberOfLines = 0;
-        [self.contentView addSubview:self.dayLabel];
-        
-        UIView *view = [UIView new];
-        view.backgroundColor = [UIColor colorWithWhite:.7 alpha:.2];
-        self.selectedBackgroundView = view;
+        _label = [[UILabel alloc]initWithFrame:self.bounds];
+        _label.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+        _label.numberOfLines = 0;
+        [self addSubview:_label];
     }
     return self;
-}
-
-- (void)prepareForReuse
-{
-    self.marked = NO;
-}
-
-- (void)setMarked:(BOOL)marked
-{
-    _marked = marked;
-    self.dayLabel.textColor = marked ? [UIColor redColor] : [UIColor blackColor];
-    self.dayLabel.layer.cornerRadius = marked ? 10. : 0.;
-}
-
-- (void)setHeaderHeight:(CGFloat)headerHeight
-{
-    _headerHeight = headerHeight;
-    [self setNeedsLayout];
-}
-
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
-    
-    CGRect frame = CGRectMake(0, 0, self.contentView.bounds.size.width, self.headerHeight);
-    self.dayLabel.frame =  CGRectInset(frame, kHeaderMargin, kHeaderMargin);
 }
 
 @end

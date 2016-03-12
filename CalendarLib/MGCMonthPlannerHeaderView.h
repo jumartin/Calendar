@@ -1,5 +1,5 @@
 //
-//  MGCMonthPlannerBackgroundView.h
+//  MGCMonthPlannerHeaderView.h
 //  Graphical Calendars Library for iOS
 //
 //  Distributed under the MIT License
@@ -28,19 +28,12 @@
 //  SOFTWARE.
 //
 
+
 #import <UIKit/UIKit.h>
 
 
-@interface MGCMonthPlannerBackgroundView : UICollectionReusableView
+@interface MGCMonthPlannerHeaderView : UICollectionReusableView
 
-@property (nonatomic) NSUInteger numberOfColumns;
-@property (nonatomic) NSUInteger numberOfRows;
-@property (nonatomic) NSUInteger firstColumn;
-@property (nonatomic) NSUInteger lastColumn;
-
-@property (nonatomic) BOOL drawVerticalLines;
-@property (nonatomic) BOOL drawHorizontalLines;
-
-@property (nonatomic) UIColor *gridColor;
+@property (nonatomic) UILabel *label;
 
 @end

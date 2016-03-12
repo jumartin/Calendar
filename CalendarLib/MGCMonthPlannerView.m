@@ -37,11 +37,13 @@
 #import "MGCMonthPlannerBackgroundView.h"
 #import "MGCMonthPlannerWeekView.h"
 #import "MGCEventsRowView.h"
+#import "MGCMonthPlannerHeaderView.h"
 
 
 // reuse identifiers for collection view cells and supplementary views
 static NSString* const DayCellIdentifier = @"DayCellIdentifier";
 static NSString* const MonthRowViewIdentifier = @"MonthRowViewIdentifier";
+static NSString* const MonthHeaderViewIdentifier = @"MonthHeaderViewIdentifier";
 static NSString* const MonthBackgroundViewIdentifier = @"MonthBackgroundViewIdentifier";
 static NSString* const EventsRowViewIdentifier = @"EventsRowViewIdentifier";
 
@@ -52,7 +54,7 @@ static const NSUInteger kMonthsLoadingStep = 2;
 static const NSUInteger kRowCacheSize = 40;			// number of rows to cache (cells / layout)
 static const CGFloat kDragScrollOffset = 20.;
 static const CGFloat kDragScrollZoneSize = 20.;
-static NSString *kDefaultDateFormat = @"d MMM\neeeee";
+static NSString* const kDefaultDateFormat = @"dMMYY";
 
 
 #pragma mark -
@@ -105,7 +107,7 @@ typedef enum
     _calendar = [NSCalendar currentCalendar];
     _dateFormatter = [NSDateFormatter new];
     _dateFormatter.calendar = _calendar;
-    _dateFormatter.dateFormat = kDefaultDateFormat;
+    _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:kDefaultDateFormat options:0 locale:[NSLocale currentLocale]]; //kDefaultDateFormat;
     _rowHeight = isiPad ? 140. : 60.;
     _dayCellHeaderHeight = 30;
     _headerHeight = 35;
@@ -114,6 +116,9 @@ typedef enum
     _eventRows = [MutableOrderedDictionary dictionaryWithCapacity:kRowCacheSize];
     _visibleRows = [NSMutableDictionary dictionaryWithCapacity:20];
     _dragEventIndex = -1;
+    _monthHeaderStyle = MGCMonthHeaderStyleDefault;
+    _monthInsets = UIEdgeInsetsMake(20, 0, 20, 0);
+    _gridStyle = MGCMonthPlannerGridStyleDefault;
     
     self.backgroundColor = [UIColor clearColor];
     
@@ -236,6 +241,41 @@ typedef enum
         range = [MGCDateRange dateRangeWithStart:first end:last];
     }
     return range;
+}
+
+- (void)setRowHeight:(CGFloat)rowHeight
+{
+    if (rowHeight != _rowHeight) {
+        _rowHeight = rowHeight;
+        self.layout.rowHeight = rowHeight;
+        [self.eventsView reloadData];
+    }
+}
+
+- (void)setMonthInsets:(UIEdgeInsets)monthInsets
+{
+    if (!UIEdgeInsetsEqualToEdgeInsets(monthInsets, _monthInsets)) {
+        _monthInsets = monthInsets;
+        self.layout.monthInsets = monthInsets;
+        [self setNeedsLayout];
+    }
+}
+
+- (void)setMonthHeaderStyle:(MGCMonthHeaderStyle)monthHeaderStyle
+{
+    if (monthHeaderStyle != _monthHeaderStyle) {
+        _monthHeaderStyle = monthHeaderStyle;
+        [self.eventsView reloadData];
+    }
+}
+
+- (void)setGridStyle:(MGCMonthPlannerGridStyle)gridStyle
+{
+    if (gridStyle != _gridStyle) {
+        _gridStyle = gridStyle;
+        self.layout.alignMonthHeaders = !(gridStyle & MGCMonthPlannerGridStyleFill);
+        [self.eventsView reloadData];
+    }
 }
 
 #pragma mark - Private properties
@@ -609,6 +649,8 @@ typedef enum
         MGCMonthPlannerViewLayout *layout = [MGCMonthPlannerViewLayout new];
         layout.rowHeight = self.rowHeight;
         layout.dayHeaderHeight = self.dayCellHeaderHeight;
+        layout.monthInsets = self.monthInsets;
+        layout.alignMonthHeaders = !(self.gridStyle & MGCMonthPlannerGridStyleFill);
         layout.delegate = self;
         
         _eventsView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
@@ -621,6 +663,7 @@ typedef enum
         [_eventsView registerClass:MGCMonthPlannerViewDayCell.class forCellWithReuseIdentifier:DayCellIdentifier];
         [_eventsView registerClass:MGCMonthPlannerBackgroundView.class forSupplementaryViewOfKind:MonthBackgroundViewKind withReuseIdentifier:MonthBackgroundViewIdentifier];
         [_eventsView registerClass:MGCMonthPlannerWeekView.class forSupplementaryViewOfKind:MonthRowViewKind withReuseIdentifier:MonthRowViewIdentifier];
+        [_eventsView registerClass:MGCMonthPlannerHeaderView.class forSupplementaryViewOfKind:MonthHeaderViewKind withReuseIdentifier:MonthHeaderViewIdentifier];
         
         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongPress:)];
         [_eventsView addGestureRecognizer:longPressGesture];
@@ -1132,33 +1175,89 @@ typedef enum
     return cell;
 }
 
+
+- (MGCMonthPlannerHeaderView*)headerViewForMonthAtIndexPath:(NSIndexPath*)indexPath
+{
+    MGCMonthPlannerHeaderView *view = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthHeaderViewKind withReuseIdentifier:MonthHeaderViewIdentifier forIndexPath:indexPath];
+    view.label.hidden = self.monthHeaderStyle & MGCMonthHeaderStyleHidden;
+    
+    if (self.monthHeaderStyle & MGCMonthHeaderStyleHidden) return view;
+    
+    NSLocale *locale = [NSLocale currentLocale];
+    
+    static NSDateFormatter *dateFormatter = nil;
+    if (dateFormatter == nil) {
+        dateFormatter = [NSDateFormatter new];
+    }
+    dateFormatter.calendar = self.calendar;
+    
+    NSString *fmtTemplate = self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMMM" : @"MMMMYYYY";
+    dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:fmtTemplate options:0 locale:locale];
+
+    NSDate *date = [self dateStartingMonthAtIndex:indexPath.section];
+    NSString *str = [[dateFormatter stringFromDate:date]uppercaseStringWithLocale:locale];
+
+    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:str attributes:@{ NSFontAttributeName: font }];
+    
+    CGRect strRect = [attrStr boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 context:NULL];
+    
+    UICollectionViewLayoutAttributes *attribs = [self.layout layoutAttributesForSupplementaryViewOfKind:MonthHeaderViewKind atIndexPath:indexPath];
+    
+    if (strRect.size.width > attribs.frame.size.width) {
+        fmtTemplate = self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMM" : @"MMMYY";
+        dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:fmtTemplate options:0 locale:locale];
+        
+        str = [[dateFormatter stringFromDate:date]uppercaseStringWithLocale:locale];
+        attrStr = [[NSMutableAttributedString alloc]initWithString:str attributes:@{ NSFontAttributeName: font }];
+    }
+    
+    if (self.gridStyle & MGCMonthPlannerGridStyleFill) {
+        NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
+        para.alignment = NSTextAlignmentCenter;
+        
+        [attrStr addAttribute:NSParagraphStyleAttributeName value:para range:NSMakeRange(0, str.length)];
+    }
+    
+    view.label.attributedText = attrStr;
+    return view;
+}
+
+- (MGCMonthPlannerBackgroundView*)backgroundViewForMonthAtIndexPath:(NSIndexPath*)indexPath
+{
+    NSDate *date = [self dateStartingMonthAtIndex:indexPath.section];
+    
+    NSUInteger firstColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section]];
+    NSUInteger lastColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section + 1]] ?: 7;
+    NSUInteger numRows = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date].length;
+    
+    MGCMonthPlannerBackgroundView *view = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthBackgroundViewKind withReuseIdentifier:MonthBackgroundViewIdentifier forIndexPath:indexPath];
+    view.numberOfColumns = 7;
+    view.numberOfRows = numRows;
+    view.firstColumn = self.gridStyle & MGCMonthPlannerGridStyleFill ? 0 : firstColumn;
+    view.lastColumn =  self.gridStyle & MGCMonthPlannerGridStyleFill ? 7 : lastColumn;
+    view.drawVerticalLines = self.gridStyle & MGCMonthPlannerGridStyleVerticalLines;
+    view.drawHorizontalLines = self.gridStyle & MGCMonthPlannerGridStyleHorizontalLines;
+    
+    [view setNeedsDisplay];
+    
+    return view;
+}
+
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString*)kind atIndexPath:(NSIndexPath*)indexPath
 {
 	if ([kind isEqualToString:MonthBackgroundViewKind])
 	{
-		NSDate *date = [self dateStartingMonthAtIndex:indexPath.section];
-		NSUInteger firstColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section]];
-		NSUInteger lastColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section + 1]];
-		NSUInteger numRows = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date].length;
-		
-		MGCMonthPlannerBackgroundView *view = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthBackgroundViewKind withReuseIdentifier:MonthBackgroundViewIdentifier forIndexPath:indexPath];
-		view.numberOfColumns = 7;
-		view.numberOfRows = numRows;
-		view.firstColumn = firstColumn;
-		view.lastColumn = lastColumn == 0 ? 7 : lastColumn;
-
-		[view setNeedsDisplay];
-		
-		return view;
+        return [self backgroundViewForMonthAtIndexPath:indexPath];
 	}
-	else if ([kind isEqualToString:MonthRowViewKind])
-	{
-		MGCMonthPlannerWeekView *view = [self monthRowViewAtIndexPath:indexPath];
-		return view;
+    else if ([kind isEqualToString:MonthHeaderViewKind]) {
+        return [self headerViewForMonthAtIndexPath:indexPath];
+    }
+	else if ([kind isEqualToString:MonthRowViewKind]) {
+		return [self monthRowViewAtIndexPath:indexPath];
 	}
 	return nil;
 }
-
 
 #pragma mark - MGCEventsRowViewDelegate
 

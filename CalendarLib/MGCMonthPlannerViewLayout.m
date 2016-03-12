@@ -32,6 +32,9 @@
 #import "MGCMonthPlannerView.h"
 
 
+const CGFloat kMonthHeaderMargin = 3.;
+
+
 @interface MGCMonthPlannerViewLayout()
 
 @property (nonatomic) NSDictionary *layoutInfo;
@@ -50,7 +53,7 @@
 	if (NSMaxRange(range) == 7) {
 		return availableWidth - columnWidth * (7 - range.length);
 	}
-	return columnWidth * range.length;
+    return columnWidth * range.length;
 }
 
 - (CGFloat)columnWidth:(NSUInteger)colIndex
@@ -83,7 +86,8 @@
 	NSMutableDictionary *rowsInfo = [NSMutableDictionary dictionary];
 	
 	CGFloat y = 0;
-	
+    CGFloat totalWidth = self.collectionView.bounds.size.width - (self.monthInsets.left + self.monthInsets.right);
+    
 	for (NSUInteger month = 0; month < numberOfMonths; month++)
 	{
 		NSUInteger col = [self.delegate collectionView:self.collectionView layout:self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:month]];
@@ -92,6 +96,18 @@
 		NSUInteger day = 0;
 		
 		CGRect monthRect = { .origin = CGPointMake(0, y) };
+        
+        NSIndexPath *path = [NSIndexPath indexPathForItem:1 inSection:month];;
+        CGRect headerFrame = CGRectMake(self.monthInsets.left, y, totalWidth, self.monthInsets.top);
+        if (self.alignMonthHeaders) {
+            CGFloat xOffset = [self widthForColumnRange:NSMakeRange(0, col)];
+            headerFrame.origin.x += (xOffset + kMonthHeaderMargin);
+            headerFrame.size.width -= (xOffset + 2*kMonthHeaderMargin);
+        }
+        UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:MonthHeaderViewKind withIndexPath:path];
+        attribs.frame = headerFrame;
+        [monthsInfo setObject:attribs forKey:path];
+        
 		y += self.monthInsets.top;
 		
 		for (NSUInteger row = 0; row < numRows; row++)
@@ -100,7 +116,7 @@
 			
 			NSIndexPath *path = [NSIndexPath indexPathForItem:day inSection:month];
 			UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:MonthRowViewKind withIndexPath:path];
-			CGFloat x = [self widthForColumnRange:NSMakeRange(0, col)];
+			CGFloat x = [self widthForColumnRange:NSMakeRange(0, col)] + self.monthInsets.left;
 			CGFloat width = [self widthForColumnRange:NSMakeRange(col, colRange.length)];
 			attribs.frame = CGRectMake(x, y + self.dayHeaderHeight, width, self.rowHeight - self.dayHeaderHeight);
 			attribs.zIndex = 1;
@@ -110,7 +126,7 @@
 			{
 				path = [NSIndexPath indexPathForItem:day inSection:month];
 				attribs = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:path];
-				x = [self widthForColumnRange:NSMakeRange(0, col)];
+				x = [self widthForColumnRange:NSMakeRange(0, col)] + self.monthInsets.left;
 				width = [self widthForColumnRange:NSMakeRange(col, 1)];
 				attribs.frame = CGRectMake(x, y, width, self.rowHeight);
 				[dayCellsInfo setObject:attribs forKey:path];
@@ -123,12 +139,11 @@
 		y += self.monthInsets.bottom;
 		monthRect.size = CGSizeMake(self.collectionView.bounds.size.width, y - monthRect.origin.y);
 			
-		NSIndexPath *path = [NSIndexPath indexPathForItem:0	inSection:month];
-		UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:MonthBackgroundViewKind withIndexPath:path];
+        path = [NSIndexPath indexPathForItem:0 inSection:month];
+		attribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:MonthBackgroundViewKind withIndexPath:path];
 		attribs.frame = UIEdgeInsetsInsetRect(monthRect, self.monthInsets);
 		attribs.zIndex = 2;
 		[monthsInfo setObject:attribs forKey:path];
-
 	}
 	
 	self.contentHeight = y;
@@ -173,7 +188,7 @@
 - (UICollectionViewLayoutAttributes*)layoutAttributesForSupplementaryViewOfKind:(NSString*)kind atIndexPath:(NSIndexPath*)indexPath
 {
 	UICollectionViewLayoutAttributes *attribs = nil;
-	if ([kind isEqualToString:MonthBackgroundViewKind]) {
+	if ([kind isEqualToString:MonthBackgroundViewKind] || [kind isEqualToString:MonthHeaderViewKind]) {
 		NSDictionary *layout = [self.layoutInfo objectForKey:@"MonthInfo"];
 		attribs = [layout objectForKey:indexPath];
 	}
