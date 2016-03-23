@@ -76,7 +76,7 @@ typedef enum
 @property (nonatomic, readonly) NSUInteger numberOfLoadedMonths;	// number of months loaded at once in the collection views
 @property (nonatomic, readonly) MGCDateRange* loadedDateRange;		// date range of all months currently loaded in the collection views
 @property (nonatomic) NSDateFormatter *dateFormatter;				// date formatter for day cells
-@property (nonatomic, readonly) NSArray *dayLabels;					// week day labels (UILabel) for header view
+@property (nonatomic) NSMutableArray *dayLabels;                    // week day labels (UILabel) for header view
 @property (nonatomic) MGCReusableObjectQueue *reuseQueue;			// reuse queue for MGCEventsRowView and MGCEventView objects
 @property (nonatomic) MutableOrderedDictionary *eventRows;			// cache of MRU MGCEventsRowView objects indexed by start date
 @property (nonatomic) NSMutableDictionary *visibleRows;				// visible rows  { startingDay : rowView }
@@ -119,6 +119,11 @@ typedef enum
     _monthHeaderStyle = MGCMonthHeaderStyleDefault;
     _monthInsets = UIEdgeInsetsMake(20, 0, 20, 0);
     _gridStyle = MGCMonthPlannerGridStyleDefault;
+    
+    _dayLabels = [NSMutableArray array];
+    for (int i = 0; i < 7; i++) {
+        [_dayLabels addObject:[[UILabel alloc]initWithFrame:CGRectZero]];
+    }
     
     self.backgroundColor = [UIColor clearColor];
     
@@ -431,6 +436,22 @@ typedef enum
     [self.eventsView reloadData];
 }
 
+- (CGFloat)maxSizeForFont:(UIFont*)font toFitStrings:(NSArray<NSString*>*)strings inSize:(CGSize)size
+{
+    NSStringDrawingContext *context = [NSStringDrawingContext new];
+    context.minimumScaleFactor = .1;
+    
+    CGFloat fontSize = font.pointSize;
+    
+    for (NSString *str in strings) {
+        NSAttributedString *attrStr = [[NSAttributedString alloc]initWithString:str attributes:@{ NSFontAttributeName: font }];
+        [attrStr boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin context:context];
+        fontSize = fminf(fontSize, font.pointSize * context.actualScaleFactor);
+    }
+    
+    return floorf(fontSize);
+}
+
 #pragma mark - Public
 
 - (void)registerClass:(Class)objectClass forEventCellReuseIdentifier:(NSString*)reuseIdentifier
@@ -681,28 +702,40 @@ typedef enum
     return _headerBorderLayer;
 }
 
-- (NSArray*)dayLabels
+- (void)setupDayLabels
 {
-    if (_dayLabels == nil) {
+    const CGFloat kHeaderHMargin = 6, kHeaderVMargin = 1;
+    
+    CGFloat width = fmaxf([self.layout columnWidth:0] - 2*kHeaderHMargin, 0);
+    CGFloat height = fmaxf(self.headerHeight - 2*kHeaderVMargin, 0);
+    CGSize labelSize = CGSizeMake(width, height);
+        
         NSDateFormatter *formatter = [NSDateFormatter new];
         formatter.calendar = self.calendar;
+        
         NSArray *days = formatter.shortStandaloneWeekdaySymbols;
         
-        NSMutableArray *labels = [NSMutableArray array];
-        for (int i = 0; i < 7; i++) {
-            UILabel *label = [[UILabel alloc]initWithFrame:CGRectZero];
-            label.textAlignment = NSTextAlignmentCenter;
+    UIFont *font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
+    CGFloat maxFontSize = [self maxSizeForFont:font toFitStrings:days inSize:labelSize];
+        
+    if (maxFontSize / font.pointSize < .8) {
+        days = formatter.veryShortStandaloneWeekdaySymbols;
+        maxFontSize = [self maxSizeForFont:font toFitStrings:days inSize:labelSize];
+    }
+    
+    font = [font fontWithSize:maxFontSize];
             
+    for (int i = 0; i < 7; i++) {
             // days array is zero-based, sunday first :
             // translate to get firstWeekday at position 0
             int weekday = (i + self.calendar.firstWeekday - 1 + days.count) % (int)days.count;
-            label.text = [days objectAtIndex:weekday];
             
-            [labels addObject:label];
-        }
-        _dayLabels = labels;
+        UILabel *label = self.dayLabels[i];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.text = [days objectAtIndex:weekday];
+        label.font = font;
+        label.hidden = (self.headerHeight == 0);
     }
-    return _dayLabels;
 }
 
 - (void)invalidateLayout
@@ -745,6 +778,8 @@ typedef enum
     
     self.headerBorderLayer.frame = CGRectMake(0, self.headerHeight, self.bounds.size.width, 1);
     
+    [self setupDayLabels];
+    
     CGFloat xPos = self.layout.monthInsets.left;
     for (int i = 0; i < 7; i++) {
         UILabel *label = [self.dayLabels objectAtIndex:i];
@@ -757,6 +792,10 @@ typedef enum
         
         xPos += width;
     }
+    
+    // we have to reload everything at this point - layout invalidation is not enough -
+    // because date formats for headers might change depending on available size
+    [self.eventsView reloadData];
 }
 
 #pragma mark - Rows handling

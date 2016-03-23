@@ -44,6 +44,8 @@
         _label = [[UILabel alloc]initWithFrame:self.bounds];
         _label.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
         _label.numberOfLines = 0;
+        _label.adjustsFontSizeToFitWidth = YES;
+        _label.minimumScaleFactor = .85;
         [self addSubview:_label];
     }
     return self;
