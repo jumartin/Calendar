@@ -110,7 +110,7 @@ typedef enum
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:kDefaultDateFormat options:0 locale:[NSLocale currentLocale]]; //kDefaultDateFormat;
     _rowHeight = isiPad ? 140. : 60.;
     _dayCellHeaderHeight = 30;
-    _headerHeight = 35;
+    _headerHeight =  35;
     _itemHeight = 16;
     _reuseQueue = [MGCReusableObjectQueue new];
     _eventRows = [MutableOrderedDictionary dictionaryWithCapacity:kRowCacheSize];
@@ -290,7 +290,7 @@ typedef enum
     if (style != _style) {
         _style = style;
         self.layout.showEvents = (style == MGCMonthPlannerStyleEvents);
-        [self.eventsView reloadData];
+        [self reload];
     }
 }
 
@@ -431,6 +431,13 @@ typedef enum
 	return weekday;
 }
 
+- (MGCDateRange*)dateRangeForEventsRowView:(MGCEventsRowView*)rowView
+{
+    NSDate *start = [self.calendar dateByAddingUnit:NSCalendarUnitDay value:rowView.daysRange.location toDate:rowView.referenceDate options:0];
+    NSDate *end =  [self.calendar dateByAddingUnit:NSCalendarUnitDay value:NSMaxRange(rowView.daysRange) toDate:rowView.referenceDate options:0];
+    return [MGCDateRange dateRangeWithStart:start end:end];
+}
+
 - (CGRect)rectForMonthAtIndex:(NSUInteger)month
 {
     NSIndexPath *first = [NSIndexPath indexPathForItem:0 inSection:month];
@@ -484,23 +491,69 @@ typedef enum
 
 - (void)reloadEvents
 {
-    [self clearRowsCacheInDateRange:nil];
-    
-    for (NSDate *date in self.visibleRows) {
-        [self reloadRowStartingAtDate:date];
+    if (self.style == MGCMonthPlannerStyleDots) {
+        [self.eventsView reloadData];
+    }
+    else if (self.style == MGCMonthPlannerStyleEvents) {
+        [self clearRowsCacheInDateRange:nil];
+
+        for (NSDate *date in self.visibleRows) {
+            [self reloadRowStartingAtDate:date];
+        }
+    }
+}
+
+- (void)reloadEventsAtDate:(NSDate*)date
+{
+    if (self.style == MGCMonthPlannerStyleDots) {
+        NSIndexPath *path = [self indexPathForDate:date];
+        if (path) {
+            MGCMonthPlannerViewDayCell *cell = (MGCMonthPlannerViewDayCell*)[self.eventsView cellForItemAtIndexPath:path];
+            if (cell) {
+                NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
+                cell.showsDot = eventsCounts > 0;
+            }
+        }
+    }
+    else if (self.style == MGCMonthPlannerStyleEvents) {
+        MGCDateRange *visibleDateRange = [self visibleDays];
+        
+        for (NSDate *rowDate in [self.eventRows.allKeys copy]) {
+            MGCDateRange *rowRange = [self dateRangeForEventsRowView:self.eventRows[date]];
+            
+            if ([rowRange containsDate:date]) {
+                [self removeRowAtDate:rowDate];
+                
+                if ([visibleDateRange containsDate:date]) {
+                    [self reloadRowStartingAtDate:rowDate];
+                }
+                
+                break;
+            }
+        }
     }
 }
 
 - (void)reloadEventsInRange:(MGCDateRange*)range
 {
-    MGCDateRange *visibleDateRange = [self visibleDays];
-    
-    for (NSDate *date in [self.eventRows.allKeys copy]) {
-        if ([range containsDate:date]) {
-            [self removeRowAtDate:date];
+   if (self.style == MGCMonthPlannerStyleDots) {
+       
+       [range enumerateDaysWithCalendar:self.calendar usingBlock:^(NSDate *day, BOOL *stop) {
+           [self reloadEventsAtDate:day];
+       }];
+    }
+    else if (self.style == MGCMonthPlannerStyleEvents) {
+        MGCDateRange *visibleDateRange = [self visibleDays];
+        
+        for (NSDate *date in [self.eventRows.allKeys copy]) {
+            MGCDateRange *rowRange = [self dateRangeForEventsRowView:self.eventRows[date]];
             
-            if ([visibleDateRange containsDate:date]) {
-                [self reloadRowStartingAtDate:date];
+            if ([rowRange intersectsDateRange:range]) {
+                [self removeRowAtDate:date];
+                
+                if ([visibleDateRange containsDate:date]) {
+                    [self reloadRowStartingAtDate:date];
+                }
             }
         }
     }
@@ -728,11 +781,11 @@ typedef enum
     CGFloat height = fmaxf(self.headerHeight - 2*kHeaderVMargin, 0);
     CGSize labelSize = CGSizeMake(width, height);
         
-        NSDateFormatter *formatter = [NSDateFormatter new];
-        formatter.calendar = self.calendar;
+    NSDateFormatter *formatter = [NSDateFormatter new];
+    formatter.calendar = self.calendar;
         
-        NSArray *days = formatter.shortStandaloneWeekdaySymbols;
-        
+    NSArray *days = formatter.shortStandaloneWeekdaySymbols;
+    
     UIFont *font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
     CGFloat maxFontSize = [self maxSizeForFont:font toFitStrings:days inSize:labelSize];
         
@@ -742,12 +795,12 @@ typedef enum
     }
     
     font = [font fontWithSize:maxFontSize];
-            
+    
     for (int i = 0; i < 7; i++) {
-            // days array is zero-based, sunday first :
-            // translate to get firstWeekday at position 0
-            int weekday = (i + self.calendar.firstWeekday - 1 + days.count) % (int)days.count;
-            
+        // days array is zero-based, sunday first :
+        // translate to get firstWeekday at position 0
+        int weekday = (i + self.calendar.firstWeekday - 1 + days.count) % (int)days.count;
+        
         UILabel *label = self.dayLabels[i];
         label.textAlignment = NSTextAlignmentCenter;
         label.text = [days objectAtIndex:weekday];
@@ -1197,7 +1250,7 @@ typedef enum
     
     cell.dayLabel.attributedText = attrStr;
     cell.backgroundColor = [self.calendar isDateInWeekend:date] ? [UIColor colorWithWhite:.97 alpha:.8] :  [UIColor whiteColor/*clearColor*/];
-    
+   
     if (self.style & MGCMonthPlannerStyleDots) {
         NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
         cell.showsDot = eventsCounts > 0;
@@ -1213,7 +1266,7 @@ typedef enum
     view.label.hidden = self.monthHeaderStyle & MGCMonthHeaderStyleHidden;
     
     if (self.monthHeaderStyle & MGCMonthHeaderStyleHidden) return view;
-    
+ 
     NSLocale *locale = [NSLocale currentLocale];
     
     static NSDateFormatter *dateFormatter = nil;
@@ -1221,7 +1274,7 @@ typedef enum
         dateFormatter = [NSDateFormatter new];
     }
     dateFormatter.calendar = self.calendar;
-    
+
     NSString *fmtTemplate = self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMMM" : @"MMMMYYYY";
     dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:fmtTemplate options:0 locale:locale];
 

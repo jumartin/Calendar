@@ -170,6 +170,7 @@ typedef enum : NSUInteger {
 - (MGCEventView*)dequeueReusableCellWithIdentifier:(NSString*)reuseIdentifier forEventAtIndex:(NSUInteger)index date:(NSDate*)date;
 - (void)scrollToDate:(NSDate*)date animated:(BOOL)animated;
 - (void)reloadEvents;
+- (void)reloadEventsAtDate:(NSDate*)date;
 - (void)reloadEventsInRange:(MGCDateRange*)range;
 - (NSArray*)visibleEventCells;
 - (MGCEventView*)cellForEventAtIndex:(NSUInteger)index date:(NSDate*)date;
