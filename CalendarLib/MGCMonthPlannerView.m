@@ -738,32 +738,7 @@ typedef enum
     }
 }
 
-- (void)invalidateLayout
-{
-    //NSLog(@"invalidateLayout");
-    
-    if (self.bounds.size.width != 0) {
-        self.layout.rowHeight = self.rowHeight;
-        [self.layout invalidateLayout];
-        //[self.layout prepareLayout];
-        
-        [self reload]; // TODO: we shouldn't have to reload everything...
-    }
-}
-
 #pragma mark - UIView
-
-- (void)setFrame:(CGRect)frame
-{
-    [super setFrame:frame];
-    [self invalidateLayout];
-}
-
-- (void)setNeedsLayout
-{
-    [super setNeedsLayout];
-    [self invalidateLayout];
-}
 
 - (void)layoutSubviews
 {
