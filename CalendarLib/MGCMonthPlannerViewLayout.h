@@ -47,6 +47,8 @@ static NSString* const MonthHeaderViewKind = @"MonthHeaderViewKind";
 @property (nonatomic) CGFloat rowHeight;
 @property (nonatomic) CGFloat dayHeaderHeight;
 @property (nonatomic) BOOL alignMonthHeaders;
+@property (nonatomic) BOOL showEvents;
+
 
 - (CGFloat)widthForColumnRange:(NSRange)range;
 - (CGFloat)columnWidth:(NSUInteger)colIndex;

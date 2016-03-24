@@ -31,6 +31,14 @@
 #import "MGCMonthPlannerViewDayCell.h"
 
 static const CGFloat kHeaderMargin = 1;
+static const CGFloat kDotSize = 8;
+
+
+@interface MGCMonthPlannerViewDayCell ()
+
+@property (nonatomic) CAShapeLayer *dotLayer;
+
+@end
 
 
 @implementation MGCMonthPlannerViewDayCell
@@ -43,9 +51,17 @@ static const CGFloat kHeaderMargin = 1;
         
         self.dayLabel = [[UILabel alloc]initWithFrame:CGRectNull];
         self.dayLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
-        self.dayLabel.numberOfLines = 0;
+        self.dayLabel.numberOfLines = 1;
+        self.dayLabel.adjustsFontSizeToFitWidth = YES;
+        
         [self.contentView addSubview:self.dayLabel];
         
+        self.dotLayer = [CAShapeLayer layer];
+        self.dotLayer.path = [UIBezierPath bezierPathWithOvalInRect:CGRectMake(0, 0, kDotSize, kDotSize)].CGPath;;
+        self.dotLayer.fillColor = [UIColor redColor].CGColor;
+        self.dotLayer.hidden = YES;
+        [self.contentView.layer addSublayer:self.dotLayer];
+      
         UIView *view = [UIView new];
         view.backgroundColor = [UIColor colorWithWhite:.7 alpha:.2];
         self.selectedBackgroundView = view;
@@ -55,14 +71,27 @@ static const CGFloat kHeaderMargin = 1;
 
 - (void)prepareForReuse
 {
-    self.marked = NO;
+    self.showsDot = NO;
 }
 
-- (void)setMarked:(BOOL)marked
+- (void)setDotColor:(UIColor *)dotColor
 {
-    _marked = marked;
-    self.dayLabel.textColor = marked ? [UIColor redColor] : [UIColor blackColor];
-    self.dayLabel.layer.cornerRadius = marked ? 10. : 0.;
+    self.dotLayer.fillColor = dotColor.CGColor;
+}
+
+- (UIColor*)dotColor
+{
+    return [UIColor colorWithCGColor:self.dotLayer.fillColor];
+}
+
+- (void)setShowsDot:(BOOL)showsDot
+{
+    _showsDot = showsDot;
+    
+    [CATransaction begin];
+    [CATransaction setValue:(id)kCFBooleanTrue forKey: kCATransactionDisableActions];
+    self.dotLayer.hidden = !showsDot;
+    [CATransaction commit];
 }
 
 - (void)setHeaderHeight:(CGFloat)headerHeight
@@ -75,8 +104,17 @@ static const CGFloat kHeaderMargin = 1;
 {
     [super layoutSubviews];
     
-    CGRect frame = CGRectMake(0, 0, self.contentView.bounds.size.width, self.headerHeight);
-    self.dayLabel.frame =  CGRectInset(frame, kHeaderMargin, kHeaderMargin);
+    CGRect headerFrame = CGRectMake(0, 0, self.contentView.bounds.size.width, self.headerHeight);
+    self.dayLabel.frame =  CGRectInset(headerFrame, kHeaderMargin, kHeaderMargin);
+    
+    CGRect contentFrame = CGRectMake(0, self.headerHeight, self.contentView.bounds.size.width, self.contentView.bounds.size.height - self.headerHeight);
+    contentFrame = CGRectInset(contentFrame, kHeaderMargin, kHeaderMargin);
+    
+    CGFloat dotSize = fminf(fminf(contentFrame.size.height, contentFrame.size.width), kDotSize);
+    CGRect dotFrame = CGRectMake(CGRectGetMidX(contentFrame)-dotSize*.5, CGRectGetMidY(contentFrame)-dotSize*.5, dotSize, dotSize);
+    
+    self.dotLayer.frame = dotFrame;
+    
 }
 
 @end

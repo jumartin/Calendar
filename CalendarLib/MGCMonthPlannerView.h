@@ -51,6 +51,12 @@ typedef enum : NSUInteger {
     MGCMonthPlannerGridStyleDefault = (MGCMonthPlannerGridStyleHorizontalLines|MGCMonthPlannerGridStyleVerticalLines)
 } MGCMonthPlannerGridStyle;
 
+typedef enum : NSUInteger {
+    MGCMonthPlannerStyleEvents = 0,
+    MGCMonthPlannerStyleDots = 1,
+    MGCMonthPlannerStyleEmpty = 2
+} MGCMonthPlannerStyle;
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // MGCMonthPlannerView
@@ -96,6 +102,20 @@ typedef enum : NSUInteger {
  
  */
 @property (nonatomic) MGCMonthHeaderStyle monthHeaderStyle;
+
+/*!
+	@abstract	Returns the style of the month planner view.
+    @discussion If set to MGCMonthPlannerStyleEvents, the view displays events cells, similar to the month view in Apple's Calendar app on iPad.
+                If set to MGCMonthPlannerStyleDots, the view only displays dots for days with events, similar to the month view in Apple's Calendar app on iPhone.
+                If set to MGCMonthPlannerStyleEmpty, the view does not display events nor dots.
+	@discussion The default value is MGCMonthPlannerStyleEvents on regular horizontal size, MGCMonthPlannerStyleDots otherwise.
+ */
+@property (nonatomic) MGCMonthPlannerStyle style;
+
+/*!
+	@abstract	Returns the color of the dot displayed when the month planner view style is set to MGCMonthPlannerStyleDots.
+ */
+@property (nonatomic) UIColor *eventsDotColor;
 
 /*!
 	@abstract	Returns the style of the months' background grid.

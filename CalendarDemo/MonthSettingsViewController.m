@@ -11,6 +11,8 @@
 #import "MGCStandardEventView.h"
 
 
+const NSUInteger kStyleSection = 1;
+
 
 @interface MonthSettingsViewController ()
 
@@ -124,6 +126,13 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath*)indexPath
 {
+    if (indexPath.section == kStyleSection) {
+        self.monthPlannerView.style = indexPath.item;
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:kStyleSection] withRowAnimation:UITableViewRowAnimationNone];
+        return;
+    }
+    
+    
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	[tableView beginUpdates];
 	
@@ -158,6 +167,15 @@
 	[self.tableView endUpdates];
 	
 	[self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    if (indexPath.section == kStyleSection) {
+        cell.accessoryType = (self.monthPlannerView.style == indexPath.item) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    }
+    return cell;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

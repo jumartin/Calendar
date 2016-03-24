@@ -70,8 +70,9 @@ static const CGFloat kCellSpacing = 2.;		// space around cells
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-	
-	// TODO: recalculate frames
+    [self reload];
+    // possible optimization: we shouldn't have to reload everything but only to recompute the frames of the cells
+    
 }
 
 - (NSUInteger)maxVisibleLinesForDaysInRange:(NSRange)range

@@ -70,6 +70,7 @@ const CGFloat kMonthHeaderMargin = 3.;
 		_monthInsets = UIEdgeInsetsMake(20, 0, 20, 0);
 		_rowHeight = 140;
 		_dayHeaderHeight = 28;
+        _showEvents = YES;
 	}
 	return self;
 }
@@ -114,20 +115,22 @@ const CGFloat kMonthHeaderMargin = 3.;
 		{
 			NSRange colRange = NSMakeRange(col, MIN(7 - col, daysInMonth - day));
 			
-			NSIndexPath *path = [NSIndexPath indexPathForItem:day inSection:month];
-			UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:MonthRowViewKind withIndexPath:path];
-			CGFloat x = [self widthForColumnRange:NSMakeRange(0, col)] + self.monthInsets.left;
-			CGFloat width = [self widthForColumnRange:NSMakeRange(col, colRange.length)];
-			attribs.frame = CGRectMake(x, y + self.dayHeaderHeight, width, self.rowHeight - self.dayHeaderHeight);
-			attribs.zIndex = 1;
-			[rowsInfo setObject:attribs forKey:path];
+            if (self.showEvents) {
+                NSIndexPath *path = [NSIndexPath indexPathForItem:day inSection:month];
+                UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:MonthRowViewKind withIndexPath:path];
+                CGFloat x = [self widthForColumnRange:NSMakeRange(0, col)] + self.monthInsets.left;
+                CGFloat width = [self widthForColumnRange:NSMakeRange(col, colRange.length)];
+                attribs.frame = CGRectMake(x, y + self.dayHeaderHeight, width, self.rowHeight - self.dayHeaderHeight);
+                attribs.zIndex = 1;
+                [rowsInfo setObject:attribs forKey:path];
+            }
 
 			for (; col < NSMaxRange(colRange); col++, day++)
 			{
-				path = [NSIndexPath indexPathForItem:day inSection:month];
-				attribs = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:path];
-				x = [self widthForColumnRange:NSMakeRange(0, col)] + self.monthInsets.left;
-				width = [self widthForColumnRange:NSMakeRange(col, 1)];
+				NSIndexPath *path = [NSIndexPath indexPathForItem:day inSection:month];
+				UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:path];
+				CGFloat x = [self widthForColumnRange:NSMakeRange(0, col)] + self.monthInsets.left;
+				CGFloat width = [self widthForColumnRange:NSMakeRange(col, 1)];
 				attribs.frame = CGRectMake(x, y, width, self.rowHeight);
 				[dayCellsInfo setObject:attribs forKey:path];
 			}

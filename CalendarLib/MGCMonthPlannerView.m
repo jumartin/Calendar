@@ -119,6 +119,8 @@ typedef enum
     _monthHeaderStyle = MGCMonthHeaderStyleDefault;
     _monthInsets = UIEdgeInsetsMake(20, 0, 20, 0);
     _gridStyle = MGCMonthPlannerGridStyleDefault;
+    _style = (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? MGCMonthPlannerStyleEvents : MGCMonthPlannerStyleDots;
+    _eventsDotColor = [UIColor lightGrayColor];
     
     _dayLabels = [NSMutableArray array];
     for (int i = 0; i < 7; i++) {
@@ -281,6 +283,21 @@ typedef enum
         self.layout.alignMonthHeaders = !(gridStyle & MGCMonthPlannerGridStyleFill);
         [self.eventsView reloadData];
     }
+}
+
+- (void)setStyle:(MGCMonthPlannerStyle)style
+{
+    if (style != _style) {
+        _style = style;
+        self.layout.showEvents = (style == MGCMonthPlannerStyleEvents);
+        [self.eventsView reloadData];
+    }
+}
+
+- (void)setEventsDotColor:(UIColor *)eventsDotColor
+{
+    _eventsDotColor = eventsDotColor;
+    [self.eventsView reloadData];
 }
 
 #pragma mark - Private properties
@@ -672,6 +689,7 @@ typedef enum
         layout.dayHeaderHeight = self.dayCellHeaderHeight;
         layout.monthInsets = self.monthInsets;
         layout.alignMonthHeaders = !(self.gridStyle & MGCMonthPlannerGridStyleFill);
+        layout.showEvents = (self.style == MGCMonthPlannerStyleEvents);
         layout.delegate = self;
         
         _eventsView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
@@ -1085,6 +1103,9 @@ typedef enum
 
 - (void)handleLongPress:(UILongPressGestureRecognizer*)gesture
 {
+    if (self.style != MGCMonthPlannerStyleEvents)
+        return;
+    
     CGPoint pt = [gesture locationInView:self];
     
     // long press on a cell or an empty space
@@ -1169,23 +1190,19 @@ typedef enum
         NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
         para.alignment = NSTextAlignmentCenter;
         
-        attrStr = [[NSAttributedString alloc]initWithString:str attributes:@{ NSParagraphStyleAttributeName: para }];
+        UIColor *textColor = [self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]] ? [UIColor redColor] : [UIColor blackColor];
         
-        if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]]) {
-            cell.marked = YES;
-        }
+        attrStr = [[NSAttributedString alloc]initWithString:str attributes:@{ NSParagraphStyleAttributeName: para, NSForegroundColorAttributeName: textColor }];
     }
     
     cell.dayLabel.attributedText = attrStr;
+    cell.backgroundColor = [self.calendar isDateInWeekend:date] ? [UIColor colorWithWhite:.97 alpha:.8] :  [UIColor whiteColor/*clearColor*/];
     
-    // isDateInWeekend is only in iOS 8 and later
-    if ([self.calendar respondsToSelector:@selector(isDateInWeekend:)] && [self.calendar isDateInWeekend:date]) {
-        cell.backgroundColor = [UIColor colorWithWhite:.97 alpha:.8];
+    if (self.style & MGCMonthPlannerStyleDots) {
+        NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
+        cell.showsDot = eventsCounts > 0;
+        cell.dotColor = self.eventsDotColor;
     }
-    else {
-        cell.backgroundColor = [UIColor whiteColor/*clearColor*/];
-    }
-    
     return cell;
 }
 
