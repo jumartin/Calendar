@@ -90,8 +90,12 @@
                         <outlet property="currentDateLabel" destination="7CX-DX-AlJ" id="bgE-8b-eGn"/>
                         <outlet property="settingsButtonItem" destination="Kp2-Jx-AfL" id="sk1-9I-sgq"/>
                         <outlet property="viewChooser" destination="6hS-eO-sTa" id="Nr1-hD-wlG"/>
-                        <segue destination="gDc-sm-yy2" kind="show" identifier="dayPlannerSettingsSegue" id="Ak6-xz-EdB"/>
-                        <segue destination="Tic-j0-v9T" kind="show" identifier="monthPlannerSettingsSegue" id="1sR-dV-I7q"/>
+                        <segue destination="gDc-sm-yy2" kind="popoverPresentation" identifier="dayPlannerSettingsSegue" popoverAnchorBarButtonItem="Kp2-Jx-AfL" id="Ak6-xz-EdB">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
+                        <segue destination="Tic-j0-v9T" kind="popoverPresentation" identifier="monthPlannerSettingsSegue" popoverAnchorBarButtonItem="Kp2-Jx-AfL" id="1sR-dV-I7q">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XRx-MN-2Mf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -99,7 +103,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </objects>

@@ -97,15 +97,33 @@ typedef enum : NSUInteger
 
 - (void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
 {
+    UINavigationController *nc = (UINavigationController*)[segue destinationViewController];
+    
     if ([segue.identifier isEqualToString:@"dayPlannerSettingsSegue"]) {
-        WeekSettingsViewController *settingsViewController = [segue destinationViewController];
+        WeekSettingsViewController *settingsViewController = (WeekSettingsViewController*)nc.topViewController;
         WeekViewController *weekController = (WeekViewController*)self.calendarViewController;
         settingsViewController.dayPlannerView = weekController.dayPlannerView;
     }
     else if ([segue.identifier isEqualToString:@"monthPlannerSettingsSegue"]) {
-        MonthSettingsViewController *settingsViewController = [segue destinationViewController];
+        MonthSettingsViewController *settingsViewController = (MonthSettingsViewController*)nc.topViewController;
         MonthViewController *monthController = (MonthViewController*)self.calendarViewController;
         settingsViewController.monthPlannerView = monthController.monthPlannerView;
+    }
+    
+    BOOL doneButton = (self.traitCollection.verticalSizeClass != UIUserInterfaceSizeClassRegular || self.traitCollection.horizontalSizeClass != UIUserInterfaceSizeClassRegular);
+    if (doneButton) {
+         nc.topViewController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSettings:)];
+    }
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+    UINavigationController *nc = (UINavigationController*)self.presentedViewController;
+    if (nc) {
+        BOOL hide = (self.traitCollection.verticalSizeClass == UIUserInterfaceSizeClassRegular && self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular);
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissSettings:)];
+        nc.topViewController.navigationItem.rightBarButtonItem = hide ? nil : doneButton;
     }
 }
 
@@ -226,6 +244,11 @@ typedef enum : NSUInteger
     else if ([self.calendarViewController isKindOfClass:MonthViewController.class]) {
         [self performSegueWithIdentifier:@"monthPlannerSettingsSegue" sender:nil];
     }
+}
+
+- (void)dismissSettings:(UIBarButtonItem*)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)calendarChooserStartEdit
