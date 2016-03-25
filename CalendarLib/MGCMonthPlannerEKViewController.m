@@ -47,8 +47,6 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 @property (nonatomic) dispatch_queue_t bgQueue;						// dispatch queue for loading events
 @property (nonatomic) NSMutableOrderedSet *datesForMonthsToLoad;	// dates for months of which we want to load events
 @property (nonatomic) MGCDateRange *visibleMonths;					// range of months currently shown
-@property (nonatomic) NSUInteger selectedEventIndex;				// index of currently selected event cell
-@property (nonatomic) NSDate *selectedEventDate;					// date of currently selected event cell
 @property (nonatomic) EKEvent *movedEvent;
 @property (nonatomic) NSDateFormatter *dateFormatter;
 
@@ -436,12 +434,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 - (void)monthPlannerView:(MGCMonthPlannerView*)view didSelectEventAtIndex:(NSUInteger)index date:(NSDate *)date
 {
-    self.selectedEventDate = date;
-    self.selectedEventIndex = index;
-    
     MGCEventView *cell = [view cellForEventAtIndex:index date:date];
-    if (cell)
-    {
+    if (cell) {
         CGRect rect = [view convertRect:cell.bounds fromView:cell];
         [self showEditControllerForEventAtIndex:index date:date rect:rect];
     }
@@ -505,7 +499,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 - (void)eventViewController:(EKEventViewController *)controller didCompleteWithAction:(EKEventViewAction)action
 {
-    //[self.monthView endSelection];
+    [self.monthPlannerView deselectEvent];
     if (controller.presentingViewController) {
         [self dismissViewControllerAnimated:YES completion:nil];
     } else {
@@ -527,26 +521,18 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 //    }
 //}
 
-
 - (void)popoverPresentationController:(UIPopoverPresentationController *)popoverPresentationController willRepositionPopoverToRect:(inout CGRect *)rect inView:(inout UIView *__autoreleasing  _Nonnull *)view
 {
-    MGCEventView *cell = [self.monthPlannerView cellForEventAtIndex:self.selectedEventIndex date:self.selectedEventDate];
-    if (cell)
-    {
+    MGCEventView *cell = self.monthPlannerView.selectedEventView;
+    if (cell) {
         CGRect newRect = [self.monthPlannerView convertRect:cell.bounds fromView:cell];
         *rect = newRect;
     }
 }
 
-- (BOOL)popoverPresentationControllerShouldDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
-{
-    [self.monthPlannerView deselectEventCellAtIndex:self.selectedEventIndex date:self.selectedEventDate];
-    return YES;
-}
-
 - (void)popoverPresentationControllerDidDismissPopover:(UIPopoverPresentationController *)popoverPresentationController
 {
-    [self.monthPlannerView endInteraction];
+    [self.monthPlannerView deselectEvent];
 }
 
 #pragma mark - UINavigationControllerDelegate

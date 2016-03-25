@@ -12,6 +12,7 @@
 
 
 const NSUInteger kStyleSection = 1;
+const NSUInteger kDateRangeSection = 3;
 
 
 @interface MonthSettingsViewController ()
@@ -32,6 +33,7 @@ const NSUInteger kStyleSection = 1;
 @property (nonatomic) IBOutlet UISwitch *horzLinesSwitch;
 @property (nonatomic) IBOutlet UISwitch *vertLinesSwitch;
 @property (nonatomic) IBOutlet UISwitch *monthHeadersSwitch;
+@property (nonatomic) IBOutlet UISwitch *eventSelectionSwitch;
 
 @end
 
@@ -94,6 +96,7 @@ const NSUInteger kStyleSection = 1;
     self.vertLinesSwitch.on = self.monthPlannerView.gridStyle & MGCMonthPlannerGridStyleVerticalLines;
     
     self.monthHeadersSwitch.on = !(self.monthPlannerView.monthHeaderStyle & MGCMonthHeaderStyleHidden);
+    self.eventSelectionSwitch.on = self.monthPlannerView.allowsSelection;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -180,7 +183,7 @@ const NSUInteger kStyleSection = 1;
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (indexPath.section == 2 && ((indexPath.row == 1 && !self.showsStartDatePicker) || (indexPath.row == 3 && !self.showsEndDatePicker))) {
+	if (indexPath.section == kDateRangeSection && ((indexPath.row == 1 && !self.showsStartDatePicker) || (indexPath.row == 3 && !self.showsEndDatePicker))) {
 		return 0;
 	}
 	return [super tableView:tableView heightForRowAtIndexPath:indexPath];
@@ -213,6 +216,9 @@ const NSUInteger kStyleSection = 1;
     }
     else if (sender == self.monthHeadersSwitch) {
         self.monthPlannerView.monthHeaderStyle = self.monthHeadersSwitch.on ? MGCMonthHeaderStyleShort : MGCMonthHeaderStyleHidden;
+    }
+    else if (sender == self.eventSelectionSwitch) {
+        self.monthPlannerView.allowsSelection = sender.on;
     }
 }
 

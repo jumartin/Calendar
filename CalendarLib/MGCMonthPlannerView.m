@@ -80,6 +80,8 @@ typedef enum
 @property (nonatomic) MGCReusableObjectQueue *reuseQueue;			// reuse queue for MGCEventsRowView and MGCEventView objects
 @property (nonatomic) MutableOrderedDictionary *eventRows;			// cache of MRU MGCEventsRowView objects indexed by start date
 @property (nonatomic) NSMutableDictionary *visibleRows;				// visible rows  { startingDay : rowView }
+@property (nonatomic, readwrite) NSDate *selectedEventDate;         // date of the selected event, or nil if no event is selected
+@property (nonatomic, readwrite) NSUInteger selectedEventIndex;     // index of the selected event at the date returned by selectedEventDate
 @property (nonatomic) MGCEventView *interactiveCell;				// cell moved around during drag and drop
 @property (nonatomic) BOOL isInteractiveCellForNewEvent;			// YES if the interactive cell is for a new event
 @property (nonatomic) CGPoint interactiveCelltouchPoint;			// touch point in cell coordinates
@@ -121,6 +123,8 @@ typedef enum
     _gridStyle = MGCMonthPlannerGridStyleDefault;
     _style = (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? MGCMonthPlannerStyleEvents : MGCMonthPlannerStyleDots;
     _eventsDotColor = [UIColor lightGrayColor];
+    _allowsSelection = YES;
+    _selectedEventDate = nil;
     
     _dayLabels = [NSMutableArray array];
     for (int i = 0; i < 7; i++) {
@@ -455,6 +459,8 @@ typedef enum
 
 - (void)reload
 {
+    [self deselectEventWithDelegate:YES];
+    
     [self.visibleRows removeAllObjects];
     [self clearRowsCacheInDateRange:nil];
     [self.eventsView reloadData];
@@ -486,6 +492,10 @@ typedef enum
 - (MGCEventView*)dequeueReusableCellWithIdentifier:(NSString *)reuseIdentifier forEventAtIndex:(NSUInteger)index date:(NSDate*)date
 {
     MGCEventView* cell = (MGCEventView*)[self.reuseQueue dequeueReusableObjectWithReuseIdentifier:reuseIdentifier];
+    
+    if ([self.selectedEventDate isEqualToDate:date] && index == self.selectedEventIndex)
+        cell.selected = YES;
+    
     return cell;
 }
 
@@ -495,6 +505,8 @@ typedef enum
         [self.eventsView reloadData];
     }
     else if (self.style == MGCMonthPlannerStyleEvents) {
+        [self deselectEventWithDelegate:YES];
+        
         [self clearRowsCacheInDateRange:nil];
 
         for (NSDate *date in self.visibleRows) {
@@ -516,6 +528,10 @@ typedef enum
         }
     }
     else if (self.style == MGCMonthPlannerStyleEvents) {
+        if ([self.selectedEventDate isEqualToDate:date]) {
+            [self deselectEventWithDelegate:YES];
+        }
+        
         MGCDateRange *visibleDateRange = [self visibleDays];
         
         for (NSDate *rowDate in [self.eventRows.allKeys copy]) {
@@ -543,6 +559,11 @@ typedef enum
        }];
     }
     else if (self.style == MGCMonthPlannerStyleEvents) {
+        
+        if (self.selectedEventDate && [range containsDate:self.selectedEventDate]) {
+            [self deselectEventWithDelegate:YES];
+        }
+        
         MGCDateRange *visibleDateRange = [self visibleDays];
         
         for (NSDate *date in [self.eventRows.allKeys copy]) {
@@ -631,16 +652,54 @@ typedef enum
     [self highlightDaysInRange:nil];
 }
 
-- (void)selectEventCellAtIndex:(NSUInteger)index date:(NSDate*)date
+#pragma mark - Selection
+
+// public
+- (MGCEventView*)selectedEventView
 {
-    MGCEventView *cell = [self cellForEventAtIndex:index date:date];
-    cell.selected = YES;
+    if (self.selectedEventDate) {
+        return [self cellForEventAtIndex:self.selectedEventIndex date:self.selectedEventDate];
+    }
+    return nil;
 }
 
-- (void)deselectEventCellAtIndex:(NSUInteger)index date:(NSDate*)date
+// tellDelegate is used to distinguish between user deselection (touch) where delegate is informed,
+// and programmatically deselected events where delegate is not informed
+- (void)deselectEventWithDelegate:(BOOL)tellDelegate
 {
-    MGCEventView *cell = [self cellForEventAtIndex:index date:date];
-    cell.selected = NO;
+    if (self.selectedEventDate)
+    {
+        MGCEventView *cell = [self cellForEventAtIndex:self.selectedEventIndex date:self.selectedEventDate];
+        cell.selected = NO;
+        
+        if (tellDelegate && [self.delegate respondsToSelector:@selector(monthPlannerView:didDeselectEventAtIndex:date:)]) {
+            [self.delegate monthPlannerView:self didDeselectEventAtIndex:self.selectedEventIndex date:self.selectedEventDate];
+        }
+        
+        self.selectedEventDate = nil;
+    }
+}
+
+// public
+- (void)deselectEvent
+{
+    if (self.allowsSelection) {
+        [self deselectEventWithDelegate:NO];
+    }
+}
+
+// public
+- (void)selectEventCellAtIndex:(NSUInteger)index date:(NSDate*)date
+{
+    [self deselectEventWithDelegate:NO];
+    
+    if (self.allowsSelection) {
+        MGCEventView *cell = [self cellForEventAtIndex:index date:date];
+        cell.selected = YES;
+        
+        self.selectedEventDate = date;
+        self.selectedEventIndex = index;
+    }
 }
 
 #pragma mark - Scrolling
@@ -1389,6 +1448,8 @@ typedef enum
 
 - (BOOL)eventsRowView:(MGCEventsRowView*)view shouldSelectCellAtIndexPath:(NSIndexPath*)indexPath
 {
+    if (!self.allowsSelection) return NO;
+    
     if ([self.delegate respondsToSelector:@selector(monthPlannerView:shouldSelectEventAtIndex:date:)]) {
         NSDateComponents *comps = [NSDateComponents new];
         comps.day = indexPath.section;
@@ -1401,19 +1462,25 @@ typedef enum
 
 - (void)eventsRowView:(MGCEventsRowView*)view didSelectCellAtIndexPath:(NSIndexPath*)indexPath
 {
+    [self deselectEventWithDelegate:YES];
+    
+    NSDateComponents *comps = [NSDateComponents new];
+    comps.day = indexPath.section;
+    NSDate *date = [self.calendar dateByAddingComponents:comps toDate:view.referenceDate options:0];
+    
+    self.selectedEventDate = date;
+    self.selectedEventIndex = indexPath.item;
+    
     if ([self.delegate respondsToSelector:@selector(monthPlannerView:didSelectEventAtIndex:date:)]) {
-        NSDateComponents *comps = [NSDateComponents new];
-        comps.day = indexPath.section;
-        NSDate *date = [self.calendar dateByAddingComponents:comps toDate:view.referenceDate options:0];
-        
         [self.delegate monthPlannerView:self didSelectEventAtIndex:indexPath.item date:date];
     }
 }
 
 - (BOOL)eventsRowView:(MGCEventsRowView *)view shouldDeselectCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([self.delegate respondsToSelector:@selector(monthPlannerView:shouldDeselectEventAtIndex:date:)])
-    {
+    if (!self.allowsSelection) return NO;
+    
+    if ([self.delegate respondsToSelector:@selector(monthPlannerView:shouldDeselectEventAtIndex:date:)]) {
         NSDateComponents *comps = [NSDateComponents new];
         comps.day = indexPath.section;
         NSDate *date = [self.calendar dateByAddingComponents:comps toDate:view.referenceDate options:0];
@@ -1425,11 +1492,16 @@ typedef enum
 
 - (void)eventsRowView:(MGCEventsRowView *)view didDeselectCellAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSDateComponents *comps = [NSDateComponents new];
+    comps.day = indexPath.section;
+    NSDate *date = [self.calendar dateByAddingComponents:comps toDate:view.referenceDate options:0];
+
+    if ([self.selectedEventDate isEqualToDate:date] && indexPath.item == self.selectedEventIndex) {
+        self.selectedEventDate = nil;
+        self.selectedEventIndex = 0;
+    }
+    
     if ([self.delegate respondsToSelector:@selector(monthPlannerView:didDeselectEventAtIndex:date:)]) {
-        NSDateComponents *comps = [NSDateComponents new];
-        comps.day = indexPath.section;
-        NSDate *date = [self.calendar dateByAddingComponents:comps toDate:view.referenceDate options:0];
-        
         [self.delegate monthPlannerView:self didDeselectEventAtIndex:indexPath.item date:date];
     }
 }

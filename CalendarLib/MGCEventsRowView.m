@@ -311,8 +311,7 @@ static const CGFloat kCellSpacing = 2.;		// space around cells
 		if (shouldDeselect)
 		{
 			cell.selected = NO;
-			if ([self.delegate respondsToSelector:@selector(eventsRowView:didDeselectCellAtIndexPath:)])
-			{
+			if ([self.delegate respondsToSelector:@selector(eventsRowView:didDeselectCellAtIndexPath:)]) {
 				[self.delegate eventsRowView:self didDeselectCellAtIndexPath:path];
 			}
 		}
@@ -326,8 +325,7 @@ static const CGFloat kCellSpacing = 2.;		// space around cells
 		if (shouldSelect)
 		{
 			cell.selected = YES;
-			if ([self.delegate respondsToSelector:@selector(eventsRowView:didSelectCellAtIndexPath:)])
-			{
+			if ([self.delegate respondsToSelector:@selector(eventsRowView:didSelectCellAtIndexPath:)]) {
 				[self.delegate eventsRowView:self didSelectCellAtIndexPath:path];
 			}
 		}

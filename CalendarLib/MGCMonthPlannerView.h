@@ -176,8 +176,51 @@ typedef enum : NSUInteger {
 - (MGCEventView*)cellForEventAtIndex:(NSUInteger)index date:(NSDate*)date;
 - (MGCEventView*)eventCellAtPoint:(CGPoint)pt date:(NSDate**)date index:(NSUInteger*)index;
 - (NSDate*)dayAtPoint:(CGPoint)pt;
+
+/*!
+	@group Managing the selection
+ */
+
+/*!
+	@abstract	Determines whether users can select events in the month planner view.
+	@discussion The default value is YES.
+                For more control over the selection of items, you can provide a delegate object and implement the
+                monthPlannerView:shouldSelectEventAtIndex:date: methods of the MGCMonthPlannerViewDelegate protocol.
+ */
+@property (nonatomic) BOOL allowsSelection;
+
+/*!
+	@abstract	Returns the date of the selected event, or nil if no event is selected.
+ */
+@property (nonatomic, readonly) NSDate *selectedEventDate;
+
+/*!
+	@abstract	Returns the index of the selected event at the date given by selectedEventDate.
+ */
+@property (nonatomic, readonly) NSUInteger selectedEventIndex;
+
+/*!
+	@abstract	Returns the event view for the current selection, or nil if no event is selected.
+ */
+@property (nonatomic, readonly) MGCEventView *selectedEventView;
+
+/*!
+	@abstract	Selects the visible event view at specified index and date.
+	@param		index		The index of the event.
+	@param		date		The date of the event.
+	@discussion If the allowsSelection property is NO, calling this method has no effect.
+                If there is an existing selection, calling this method replaces the previous selection.
+	@discussion	This method does not cause any selection-related delegate methods to be called.
+ */
 - (void)selectEventCellAtIndex:(NSUInteger)index date:(NSDate*)date;
-- (void)deselectEventCellAtIndex:(NSUInteger)index date:(NSDate*)date;
+
+/*!
+	@abstract	Cancels current selection.
+	@discussion If the allowsSelection property is NO, calling this method has no effect.
+	@discussion	This method does not cause any selection-related delegate methods to be called.
+ */
+- (void)deselectEvent;
+
 - (void)endInteraction;
 
 @end
@@ -214,13 +257,57 @@ typedef enum : NSUInteger {
 - (NSAttributedString*)monthPlannerView:(MGCMonthPlannerView*)view attributedStringForDayHeaderAtDate:(NSDate*)date;
 
 - (void)monthPlannerViewDidScroll:(MGCMonthPlannerView*)view;
-- (BOOL)monthPlannerView:(MGCMonthPlannerView*)view shouldSelectEventAtIndex:(NSUInteger)index date:(NSDate*)date;
-- (void)monthPlannerView:(MGCMonthPlannerView*)view didSelectEventAtIndex:(NSUInteger)index date:(NSDate*)date;
-- (BOOL)monthPlannerView:(MGCMonthPlannerView*)view shouldDeselectEventAtIndex:(NSUInteger)index date:(NSDate*)date;
-- (void)monthPlannerView:(MGCMonthPlannerView*)view didDeselectEventAtIndex:(NSUInteger)index date:(NSDate*)date;
 - (void)monthPlannerView:(MGCMonthPlannerView*)view didSelectDayCellAtDate:(NSDate*)date;
 - (void)monthPlannerView:(MGCMonthPlannerView*)view didShowCell:(MGCEventView*)cell forNewEventAtDate:(NSDate*)date;
 - (void)monthPlannerView:(MGCMonthPlannerView*)view willStartMovingEventAtIndex:(NSUInteger)index date:(NSDate*)date;
 - (void)monthPlannerView:(MGCMonthPlannerView*)view didMoveEventAtIndex:(NSUInteger)index date:(NSDate*)dateOld toDate:(NSDate*)dayNew;
+
+/*!
+	@group Managing the selection of events
+ */
+
+/*!
+	@abstract	Asks the delegate if the specified event should be selected.
+	@param		view		The month planner view object making the request.
+	@param		index		The index of the event.
+	@param		date		The day of the event.
+	@return		YES if the event should be selected or NO if it should not.
+	@discussion	The month planner view calls this method when the user tries to select an event. 
+                It does not call this method when you programmatically set the selection.
+	@discussion	If you do not implement this method, the default return value is YES.
+ */
+- (BOOL)monthPlannerView:(MGCMonthPlannerView*)view shouldSelectEventAtIndex:(NSUInteger)index date:(NSDate*)date;
+
+/*!
+	@abstract	Tells the delegate that the specified event was selected.
+	@param		view		The month planner view object notifying about the selection change.
+	@param		index		The index of the event.
+	@param		date		The day of the event.
+	@return		YES if the event should be selected or NO if it should not.
+	@discussion	The month planner view calls this method when the user successfully selects an event. 
+                It does not call this method when you programmatically set the selection.
+ */
+- (void)monthPlannerView:(MGCMonthPlannerView*)view didSelectEventAtIndex:(NSUInteger)index date:(NSDate*)date;
+
+/*!
+	@abstract	Asks the delegate if the specified event should be deselected.
+	@param		view		The month planner view object notifying about the selection change.
+	@param		index		The index of the event.
+	@param		date		The day of the event.
+	@return		YES if the event should be selected or NO if it should not.
+	@discussion	The month planner view calls this method when the user tries to deselect an already selected event.
+                It does not call this method when you programmatically set the selection.
+ */
+- (BOOL)monthPlannerView:(MGCMonthPlannerView*)view shouldDeselectEventAtIndex:(NSUInteger)index date:(NSDate*)date;
+
+/*!
+	@abstract	Tells the delegate that the specified event was deselected.
+	@param		view		The month planner view object notifying about the selection change.
+	@param		index		The index of the event.
+	@param		date		The day of the event.
+	@return		YES if the event should be selected or NO if it should not.
+	@discussion This does not get called when you programmatically deselect an event with the deselectEvent method
+ */
+- (void)monthPlannerView:(MGCMonthPlannerView*)view didDeselectEventAtIndex:(NSUInteger)index date:(NSDate*)date;
 
 @end
