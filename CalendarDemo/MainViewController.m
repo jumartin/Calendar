@@ -22,11 +22,14 @@ typedef enum : NSUInteger
 } CalendarViewType;
 
 
-@interface MainViewController ()<YearViewControllerDelegate>
+@interface MainViewController ()<YearViewControllerDelegate, WeekViewControllerDelegate>
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic) EKCalendarChooser *calendarChooser;
 @property (nonatomic) BOOL firstTimeAppears;
+@property (nonatomic) WeekViewController *weekViewController;
+@property (nonatomic) MonthViewController *monthViewController;
+@property (nonatomic) YearViewController *yearViewController;
 
 @end
 
@@ -129,40 +132,45 @@ typedef enum : NSUInteger
 
 #pragma mark - Private
 
+- (WeekViewController*)weekViewController
+{
+    if (_weekViewController == nil) {
+        _weekViewController = [[WeekViewController alloc]initWithEventStore:self.eventStore];
+        _weekViewController.calendar = self.calendar;
+        _weekViewController.delegate = self;
+    }
+    return _weekViewController;
+}
+
+- (MonthViewController*)monthViewController
+{
+    if (_monthViewController == nil) {
+        _monthViewController = [[MonthViewController alloc]initWithEventStore:self.eventStore];
+        _monthViewController.calendar = self.calendar;
+        _monthViewController.delegate = self;
+    }
+    return _monthViewController;
+}
+
+- (YearViewController*)yearViewController
+{
+    if (_yearViewController == nil) {
+        _yearViewController = [[YearViewController alloc]init];
+        _yearViewController.calendar = self.calendar;
+        _yearViewController.delegate = self;
+    }
+    return _yearViewController;
+}
+
 - (CalendarViewController*)controllerForViewType:(CalendarViewType)type
 {
-    CalendarViewController *controller = nil;
-    
     switch (type)
     {
-        case CalendarViewWeekType:
-        {
-            WeekViewController *weekController = [[WeekViewController alloc]initWithEventStore:self.eventStore];
-            weekController.calendar = self.calendar;
-            weekController.delegate = self;
-            controller = weekController;
-            break;
-        }
-        case CalendarViewMonthType:
-        {
-            MonthViewController *monthController = [[MonthViewController alloc]initWithEventStore:self.eventStore];
-            monthController.calendar = self.calendar;
-            monthController.delegate = self;
-            controller = monthController;
-            break;
-        }
-        case CalendarViewYearType:
-        {
-            YearViewController *yearController = [[YearViewController alloc]init];
-            yearController.calendar = self.calendar;
-            yearController.delegate = self;
-            controller = yearController;
-            break;
-        }
-        default:
-            break;
+        case CalendarViewWeekType:  return self.weekViewController;
+        case CalendarViewMonthType: return self.monthViewController;
+        case CalendarViewYearType:  return self.yearViewController;
     }
-    return controller;
+    return nil;
 }
 
 -(void)moveToNewController:(CalendarViewController*)newController atDate:(NSDate*)date
