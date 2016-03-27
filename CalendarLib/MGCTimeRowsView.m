@@ -161,7 +161,8 @@
     CGSize markSizeMax = CGSizeMake(self.timeColumnWidth - 2.*kSpacing, CGFLOAT_MAX);
     
 	// calculate rect for current time mark
-	NSTimeInterval currentTime = -[[self.calendar mgc_startOfDayForDate:[NSDate date]] timeIntervalSinceNow];
+    NSDateComponents *comps = [self.calendar components:NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond fromDate:[NSDate date]];
+    NSTimeInterval currentTime = comps.hour*3600.+comps.minute*60.+comps.second;
     
     NSAttributedString *markAttrStr = [self attributedStringForTimeMark:MGCDayPlannerTimeMarkCurrent time:currentTime];
     CGSize markSize = [markAttrStr boundingRectWithSize:markSizeMax options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
