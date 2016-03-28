@@ -92,11 +92,9 @@
 
 - (void)moveToDate:(NSDate*)date animated:(BOOL)animated
 {
-	if ([self.monthPlannerView.dateRange containsDate:date]) {
-		return;
-	}
-	
-	[self.monthPlannerView scrollToDate:date animated:animated];
+    if (!self.monthPlannerView.dateRange || [self.monthPlannerView.dateRange containsDate:date]) {
+        [self.monthPlannerView scrollToDate:date animated:animated];
+    }
 }
 
 - (void)moveToNextPageAnimated:(BOOL)animated

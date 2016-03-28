@@ -121,7 +121,7 @@ typedef enum
     _monthHeaderStyle = MGCMonthHeaderStyleDefault;
     _monthInsets = UIEdgeInsetsMake(20, 0, 20, 0);
     _gridStyle = MGCMonthPlannerGridStyleDefault;
-    _style = (self.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClassRegular) ? MGCMonthPlannerStyleEvents : MGCMonthPlannerStyleDots;
+    _style = MGCMonthPlannerStyleEvents;
     _eventsDotColor = [UIColor lightGrayColor];
     _allowsSelection = YES;
     _selectedEventDate = nil;
@@ -237,6 +237,8 @@ typedef enum
 // public
 - (MGCDateRange*)visibleDays
 {
+    [self.eventsView layoutIfNeeded];
+    
     MGCDateRange *range = nil;
     
     NSArray *visible = [[self.eventsView indexPathsForVisibleItems]sortedArrayUsingSelector:@selector(compare:)];
@@ -455,6 +457,30 @@ typedef enum
     bottom += self.layout.monthInsets.bottom;
     
     return CGRectMake(0, top, self.bounds.size.width, bottom - top);
+}
+
+// returns the offset from startDate to given month
+- (CGFloat)yOffsetForMonth:(NSDate*)date
+{
+    NSDate *startOfMonth = [self.calendar mgc_startOfMonthForDate:date];
+    
+    NSDateComponents *comps = [self.calendar components:NSCalendarUnitMonth fromDate:self.startDate toDate:startOfMonth options:0];
+    NSUInteger monthsDiff = labs(comps.month);
+    
+    CGFloat offset = 0;
+    
+    NSDate *month = [startOfMonth earlierDate:self.startDate];
+    for (int i = 0; i < monthsDiff; i++) {
+        NSUInteger numWeeks = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:month].length;
+        offset += numWeeks * self.rowHeight + self.monthInsets.top + self.monthInsets.bottom;
+        
+        month = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:month options:0];
+    }
+    
+    if ([startOfMonth compare:self.startDate] == NSOrderedAscending) {
+        offset = -offset;
+    }
+    return offset;
 }
 
 - (void)reload
@@ -707,36 +733,27 @@ typedef enum
 -(void)scrollToDate:(NSDate*)date animated:(BOOL)animated
 {
     NSAssert(date, @"scrollToDate:date: was passed nil date");
-    
+
     // check if date in range
     if (self.dateRange && ![self.dateRange containsDate:date])
         [NSException raise:@"Invalid parameter" format:@"date %@ is not in range %@ for this month planner view", date, self.dateRange];
-    
-    NSDate *firstInMonth = [self.calendar mgc_startOfMonthForDate:date];
-    
-    // calc new startDate
-    NSInteger diff = [self adjustStartDate:firstInMonth byNumberOfMonths:-kMonthsLoadingStep];
-    
-    [self reload];
-    
-    NSIndexPath *top = [NSIndexPath indexPathForItem:0 inSection:diff];
-    [self.eventsView scrollToItemAtIndexPath:top atScrollPosition:UICollectionViewScrollPositionTop animated:animated];
-    
-    // this is needed, or subsequent call to visibleDateRange may fail
-    [self.eventsView layoutIfNeeded];
+
+    CGFloat yOffset = [self yOffsetForMonth:date];
+    [self.eventsView setContentOffset:CGPointMake(0, yOffset) animated:animated];
     
     if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidScroll:)]) {
         [self.delegate monthPlannerViewDidScroll:self];
     }
+
 }
 
 // adjusts startDate by offsetting date by given months within calendar date range.
 // returns the distance in months between date and new start.
-- (NSUInteger)adjustStartDate:(NSDate*)date byNumberOfMonths:(NSInteger)months
+- (NSUInteger)adjustStartDateByMonths:(NSInteger)months
 {
 	NSDateComponents *comps = [NSDateComponents new];
 	comps.month = months;
-	NSDate *start = [self.calendar dateByAddingComponents:comps toDate:date options:0];
+	NSDate *start = [self.calendar dateByAddingComponents:comps toDate:self.startDate options:0];
 	
 	if ([start compare:self.dateRange.start] == NSOrderedAscending) {
 		start = self.dateRange.start;
@@ -745,51 +762,39 @@ typedef enum
 		start = self.maxStartDate;
 	}
 	
-	NSUInteger diff = abs((int)[self.calendar components:NSCalendarUnitMonth fromDate:start toDate:date options:0].month);
-	
-	self.startDate = start;
-	return diff;
-}
+    NSUInteger diff = abs((int)[self.calendar components:NSCalendarUnitMonth fromDate:self.startDate toDate:start options:0].month);
 
-// returns new corresponding offset
-- (CGFloat)reloadForTargetContentOffset:(CGFloat)yOffset
-{
-    CGFloat newYOffset = yOffset;
-    
-    NSUInteger diff;
-    if (yOffset <= 0)
-    {
-        if ((diff = [self adjustStartDate:self.startDate byNumberOfMonths:-kMonthsLoadingStep]) != 0) {
-            [self.eventsView reloadData];
-            // NOTE: we only use rect origin !!
-            newYOffset = [self rectForMonthAtIndex:diff].origin.y + yOffset;
-        }
-    }
-    else if (CGRectGetMaxY(self.eventsView.bounds) >= self.eventsView.contentSize.height)
-    {
-        if ((diff = [self adjustStartDate:self.startDate byNumberOfMonths:kMonthsLoadingStep]) != 0) {
-            newYOffset = yOffset - [self rectForMonthAtIndex:diff].origin.y;
-            [self.eventsView reloadData];
-        }
-    }
-    return newYOffset;
+    self.startDate = start;
+    return diff;
 }
 
 // returns YES if collection views were reloaded
 - (BOOL)recenterIfNeeded
 {
-    CGPoint contentOffset = self.eventsView.contentOffset;
+    CGFloat yOffset = self.eventsView.contentOffset.y;
+    CGFloat contentHeight = self.eventsView.contentSize.height;
+
+    NSDate *oldStart = [self.startDate copy];
+    NSUInteger monthOffset = 0;
     
-    if (contentOffset.y <= 0.0f || CGRectGetMaxY(self.eventsView.bounds) >= self.eventsView.contentSize.height)
-    {
+    if (yOffset <= 0) {
+        monthOffset = [self adjustStartDateByMonths:-kMonthsLoadingStep];
+    }
+     else if (CGRectGetMaxY(self.eventsView.bounds) >= contentHeight) {
+        monthOffset = [self adjustStartDateByMonths:kMonthsLoadingStep];
+    }
+    
+    if (monthOffset != 0) {
+        CGFloat y = [self yOffsetForMonth:oldStart];
+        [self.eventsView reloadData];
+        
         CGPoint offset = self.eventsView.contentOffset;
-        offset.y = [self reloadForTargetContentOffset:offset.y];
-        [self.eventsView setContentOffset:offset];
+        offset.y = y + yOffset;
+        self.eventsView.contentOffset = offset;
         return YES;
     }
     return NO;
 }
-
 
 #pragma mark - Subviews
 
@@ -827,7 +832,6 @@ typedef enum
     if (!_headerBorderLayer) {
         _headerBorderLayer = [CALayer layer];
         _headerBorderLayer.backgroundColor = [UIColor lightGrayColor].CGColor;
-        [self.layer addSublayer:_headerBorderLayer];
     }
     return _headerBorderLayer;
 }
@@ -876,28 +880,37 @@ typedef enum
     
     [super layoutSubviews];
     
+    [self setupDayLabels];
+    
+    // the order in which subviews are added is important here -
+    // see UIViewController automaticallyAdjustsScrollViewInsets property:
+    // if the first subview of the controller's view is a scrollview,
+    // its insets may be adjusted to account for screen areas consumed by navigation bar...
+    
+    CGFloat xPos = self.layout.monthInsets.left;
+    CGFloat colWidth = (self.bounds.size.width - (self.monthInsets.left + self.monthInsets.right)) / 7.;
+    
+    for (int i = 0; i < 7; i++) {
+        UILabel *label = [self.dayLabels objectAtIndex:i];
+        
+        label.frame = CGRectMake(xPos, 0, colWidth, self.headerHeight);
+        if (!label.superview) {
+            [self addSubview:label];
+        }
+        
+        xPos += colWidth;
+    }
+ 
     self.eventsView.frame = CGRectMake(0, self.headerHeight, self.bounds.size.width, self.bounds.size.height - self.headerHeight);
     if (!self.eventsView.superview) {
         [self addSubview:self.eventsView];
     }
     
     self.headerBorderLayer.frame = CGRectMake(0, self.headerHeight, self.bounds.size.width, 1);
-    
-    [self setupDayLabels];
-    
-    CGFloat xPos = self.layout.monthInsets.left;
-    for (int i = 0; i < 7; i++) {
-        UILabel *label = [self.dayLabels objectAtIndex:i];
-        
-        CGFloat width = [self.layout columnWidth:i];
-        label.frame = CGRectMake(xPos, 0, width, self.headerHeight);
-        if (!label.superview) {
-            [self addSubview:label];
-        }
-        
-        xPos += width;
+    if (!self.headerBorderLayer.superlayer) {
+        [self.layer addSublayer:_headerBorderLayer];
     }
-    
+
     // we have to reload everything at this point - layout invalidation is not enough -
     // because date formats for headers might change depending on available size
     [self.eventsView reloadData];
@@ -1543,9 +1556,6 @@ typedef enum
 - (void)scrollViewDidScroll:(UIScrollView*)scrollview
 {
     [self recenterIfNeeded];
-    
-    // this is needed, or subsequent call to visibleDateRange may fail (?)
-    [self.eventsView layoutIfNeeded];
     
     
     if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidScroll:)]) {
