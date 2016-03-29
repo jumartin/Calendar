@@ -48,6 +48,7 @@ typedef enum : NSUInteger {
     MGCMonthPlannerGridStyleFill = 1 << 0,
     MGCMonthPlannerGridStyleVerticalLines = 1 << 1,
     MGCMonthPlannerGridStyleHorizontalLines = 1 << 2,
+    MGCMonthPlannerGridStyleBottomDayLabel = 1 << 3,
     MGCMonthPlannerGridStyleDefault = (MGCMonthPlannerGridStyleHorizontalLines|MGCMonthPlannerGridStyleVerticalLines)
 } MGCMonthPlannerGridStyle;
 

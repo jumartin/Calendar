@@ -1397,7 +1397,9 @@ typedef enum
     view.lastColumn =  self.gridStyle & MGCMonthPlannerGridStyleFill ? 7 : lastColumn;
     view.drawVerticalLines = self.gridStyle & MGCMonthPlannerGridStyleVerticalLines;
     view.drawHorizontalLines = self.gridStyle & MGCMonthPlannerGridStyleHorizontalLines;
-    
+    view.drawBottomDayLabelLines = self.gridStyle & MGCMonthPlannerGridStyleBottomDayLabel;
+    view.dayCellHeaderHeight = self.dayCellHeaderHeight;
+
     [view setNeedsDisplay];
     
     return view;
