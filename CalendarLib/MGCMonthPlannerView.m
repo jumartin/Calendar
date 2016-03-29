@@ -1571,4 +1571,11 @@ typedef enum
     }
 }
 
+#pragma mark - Customization
+
+- (void)setCalendarBackgroundColor:(UIColor *)calendarBackgroundColor {
+    _calendarBackgroundColor = calendarBackgroundColor;
+    self.eventsView.backgroundColor = calendarBackgroundColor;
+}
+
 @end
