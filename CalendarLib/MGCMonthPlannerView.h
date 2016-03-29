@@ -165,6 +165,17 @@ typedef enum : NSUInteger {
  */
 @property (nonatomic, copy) MGCDateRange *dateRange;
 
+@property (nonatomic, strong) UIColor *calendarBackgroundColor; //Default: [UIColor whiteColor]
+
+@property (nonatomic, strong) UIColor *weekDayBackgroundColor; //Default: [UIColor whiteColor]
+@property (nonatomic, strong) UIColor *weekendDayBackgroundColor; //Default: [UIColor colorWithWhite:.97 alpha:.8]
+
+@property (nonatomic, strong) UIColor *weekdaysLabelTextColor; //Default: [UIColor blackColor]
+@property (nonatomic, strong) UIColor *monthLabelTextColor; //Default: [UIColor blackColor]
+@property (nonatomic, strong) UIFont *monthLabelFont; //Default: [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
+
+@property (nonatomic, strong) UIFont *weekdaysLabelFont;
+@property (nonatomic, strong) NSArray *weekDaysStringArray;
 
 - (void)registerClass:(Class)objectClass forEventCellReuseIdentifier:(NSString*)reuseIdentifier;
 - (MGCEventView*)dequeueReusableCellWithIdentifier:(NSString*)reuseIdentifier forEventAtIndex:(NSUInteger)index date:(NSDate*)date;
