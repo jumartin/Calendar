@@ -79,7 +79,6 @@ typedef enum
 @property (nonatomic) NSMutableArray *dayLabels;                    // week day labels (UILabel) for header view
 @property (nonatomic) MGCReusableObjectQueue *reuseQueue;			// reuse queue for MGCEventsRowView and MGCEventView objects
 @property (nonatomic) MutableOrderedDictionary *eventRows;			// cache of MRU MGCEventsRowView objects indexed by start date
-@property (nonatomic) NSMutableDictionary *visibleRows;				// visible rows  { startingDay : rowView }
 @property (nonatomic, readwrite) NSDate *selectedEventDate;         // date of the selected event, or nil if no event is selected
 @property (nonatomic, readwrite) NSUInteger selectedEventIndex;     // index of the selected event at the date returned by selectedEventDate
 @property (nonatomic) MGCEventView *interactiveCell;				// cell moved around during drag and drop
@@ -116,7 +115,6 @@ typedef enum
     _itemHeight = 16;
     _reuseQueue = [MGCReusableObjectQueue new];
     _eventRows = [MutableOrderedDictionary dictionaryWithCapacity:kRowCacheSize];
-    _visibleRows = [NSMutableDictionary dictionaryWithCapacity:20];
     _dragEventIndex = -1;
     _monthHeaderStyle = MGCMonthHeaderStyleDefault;
     _monthInsets = UIEdgeInsetsMake(20, 0, 20, 0);
@@ -163,9 +161,11 @@ typedef enum
 {
     // remove all cached events rows not currently displayed
     NSMutableArray *delete = [NSMutableArray array];
+
+    MGCDateRange *visibleDays = self.visibleDays;
     
     for (NSDate *date in self.eventRows.allKeys) {
-        if (![self.visibleDays containsDate:date]) {
+        if (![visibleDays containsDate:date]) {
             [delete addObject:date];
         }
     }
@@ -247,9 +247,7 @@ typedef enum
         NSDate *last = [self dateForDayAtIndexPath:[visible lastObject]];
         
         // end date of the range is excluded, so set it to next day
-        NSDateComponents *comps = [NSDateComponents new];
-        comps.day = 1;
-        last = [self.calendar dateByAddingComponents:comps toDate:last options:0];
+        last = [self.calendar dateByAddingUnit:NSCalendarUnitDay value:1 toDate:last options:0];
         
         range = [MGCDateRange dateRangeWithStart:first end:last];
     }
@@ -444,21 +442,6 @@ typedef enum
     return [MGCDateRange dateRangeWithStart:start end:end];
 }
 
-- (CGRect)rectForMonthAtIndex:(NSUInteger)month
-{
-    NSIndexPath *first = [NSIndexPath indexPathForItem:0 inSection:month];
-    
-    CGFloat top = [self.eventsView layoutAttributesForItemAtIndexPath:first].frame.origin.y;
-    top -= self.layout.monthInsets.top;
-    
-    NSUInteger numDays = [self numberOfDaysForMonthAtIndex:month];
-    NSIndexPath *last = [NSIndexPath indexPathForItem:numDays - 1 inSection:month];
-    CGFloat bottom = CGRectGetMaxY([self.eventsView layoutAttributesForItemAtIndexPath:last].frame);
-    bottom += self.layout.monthInsets.bottom;
-    
-    return CGRectMake(0, top, self.bounds.size.width, bottom - top);
-}
-
 // returns the offset from startDate to given month
 - (CGFloat)yOffsetForMonth:(NSDate*)date
 {
@@ -487,7 +470,6 @@ typedef enum
 {
     [self deselectEventWithDelegate:YES];
     
-    [self.visibleRows removeAllObjects];
     [self clearRowsCacheInDateRange:nil];
     [self.eventsView reloadData];
 }
@@ -533,11 +515,18 @@ typedef enum
     else if (self.style == MGCMonthPlannerStyleEvents) {
         [self deselectEventWithDelegate:YES];
         
-        [self clearRowsCacheInDateRange:nil];
-
-        for (NSDate *date in self.visibleRows) {
-            [self reloadRowStartingAtDate:date];
-        }
+        MGCDateRange *visibleDateRange = [self visibleDays];
+        
+        [[self.eventRows copy] enumerateKeysAndObjectsUsingBlock:^(NSDate *date, MGCEventsRowView *rowView, BOOL* stop) {
+            MGCDateRange *rowRange = [self dateRangeForEventsRowView:rowView];
+            
+            if ([rowRange intersectsDateRange:visibleDateRange]) {
+                [rowView reload];
+            }
+            else {
+                [self removeRowAtDate:date];
+            }
+        }];
     }
 }
 
@@ -560,19 +549,18 @@ typedef enum
         
         MGCDateRange *visibleDateRange = [self visibleDays];
         
-        for (NSDate *rowDate in [self.eventRows.allKeys copy]) {
-            MGCDateRange *rowRange = [self dateRangeForEventsRowView:self.eventRows[date]];
+        [[self.eventRows copy] enumerateKeysAndObjectsUsingBlock:^(NSDate *date, MGCEventsRowView *rowView, BOOL* stop) {
+            MGCDateRange *rowRange = [self dateRangeForEventsRowView:rowView];
             
             if ([rowRange containsDate:date]) {
-                [self removeRowAtDate:rowDate];
-                
                 if ([visibleDateRange containsDate:date]) {
-                    [self reloadRowStartingAtDate:rowDate];
+                    [rowView reload];
                 }
-                
-                break;
+                else {
+                    [self removeRowAtDate:date];
+                }
             }
-        }
+        }];
     }
 }
 
@@ -592,17 +580,18 @@ typedef enum
         
         MGCDateRange *visibleDateRange = [self visibleDays];
         
-        for (NSDate *date in [self.eventRows.allKeys copy]) {
-            MGCDateRange *rowRange = [self dateRangeForEventsRowView:self.eventRows[date]];
+        [[self.eventRows copy] enumerateKeysAndObjectsUsingBlock:^(NSDate *date, MGCEventsRowView *rowView, BOOL* stop) {
+            MGCDateRange *rowRange = [self dateRangeForEventsRowView:rowView];
             
             if ([rowRange intersectsDateRange:range]) {
-                [self removeRowAtDate:date];
-                
-                if ([visibleDateRange containsDate:date]) {
-                    [self reloadRowStartingAtDate:date];
+                if ([rowRange intersectsDateRange:visibleDateRange]) {
+                    [rowView reload];
+                }
+                else {
+                    [self removeRowAtDate:date];
                 }
             }
-        }
+        }];
     }
 }
 
@@ -954,35 +943,31 @@ typedef enum
     }
 }
 
-- (void)reloadRowStartingAtDate:(NSDate*)rowStart
+
+- (MGCEventsRowView*)eventsRowViewAtDate:(NSDate*)rowStart
 {
-	//NSLog(@"setup row at %@", rowStart);
-	
-	MGCEventsRowView *eventsView = [self.eventRows objectForKey:rowStart];
-
-	if (!eventsView)
-	{
-		eventsView = (MGCEventsRowView*)[self.reuseQueue dequeueReusableObjectWithReuseIdentifier:EventsRowViewIdentifier];
-		
-		NSDate *referenceDate = [self.calendar mgc_startOfMonthForDate:rowStart];
-		NSUInteger first = [self.calendar components:NSCalendarUnitDay fromDate:referenceDate toDate:rowStart options:0].day;
-		NSUInteger numDays = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitWeekOfMonth forDate:rowStart].length;
-		
-		eventsView.referenceDate = referenceDate;
-		eventsView.scrollEnabled = NO;
-		eventsView.itemHeight = self.itemHeight;
-		eventsView.delegate = self;
-		eventsView.daysRange =  NSMakeRange(first, numDays);
-		
-		[eventsView reload];
-	}
-
-	[self cacheRow:eventsView forDate:rowStart];
-	
-	MGCMonthPlannerWeekView *rowView = [self.visibleRows objectForKey:rowStart];
-	rowView.eventsView = eventsView;
+    MGCEventsRowView *eventsView = [self.eventRows objectForKey:rowStart];
+    
+    if (!eventsView) {
+        eventsView = (MGCEventsRowView*)[self.reuseQueue dequeueReusableObjectWithReuseIdentifier:EventsRowViewIdentifier];
+        
+        NSDate *referenceDate = [self.calendar mgc_startOfMonthForDate:rowStart];
+        NSUInteger first = [self.calendar components:NSCalendarUnitDay fromDate:referenceDate toDate:rowStart options:0].day;
+        NSUInteger numDays = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitWeekOfMonth forDate:rowStart].length;
+        
+        eventsView.referenceDate = referenceDate;
+        eventsView.scrollEnabled = NO;
+        eventsView.itemHeight = self.itemHeight;
+        eventsView.delegate = self;
+        eventsView.daysRange =  NSMakeRange(first, numDays);
+        
+        [eventsView reload];
+    }
+    
+    [self cacheRow:eventsView forDate:rowStart];
+    
+    return eventsView;
 }
-
 
 - (void)cacheRow:(MGCEventsRowView*)eventsView forDate:(NSDate*)date
 {
@@ -1006,9 +991,9 @@ typedef enum
 {
     NSDate *rowStart = [self dateForDayAtIndexPath:indexPath];
     MGCMonthPlannerWeekView *rowView = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthRowViewKind withReuseIdentifier:MonthRowViewIdentifier forIndexPath:indexPath];
-    [self.visibleRows setObject:rowView forKey:rowStart];
-    
-    [self reloadRowStartingAtDate:rowStart];
+   
+    MGCEventsRowView *eventsView = [self eventsRowViewAtDate:rowStart];
+    rowView.eventsView = eventsView;
     
     return rowView;
 }
@@ -1545,18 +1530,9 @@ typedef enum
     [self.eventsView deselectItemAtIndexPath:self.eventsView.indexPathsForSelectedItems.firstObject animated:YES];
 }
 
-- (void)collectionView:(UICollectionView*)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView*)view forElementOfKind:(NSString*)elementKind atIndexPath:(NSIndexPath*)indexPath
-{
-    if ([elementKind isEqualToString:MonthRowViewKind]) {
-        NSDate *date = [self dateForDayAtIndexPath:indexPath];
-        [self.visibleRows removeObjectForKey:date];
-    }
-}
-
 - (void)scrollViewDidScroll:(UIScrollView*)scrollview
 {
     [self recenterIfNeeded];
-    
     
     if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidScroll:)]) {
         [self.delegate monthPlannerViewDidScroll:self];
