@@ -38,6 +38,7 @@
 #import "MGCMonthPlannerWeekView.h"
 #import "MGCEventsRowView.h"
 #import "MGCMonthPlannerHeaderView.h"
+#import "Constant.h"
 
 
 // reuse identifiers for collection view cells and supplementary views
