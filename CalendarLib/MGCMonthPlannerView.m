@@ -38,6 +38,7 @@
 #import "MGCMonthPlannerWeekView.h"
 #import "MGCEventsRowView.h"
 #import "MGCMonthPlannerHeaderView.h"
+#import "Constant.h"
 
 
 // reuse identifiers for collection view cells and supplementary views
@@ -125,6 +126,13 @@ typedef enum
     _eventsDotColor = [UIColor lightGrayColor];
     _allowsSelection = YES;
     _selectedEventDate = nil;
+    
+    _calendarBackgroundColor   = [UIColor whiteColor];
+    _weekDayBackgroundColor    = [UIColor whiteColor];
+    _weekendDayBackgroundColor = [UIColor colorWithWhite:.97 alpha:.8];
+    _weekdaysLabelTextColor    = [UIColor blackColor];
+    _monthLabelTextColor       = [UIColor blackColor];
+    _monthLabelFont            = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     
     _dayLabels = [NSMutableArray array];
     for (int i = 0; i < 7; i++) {
@@ -805,7 +813,7 @@ typedef enum
         layout.delegate = self;
         
         _eventsView = [[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
-        _eventsView.backgroundColor = [UIColor whiteColor];
+        _eventsView.backgroundColor = self.calendarBackgroundColor;
         _eventsView.dataSource = self;
         _eventsView.delegate = self;
         _eventsView.showsVerticalScrollIndicator = NO;
@@ -842,8 +850,11 @@ typedef enum
         
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.calendar = self.calendar;
-        
-    NSArray *days = formatter.shortStandaloneWeekdaySymbols;
+    
+    NSArray *days = self.weekDaysStringArray;
+    if (!days) {
+        days = formatter.shortStandaloneWeekdaySymbols;
+    }
     
     UIFont *font = [UIFont systemFontOfSize:[UIFont labelFontSize]];
     CGFloat maxFontSize = [self maxSizeForFont:font toFitStrings:days inSize:labelSize];
@@ -863,7 +874,13 @@ typedef enum
         UILabel *label = self.dayLabels[i];
         label.textAlignment = NSTextAlignmentCenter;
         label.text = [days objectAtIndex:weekday];
-        label.font = font;
+        if (self.weekdaysLabelFont) {
+            label.font = self.weekdaysLabelFont;
+            label.adjustsFontSizeToFitWidth = YES;
+        } else {
+            label.font = font;
+        }
+        label.textColor = self.weekdaysLabelTextColor;
         label.hidden = (self.headerHeight == 0);
     }
 }
@@ -1308,8 +1325,8 @@ typedef enum
     }
     
     cell.dayLabel.attributedText = attrStr;
-    cell.backgroundColor = [self.calendar isDateInWeekend:date] ? [UIColor colorWithWhite:.97 alpha:.8] :  [UIColor whiteColor/*clearColor*/];
-   
+    cell.backgroundColor = [self.calendar isDateInWeekend:date] ? self.weekendDayBackgroundColor : self.weekDayBackgroundColor;
+    
     if (self.style & MGCMonthPlannerStyleDots) {
         NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
         cell.showsDot = eventsCounts > 0;
@@ -1339,9 +1356,9 @@ typedef enum
 
     NSDate *date = [self dateStartingMonthAtIndex:indexPath.section];
     NSString *str = [[dateFormatter stringFromDate:date]uppercaseStringWithLocale:locale];
-
-    UIFont *font = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
-    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:str attributes:@{ NSFontAttributeName: font }];
+    
+    UIFont *font = self.monthLabelFont;
+    NSMutableAttributedString *attrStr = [[NSMutableAttributedString alloc]initWithString:str attributes:@{ NSFontAttributeName: font, NSForegroundColorAttributeName: self.monthLabelTextColor }];
     
     CGRect strRect = [attrStr boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:0 context:NULL];
     
@@ -1381,7 +1398,9 @@ typedef enum
     view.lastColumn =  self.gridStyle & MGCMonthPlannerGridStyleFill ? 7 : lastColumn;
     view.drawVerticalLines = self.gridStyle & MGCMonthPlannerGridStyleVerticalLines;
     view.drawHorizontalLines = self.gridStyle & MGCMonthPlannerGridStyleHorizontalLines;
-    
+    view.drawBottomDayLabelLines = self.gridStyle & MGCMonthPlannerGridStyleBottomDayLabel;
+    view.dayCellHeaderHeight = self.dayCellHeaderHeight;
+
     [view setNeedsDisplay];
     
     return view;
@@ -1551,6 +1570,13 @@ typedef enum
     if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidScroll:)]) {
         [self.delegate monthPlannerViewDidScroll:self];
     }
+}
+
+#pragma mark - Customization
+
+- (void)setCalendarBackgroundColor:(UIColor *)calendarBackgroundColor {
+    _calendarBackgroundColor = calendarBackgroundColor;
+    self.eventsView.backgroundColor = calendarBackgroundColor;
 }
 
 @end

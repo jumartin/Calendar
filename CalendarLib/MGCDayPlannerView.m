@@ -66,7 +66,7 @@ static NSString* const MoreEventsViewReuseIdentifier = @"MoreEventsViewReuseIden
 static const NSUInteger kDaysLoadingStep = 2;
 
 // minimum and maximum height of a one-hour time slot
-static const CGFloat kMinHourSlotHeight = 40.;
+static const CGFloat kMinHourSlotHeight = 20.;
 static const CGFloat kMaxHourSlotHeight = 150.;
 
 
@@ -177,7 +177,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     _currentTimeColor = [UIColor redColor];
     _eventIndicatorDotColor = [UIColor blueColor];
 	_showsAllDayEvents = YES;
-    _eventsViewInnerMargin = 45.;
+    _eventsViewInnerMargin = 15.;
 	_allDayEventCellHeight = 20;
 	_pagingEnabled = YES;
 	_zoomingEnabled = YES;
