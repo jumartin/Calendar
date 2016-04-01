@@ -1367,7 +1367,7 @@ typedef enum
         dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:fmtTemplate options:0 locale:locale];
         
         str = [[dateFormatter stringFromDate:date]uppercaseStringWithLocale:locale];
-        attrStr = [[NSMutableAttributedString alloc]initWithString:str attributes:@{ NSFontAttributeName: font }];
+        attrStr = [[NSMutableAttributedString alloc]initWithString:str attributes:@{ NSFontAttributeName: font, NSForegroundColorAttributeName: self.monthLabelTextColor }];
     }
     
     if (self.gridStyle & MGCMonthPlannerGridStyleFill) {
