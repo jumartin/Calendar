@@ -437,7 +437,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 - (NSDate*)startDate
 {
 	if (_startDate == nil) {
-		_startDate = [self.calendar mgc_startOfDayForDate:[NSDate date]];
+		_startDate = [self.calendar mgc_startOfWeekForDate:[NSDate date]];
 		
 		if (self.dateRange && ![self.dateRange containsDate:_startDate]) {
 			_startDate = self.dateRange.start;
