@@ -76,6 +76,17 @@
             CGContextAddLineToPoint(c, x2, y2);
         }
     }
+    
+    if (self.dayCellHeaderHeight > 0.0f && self.drawBottomDayLabelLines) {
+        for (int i = 0; i < self.numberOfRows && self.numberOfRows != 0; i++) {
+            y2 = y1 = rowHeight * i + self.dayCellHeaderHeight;
+            x1 = i == 0 ? self.firstColumn * colWidth : 0;
+            x2 = (i == (self.numberOfRows - 1)) ? self.lastColumn * colWidth : CGRectGetMaxX(rect);
+            
+            CGContextMoveToPoint(c, x1, y1);
+            CGContextAddLineToPoint(c, x2, y2);
+        }
+    }
 	
     if (self.drawVerticalLines) {
         for (int j = 0; j <= self.numberOfColumns; j++) {
