@@ -64,6 +64,12 @@ typedef enum : NSUInteger {
     MGCMonthPlannerPagingModeHeaderBottom = 2
 } MGCMonthPlannerPagingMode;
 
+typedef enum : NSUInteger {
+    MGCMonthPlannerScrollAlignmentHeaderTop = 0,
+    MGCMonthPlannerScrollAlignmentHeaderBottom = 1,
+    MGCMonthPlannerScrollAlignmentWeekRow = 2
+} MGCMonthPlannerScrollAlignment;
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // MGCMonthPlannerView
@@ -195,7 +201,21 @@ typedef enum : NSUInteger {
 
 - (void)registerClass:(Class)objectClass forEventCellReuseIdentifier:(NSString*)reuseIdentifier;
 - (MGCEventView*)dequeueReusableCellWithIdentifier:(NSString*)reuseIdentifier forEventAtIndex:(NSUInteger)index date:(NSDate*)date;
+
+// deprecated: use scrollToDate:position:animated: instead
 - (void)scrollToDate:(NSDate*)date animated:(BOOL)animated;
+
+/*!
+	@abstract	Scrolls the view to make a given date visible.
+	@param		date		The date to scroll into view.
+	@param		alignment   If set to MGCMonthPlannerScrollAlignmentWeekRow, the top of the view is aligned with the week row for given date.
+                            If set to MGCMonthPlannerScrollAlignmentHeaderBottom, it is aligned with the first row of the month.
+                            If set to MGCMonthPlannerScrollAlignmentHeaderTop, it is aligned with the top of the month header.
+	@param		animated	Specify YES to animate the scrolling behavior or NO to adjust the visible content immediately.
+	@warning	If `date` param is not in the scrollable range of dates, an exception is thrown.
+ */
+- (void)scrollToDate:(NSDate*)date alignment:(MGCMonthPlannerScrollAlignment)alignment animated:(BOOL)animated;
+
 - (void)reloadEvents;
 - (void)reloadEventsAtDate:(NSDate*)date;
 - (void)reloadEventsInRange:(MGCDateRange*)range;

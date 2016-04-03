@@ -774,21 +774,35 @@ typedef enum
 
 #pragma mark - Scrolling
 
+// public - deprecated
 -(void)scrollToDate:(NSDate*)date animated:(BOOL)animated
 {
-    NSAssert(date, @"scrollToDate:date: was passed nil date");
+    [self scrollToDate:date alignment:MGCMonthPlannerScrollAlignmentHeaderTop animated:animated];
+}
 
+// public
+- (void)scrollToDate:(NSDate*)date alignment:(MGCMonthPlannerScrollAlignment)position animated:(BOOL)animated {
+    NSAssert(date, @"scrollToDate:date: was passed nil date");
+    
     // check if date in range
     if (self.dateRange && ![self.dateRange containsDate:date])
         [NSException raise:@"Invalid parameter" format:@"date %@ is not in range %@ for this month planner view", date, self.dateRange];
 
     CGFloat yOffset = [self yOffsetForMonth:date];
-    [self.eventsView setContentOffset:CGPointMake(0, yOffset) animated:animated];
     
+    if (position == MGCMonthPlannerScrollAlignmentHeaderBottom) {
+        yOffset += self.monthInsets.top;
+    }
+    else if (position == MGCMonthPlannerScrollAlignmentWeekRow) {
+        NSUInteger weekNum = [self.calendar mgc_indexOfWeekInMonthForDate:date];
+        yOffset += self.monthInsets.top + (weekNum - 1) * self.rowHeight;
+    }
+    
+    [self.eventsView setContentOffset:CGPointMake(0, yOffset) animated:animated];
+
     if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidScroll:)]) {
         [self.delegate monthPlannerViewDidScroll:self];
     }
-
 }
 
 // adjusts startDate so that month at given date is centered.

@@ -116,6 +116,24 @@
 	return firstDay;
 }
 
+// one-based index of the week in month for given date
+- (NSUInteger)mgc_indexOfWeekInMonthForDate:(NSDate*)date
+{
+    // [NSCalendar ordinalityOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:] is one-based
+    // but the first week is considered only if its number of days is at least equal to the minimumDaysInFirstWeek value.
+
+    NSUInteger index = [self ordinalityOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date];
+    
+    NSDate *startOfMonth = [self mgc_startOfMonthForDate:date];
+    NSRange firstWeekRange = [self rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitWeekOfMonth forDate:startOfMonth];
+    
+    if (firstWeekRange.length < self.minimumDaysInFirstWeek) {
+        index++;
+    }
+    
+    return index;
+}
+
 - (BOOL)mgc_isDate:(NSDate*)date1 sameDayAsDate:(NSDate*)date2
 {
 	if (!date1 || !date2)
