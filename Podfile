@@ -1,3 +1,4 @@
+source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
 
-pod "OSCache", "~> 1.2"
-pod "OrderedDictionary", "~> 1.2"
+pod 'CalendarLib' , :path => '.'

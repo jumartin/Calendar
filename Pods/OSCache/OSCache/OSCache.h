@@ -1,7 +1,7 @@
 //
 //  OSCache.h
 //
-//  Version 1.2
+//  Version 1.2.1
 //
 //  Created by Nick Lockwood on 01/01/2014.
 //  Copyright (C) 2014 Charcoal Design
@@ -34,14 +34,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface OSCache : NSCache <NSFastEnumeration>
+@interface OSCache <KeyType, ObjectType> : NSCache <NSFastEnumeration>
 
 @property (nonatomic, readonly) NSUInteger count;
 @property (nonatomic, readonly) NSUInteger totalCost;
 
-- (id)objectForKeyedSubscript:(id<NSCopying>)key;
-- (void)setObject:(id)obj forKeyedSubscript:(id<NSCopying>)key;
-- (void)enumerateKeysAndObjectsUsingBlock:(void (^)(id key, id obj, BOOL *stop))block;
+- (id)objectForKeyedSubscript:(KeyType <NSCopying>)key;
+- (void)setObject:(ObjectType)obj forKeyedSubscript:(KeyType <NSCopying>)key;
+- (void)enumerateKeysAndObjectsUsingBlock:(void (^)(KeyType key, ObjectType obj, BOOL *stop))block;
 
 @end
 

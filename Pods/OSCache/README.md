@@ -13,9 +13,9 @@ Purpose
 Supported OS & SDK Versions
 -----------------------------
 
-* Supported build target - iOS 8.4 / Mac OS 10.10.3 (Xcode 6.3, Apple LLVM compiler 6.1)
-* Earliest supported deployment target - iOS 7.0 / Mac OS 10.10
-* Earliest compatible deployment target - iOS 4.3 / Mac OS 10.6
+* Supported build target - iOS 9.1 / tvOS 9.1 / Mac OS 10.11 (Xcode 7.1, Apple LLVM compiler 7.1)
+* Earliest supported deployment target - iOS 7.0 / tvOS 9.0 / Mac OS 10.10
+* Earliest compatible deployment target - iOS 4.3 / tvOS 9.0 / Mac OS 10.6
 
 *NOTE:* 'Supported' means that the library has been tested with this version. 'Compatible' means that the library should work on this OS version (i.e. it doesn't rely on any unavailable SDK features) but is no longer being tested for compatibility and may require tweaking or bug fixes to run correctly.
 
@@ -76,6 +76,11 @@ For this reason, you should ideally size your cache so that it will never get fu
 
 Release Notes
 ---------------
+
+Version 1.2.1
+
+- Fixed bug where `enumerateKeysAndObjectsUsingBlock:` returned internal wrapper instead of cached object
+- Added lightweight generics annotations
 
 Version 1.2
 

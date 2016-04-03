@@ -1,7 +1,7 @@
 //
 //  OSCache.m
 //
-//  Version 1.2
+//  Version 1.2.1
 //
 //  Created by Nick Lockwood on 01/01/2014.
 //  Copyright (C) 2014 Charcoal Design
@@ -344,16 +344,21 @@
 
 - (void)enumerateKeysAndObjectsUsingBlock:(void (^)(id key, id obj, BOOL *stop))block
 {
-    [_lock lock];
-    [_cache enumerateKeysAndObjectsUsingBlock:block];
-    [_lock unlock];
+  if (block)
+  {
+      [_lock lock];
+      [_cache enumerateKeysAndObjectsUsingBlock:^(id key, OSCacheEntry *entry, BOOL *stop) {
+         block(key, entry.object, stop);
+      }];
+      [_lock unlock];
+  }
 }
 
 //handle unimplemented methods
 
 - (BOOL)isKindOfClass:(Class)aClass
 {
-    //pretend that we're an OSCache if anyone asks
+    //pretend that we're an NSCache if anyone asks
     if (aClass == [OSCache class] || aClass == [NSCache class])
     {
         return YES;

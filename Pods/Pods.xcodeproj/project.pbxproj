@@ -1,580 +1,4022 @@
-// !$*UTF8*$!
-{
-	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 46;
-	objects = {
-
-/* Begin PBXBuildFile section */
-		18F7C25535ADA578F99B459B0EFD7966 /* OSCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 14B848054A38E81DC63BAF5F4CA69040 /* OSCache.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		35174D9DB97F8B1744ED3323C6EB9841 /* OrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = 0FDC6683B2ED5E1B8C6E83E6574C83F1 /* OrderedDictionary.h */; };
-		44F6D1120FD2CE4D0F6803D6F62F6339 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5679141247503D980640DEFD3D04CC16 /* Foundation.framework */; };
-		4DB2DF3B9DC6754578826649F0A94F86 /* OSCache-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BE3086DA6ECD951EE04BF77FEA1B8CE7 /* OSCache-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		56E52638360954912708146AB5AB87A1 /* OSCache-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F693E1C8F78DD732E0FE595DB5A1739A /* OSCache-dummy.m */; };
-		A70981C259CF6281A9BC8DBEF85F0C6D /* OrderedDictionary-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D2138377D2391513DDEC6DBE0C50E3CF /* OrderedDictionary-dummy.m */; };
-		AD29734C422912B92F1CFEDCC49D79AB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5679141247503D980640DEFD3D04CC16 /* Foundation.framework */; };
-		B32C7FDF8F0FFDC6B63A73731A135727 /* OSCache.h in Headers */ = {isa = PBXBuildFile; fileRef = E7F86D42CECF649962C3D1B7D138E02F /* OSCache.h */; };
-		B96B0FC299AE42EAFBFD59BD5E1D3B4E /* OrderedDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 46B62A7B5F25053AD22E8EA0C72D7DC4 /* OrderedDictionary.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		C76338519A3C06BAB24ED8297064E9BB /* OrderedDictionary-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 047AEC3A9D05D1017F25DC3A5179AACA /* OrderedDictionary-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		F242DA4E60FD57FC807320EB0F1423F4 /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C39B9DDD6F254278B62813604D2D2F74 /* Pods-dummy.m */; };
-		FEF572AD29330B3430BC74A873A9D56F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5679141247503D980640DEFD3D04CC16 /* Foundation.framework */; };
-/* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		009955B67E9D6DF10E96C01BBD9B4243 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = DBAB20756E9E95D4DFE7051533099852;
-			remoteInfo = OrderedDictionary;
-		};
-		BC75E0D3003254485A2E9B31DB8B0886 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = D341306BC8DEF13060F1DB3E84C5B762;
-			remoteInfo = OSCache;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXFileReference section */
-		02F5C56C9871F8B07446DD808A9CB2AD /* OSCache-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OSCache-prefix.pch"; sourceTree = "<group>"; };
-		047AEC3A9D05D1017F25DC3A5179AACA /* OrderedDictionary-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OrderedDictionary-umbrella.h"; sourceTree = "<group>"; };
-		0FDC6683B2ED5E1B8C6E83E6574C83F1 /* OrderedDictionary.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OrderedDictionary.h; path = OrderedDictionary/OrderedDictionary.h; sourceTree = "<group>"; };
-		14B848054A38E81DC63BAF5F4CA69040 /* OSCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OSCache.m; path = OSCache/OSCache.m; sourceTree = "<group>"; };
-		19F830CABFD7C5AB3A939E4B18915F47 /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
-		23CC8F8ABA12F72CC09719BAD609513D /* libOSCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOSCache.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		4610BE06084CEB90D4B21ED2E256E08F /* OrderedDictionary-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "OrderedDictionary-Private.xcconfig"; sourceTree = "<group>"; };
-		46B62A7B5F25053AD22E8EA0C72D7DC4 /* OrderedDictionary.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = OrderedDictionary.m; path = OrderedDictionary/OrderedDictionary.m; sourceTree = "<group>"; };
-		5679141247503D980640DEFD3D04CC16 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		5792AF01188F9456A9531218AAB414F0 /* OSCache.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = OSCache.modulemap; sourceTree = "<group>"; };
-		7462CDD8E66B99D9EBCD9A05F89AEDD4 /* OrderedDictionary.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OrderedDictionary.xcconfig; sourceTree = "<group>"; };
-		8BD57F7DFA15BD07D4EDFDDE1FBBCE7D /* OSCache.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = OSCache.xcconfig; sourceTree = "<group>"; };
-		918020A53BC2361920A627EF1A70307B /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
-		94177A5B47BAC483A5ED375060A47E95 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
-		A2E572EE15AC6E4B5106342B027036C2 /* libOrderedDictionary.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOrderedDictionary.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		A5F822E59C48343778A7A0893BEB2933 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
-		A71F032D6233B4EB0E5F599758DB4E89 /* OrderedDictionary-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OrderedDictionary-prefix.pch"; sourceTree = "<group>"; };
-		B3BB5840B4BDD2DDB6F5AB1247265D75 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
-		BE3086DA6ECD951EE04BF77FEA1B8CE7 /* OSCache-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "OSCache-umbrella.h"; sourceTree = "<group>"; };
-		C39B9DDD6F254278B62813604D2D2F74 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
-		C88113A79685B4EFEE7BAD12896829F7 /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		D2138377D2391513DDEC6DBE0C50E3CF /* OrderedDictionary-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "OrderedDictionary-dummy.m"; sourceTree = "<group>"; };
-		D8D1455E52FAF62A7EFFCEF54DD59F98 /* OSCache-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "OSCache-Private.xcconfig"; sourceTree = "<group>"; };
-		E7F86D42CECF649962C3D1B7D138E02F /* OSCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = OSCache.h; path = OSCache/OSCache.h; sourceTree = "<group>"; };
-		ED784B8409F1344DD53426A30B69619D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		F618B933D60DD62748C8A31E8C103F89 /* OrderedDictionary.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = OrderedDictionary.modulemap; sourceTree = "<group>"; };
-		F693E1C8F78DD732E0FE595DB5A1739A /* OSCache-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "OSCache-dummy.m"; sourceTree = "<group>"; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		E314BEAF3772E1FF449241D866D08CE9 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FEF572AD29330B3430BC74A873A9D56F /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F27D636AA0E1AE2B89A670B1389FF336 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				AD29734C422912B92F1CFEDCC49D79AB /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F94F38EC74CD749793D452045B9A9C7D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				44F6D1120FD2CE4D0F6803D6F62F6339 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXGroup section */
-		1756D53AACF8E3E0EFC3D6E274EA8867 /* OrderedDictionary */ = {
-			isa = PBXGroup;
-			children = (
-				0FDC6683B2ED5E1B8C6E83E6574C83F1 /* OrderedDictionary.h */,
-				46B62A7B5F25053AD22E8EA0C72D7DC4 /* OrderedDictionary.m */,
-				FFF2BE97C953B535B4C794D6F8C60C21 /* Support Files */,
-			);
-			path = OrderedDictionary;
-			sourceTree = "<group>";
-		};
-		2E2214D23ACDFBABAF53C2C6E2C857CB /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				5792AF01188F9456A9531218AAB414F0 /* OSCache.modulemap */,
-				8BD57F7DFA15BD07D4EDFDDE1FBBCE7D /* OSCache.xcconfig */,
-				D8D1455E52FAF62A7EFFCEF54DD59F98 /* OSCache-Private.xcconfig */,
-				F693E1C8F78DD732E0FE595DB5A1739A /* OSCache-dummy.m */,
-				02F5C56C9871F8B07446DD808A9CB2AD /* OSCache-prefix.pch */,
-				BE3086DA6ECD951EE04BF77FEA1B8CE7 /* OSCache-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/OSCache";
-			sourceTree = "<group>";
-		};
-		2F414954F87ED957BE121A1660094A49 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3062451A7F17171409B8534EF510CB73 /* OSCache */,
-				1756D53AACF8E3E0EFC3D6E274EA8867 /* OrderedDictionary */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		3062451A7F17171409B8534EF510CB73 /* OSCache */ = {
-			isa = PBXGroup;
-			children = (
-				E7F86D42CECF649962C3D1B7D138E02F /* OSCache.h */,
-				14B848054A38E81DC63BAF5F4CA69040 /* OSCache.m */,
-				2E2214D23ACDFBABAF53C2C6E2C857CB /* Support Files */,
-			);
-			path = OSCache;
-			sourceTree = "<group>";
-		};
-		33A2DFA941E11F4B5B7E005D2FE0A3E5 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				5679141247503D980640DEFD3D04CC16 /* Foundation.framework */,
-			);
-			name = iOS;
-			sourceTree = "<group>";
-		};
-		5E1F3384B1B39575144FEBFCF3210CCC /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				33A2DFA941E11F4B5B7E005D2FE0A3E5 /* iOS */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		6FD3E34139C991EBA686BD4A55CCB45D /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				19F830CABFD7C5AB3A939E4B18915F47 /* Pods-acknowledgements.markdown */,
-				A5F822E59C48343778A7A0893BEB2933 /* Pods-acknowledgements.plist */,
-				C39B9DDD6F254278B62813604D2D2F74 /* Pods-dummy.m */,
-				B3BB5840B4BDD2DDB6F5AB1247265D75 /* Pods-resources.sh */,
-				94177A5B47BAC483A5ED375060A47E95 /* Pods.debug.xcconfig */,
-				918020A53BC2361920A627EF1A70307B /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			path = "Target Support Files/Pods";
-			sourceTree = "<group>";
-		};
-		7DB346D0F39D3F0E887471402A8071AB = {
-			isa = PBXGroup;
-			children = (
-				C88113A79685B4EFEE7BAD12896829F7 /* Podfile */,
-				5E1F3384B1B39575144FEBFCF3210CCC /* Frameworks */,
-				2F414954F87ED957BE121A1660094A49 /* Pods */,
-				CCA510CFBEA2D207524CDA0D73C3B561 /* Products */,
-				848A6CE8DA3504A266A17F635DC3683A /* Targets Support Files */,
-			);
-			sourceTree = "<group>";
-		};
-		848A6CE8DA3504A266A17F635DC3683A /* Targets Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				6FD3E34139C991EBA686BD4A55CCB45D /* Pods */,
-			);
-			name = "Targets Support Files";
-			sourceTree = "<group>";
-		};
-		CCA510CFBEA2D207524CDA0D73C3B561 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				23CC8F8ABA12F72CC09719BAD609513D /* libOSCache.a */,
-				A2E572EE15AC6E4B5106342B027036C2 /* libOrderedDictionary.a */,
-				ED784B8409F1344DD53426A30B69619D /* libPods.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		FFF2BE97C953B535B4C794D6F8C60C21 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				F618B933D60DD62748C8A31E8C103F89 /* OrderedDictionary.modulemap */,
-				7462CDD8E66B99D9EBCD9A05F89AEDD4 /* OrderedDictionary.xcconfig */,
-				4610BE06084CEB90D4B21ED2E256E08F /* OrderedDictionary-Private.xcconfig */,
-				D2138377D2391513DDEC6DBE0C50E3CF /* OrderedDictionary-dummy.m */,
-				A71F032D6233B4EB0E5F599758DB4E89 /* OrderedDictionary-prefix.pch */,
-				047AEC3A9D05D1017F25DC3A5179AACA /* OrderedDictionary-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/OrderedDictionary";
-			sourceTree = "<group>";
-		};
-/* End PBXGroup section */
-
-/* Begin PBXHeadersBuildPhase section */
-		A28E8BDB64807D76F5502F11646C5652 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C76338519A3C06BAB24ED8297064E9BB /* OrderedDictionary-umbrella.h in Headers */,
-				35174D9DB97F8B1744ED3323C6EB9841 /* OrderedDictionary.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F594ED90A3DA15C7B9267D0C3BC5C110 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4DB2DF3B9DC6754578826649F0A94F86 /* OSCache-umbrella.h in Headers */,
-				B32C7FDF8F0FFDC6B63A73731A135727 /* OSCache.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXHeadersBuildPhase section */
-
-/* Begin PBXNativeTarget section */
-		277B0C4BF83B4D8D1DEC8548033D7128 /* Pods */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 53B44C7CFF0E028838E5ABA692A63598 /* Build configuration list for PBXNativeTarget "Pods" */;
-			buildPhases = (
-				5830286D6C84B727E502C3D7579F8FA8 /* Sources */,
-				E314BEAF3772E1FF449241D866D08CE9 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				717657AB8E64CE6F1E3EA746B1B3B6B5 /* PBXTargetDependency */,
-				805C6CE9E57058819144BDCE98CAAD59 /* PBXTargetDependency */,
-			);
-			name = Pods;
-			productName = Pods;
-			productReference = ED784B8409F1344DD53426A30B69619D /* libPods.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		D341306BC8DEF13060F1DB3E84C5B762 /* OSCache */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = AEEB1D870B20C9542F43BB0D9A92EE30 /* Build configuration list for PBXNativeTarget "OSCache" */;
-			buildPhases = (
-				E299C942F978DBBE641085A8734BCCB4 /* Sources */,
-				F27D636AA0E1AE2B89A670B1389FF336 /* Frameworks */,
-				F594ED90A3DA15C7B9267D0C3BC5C110 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = OSCache;
-			productName = OSCache;
-			productReference = 23CC8F8ABA12F72CC09719BAD609513D /* libOSCache.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-		DBAB20756E9E95D4DFE7051533099852 /* OrderedDictionary */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 450E5DBE4A13FAEE52FEAB7C2F0135BB /* Build configuration list for PBXNativeTarget "OrderedDictionary" */;
-			buildPhases = (
-				B1ABC4AF26D86B6157060FB9A7337518 /* Sources */,
-				F94F38EC74CD749793D452045B9A9C7D /* Frameworks */,
-				A28E8BDB64807D76F5502F11646C5652 /* Headers */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = OrderedDictionary;
-			productName = OrderedDictionary;
-			productReference = A2E572EE15AC6E4B5106342B027036C2 /* libOrderedDictionary.a */;
-			productType = "com.apple.product-type.library.static";
-		};
-/* End PBXNativeTarget section */
-
-/* Begin PBXProject section */
-		D41D8CD98F00B204E9800998ECF8427E /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0720;
-			};
-			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-			);
-			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
-			productRefGroup = CCA510CFBEA2D207524CDA0D73C3B561 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				D341306BC8DEF13060F1DB3E84C5B762 /* OSCache */,
-				DBAB20756E9E95D4DFE7051533099852 /* OrderedDictionary */,
-				277B0C4BF83B4D8D1DEC8548033D7128 /* Pods */,
-			);
-		};
-/* End PBXProject section */
-
-/* Begin PBXSourcesBuildPhase section */
-		5830286D6C84B727E502C3D7579F8FA8 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F242DA4E60FD57FC807320EB0F1423F4 /* Pods-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B1ABC4AF26D86B6157060FB9A7337518 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A70981C259CF6281A9BC8DBEF85F0C6D /* OrderedDictionary-dummy.m in Sources */,
-				B96B0FC299AE42EAFBFD59BD5E1D3B4E /* OrderedDictionary.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E299C942F978DBBE641085A8734BCCB4 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				56E52638360954912708146AB5AB87A1 /* OSCache-dummy.m in Sources */,
-				18F7C25535ADA578F99B459B0EFD7966 /* OSCache.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		717657AB8E64CE6F1E3EA746B1B3B6B5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = OSCache;
-			target = D341306BC8DEF13060F1DB3E84C5B762 /* OSCache */;
-			targetProxy = BC75E0D3003254485A2E9B31DB8B0886 /* PBXContainerItemProxy */;
-		};
-		805C6CE9E57058819144BDCE98CAAD59 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = OrderedDictionary;
-			target = DBAB20756E9E95D4DFE7051533099852 /* OrderedDictionary */;
-			targetProxy = 009955B67E9D6DF10E96C01BBD9B4243 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin XCBuildConfiguration section */
-		3523159348E1035C58EF859238BFEDB0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = YES;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Debug;
-		};
-		412FE87EC81ABB2D46DFC8463A2B7B55 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 94177A5B47BAC483A5ED375060A47E95 /* Pods.debug.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		45B6D62078F926A75666A9BDD7D72A0D /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 918020A53BC2361920A627EF1A70307B /* Pods.release.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		6D8553AB4766A905BE1AF6EB0A3B71CF /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8D1455E52FAF62A7EFFCEF54DD59F98 /* OSCache-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/OSCache/OSCache-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MODULEMAP_FILE = "Target Support Files/OSCache/OSCache.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		A26643F4BA9D787337FC7AF60323C121 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4610BE06084CEB90D4B21ED2E256E08F /* OrderedDictionary-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/OrderedDictionary/OrderedDictionary-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MODULEMAP_FILE = "Target Support Files/OrderedDictionary/OrderedDictionary.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		A88658A9552ACB0502744ED7A6EDBEFD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				STRIP_INSTALLED_PRODUCT = NO;
-				SYMROOT = "${SRCROOT}/../build";
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		B80037161BDE1EE96C0D06FA06FA4E26 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4610BE06084CEB90D4B21ED2E256E08F /* OrderedDictionary-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/OrderedDictionary/OrderedDictionary-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MODULEMAP_FILE = "Target Support Files/OrderedDictionary/OrderedDictionary.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		FAF71EC26AEAA13A6D2A1D7D28BA56D2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D8D1455E52FAF62A7EFFCEF54DD59F98 /* OSCache-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/OSCache/OSCache-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MODULEMAP_FILE = "Target Support Files/OSCache/OSCache.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-/* End XCBuildConfiguration section */
-
-/* Begin XCConfigurationList section */
-		2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				3523159348E1035C58EF859238BFEDB0 /* Debug */,
-				A88658A9552ACB0502744ED7A6EDBEFD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		450E5DBE4A13FAEE52FEAB7C2F0135BB /* Build configuration list for PBXNativeTarget "OrderedDictionary" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A26643F4BA9D787337FC7AF60323C121 /* Debug */,
-				B80037161BDE1EE96C0D06FA06FA4E26 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		53B44C7CFF0E028838E5ABA692A63598 /* Build configuration list for PBXNativeTarget "Pods" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				412FE87EC81ABB2D46DFC8463A2B7B55 /* Debug */,
-				45B6D62078F926A75666A9BDD7D72A0D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		AEEB1D870B20C9542F43BB0D9A92EE30 /* Build configuration list for PBXNativeTarget "OSCache" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6D8553AB4766A905BE1AF6EB0A3B71CF /* Debug */,
-				FAF71EC26AEAA13A6D2A1D7D28BA56D2 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-/* End XCConfigurationList section */
-	};
-	rootObject = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>archiveVersion</key>
+	<string>1</string>
+	<key>classes</key>
+	<dict/>
+	<key>objectVersion</key>
+	<string>46</string>
+	<key>objects</key>
+	<dict>
+		<key>011E1FCF975A08E676DDC0C7584AE406</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4B2D02F6BD7A7815D23E41AD12F267FA</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>01B8A5375E02A752828EE107C73EC16F</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>name</key>
+			<string>CalendarLib-CalendarLib</string>
+			<key>target</key>
+			<string>2673FB444CAD63D7872199869D12B242</string>
+			<key>targetProxy</key>
+			<string>116AD1AD124691B81F860EABA00AFA9D</string>
+		</dict>
+		<key>03ED48CF8AC5E601600DC1AF567A32DB</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>OSCache-prefix.pch</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>03F3AFA7B9DB61F6AC47C2A678FA8D97</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>F2D659C466006058FAC3AD5F73739042</string>
+				<string>041065056186CE74773121495323B530</string>
+				<string>DF91B5D1789262D7E8D4AA5322675C03</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>CalendarLib</string>
+			<key>path</key>
+			<string>..</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>041065056186CE74773121495323B530</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>6F394DFBC8BE1F02F73C83828C87677C</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Resources</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>04E7116C3CB7E6EBE2FAE0ECEDE21335</key>
+		<dict>
+			<key>fileRef</key>
+			<string>32FB3B5FADC69ACFED3957D67EC8FF0C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>05B843E94270077471F87E84B4003FE5</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>BC129756EB184EB7B54FC078D77EAE6F</string>
+			</array>
+			<key>isa</key>
+			<string>PBXResourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>0621FC5DD83F68E761116875B059412C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>Info.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>07144BF1E580A3278D85202D9E0EA237</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>3AF00EE9C8D84368563E95CD80B42BB1</string>
+				<string>EBFF017FC953CCA3AC12B82707F2AF66</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>071A1F91B444D57F30C5D7535DBEB27E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCTimeRowsView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>07A60E73123D9E4243072109870ABD5F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>51395D7B9E463D3582E9D3E38F9030D6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>0A82847ABC6DF78794FA578FFF202A2C</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>Foundation.framework</string>
+			<key>path</key>
+			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/Foundation.framework</string>
+			<key>sourceTree</key>
+			<string>DEVELOPER_DIR</string>
+		</dict>
+		<key>0A872286FBE445770A8D03573B5DA997</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCReusableObjectQueue.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0AC2F4E580C735F08DDD3E5212CA9F43</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>OSCache.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>0BA4202AF3F26C0318214DCA8BCEF4B1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B371DB50A8D4C71C99452B2087E37A42</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>0BAA841B43F921E5A0BE8A85BACF0892</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCMonthPlannerEKViewController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>0E9CC45B237038F53AE2CA2244AE6AAD</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>D41D8CD98F00B204E9800998ECF8427E</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>C4C32B98A88C3F59ADE6A79B82E1867F</string>
+			<key>remoteInfo</key>
+			<string>OrderedDictionary</string>
+		</dict>
+		<key>116AD1AD124691B81F860EABA00AFA9D</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>D41D8CD98F00B204E9800998ECF8427E</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>2673FB444CAD63D7872199869D12B242</string>
+			<key>remoteInfo</key>
+			<string>CalendarLib-CalendarLib</string>
+		</dict>
+		<key>119D19EC4AB9AA19EC1BE5925AFC22AD</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCMonthPlannerBackgroundView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>11B36C9E180E0B2E5C952E6D9C3BC8C3</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>fr.lproj</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>11DCC70782EFCAFBDF8839E208D8DA20</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCMonthPlannerViewController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1277870414018BAF910A8665C4B4C3A5</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCYearCalendarMonthHeaderView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>13DC16DDFED439792B834335828FF8E5</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>name</key>
+			<string>OrderedDictionary</string>
+			<key>target</key>
+			<string>C4C32B98A88C3F59ADE6A79B82E1867F</string>
+			<key>targetProxy</key>
+			<string>0E9CC45B237038F53AE2CA2244AE6AAD</string>
+		</dict>
+		<key>13E1F173FF380B6FE1ACDFF95A720D25</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>CalendarLib.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>14730700B2D60DF9994CA196CE7ADE3C</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>5AF40903545821C2654D818E75824FFD</string>
+			<key>buildPhases</key>
+			<array>
+				<string>690591D27D2C822C43B2C4C87F6D6C5C</string>
+				<string>4CBB24793DE31904DE12AAE27652CDAF</string>
+				<string>5DE1912BFD3CC1D9E0C97641EF70CA68</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>OSCache</string>
+			<key>productName</key>
+			<string>OSCache</string>
+			<key>productReference</key>
+			<string>8BB1D7AB0293B9DD77C6276E9A786485</string>
+			<key>productType</key>
+			<string>com.apple.product-type.framework</string>
+		</dict>
+		<key>14B190E699B439B79982AB719CBCA65F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0A82847ABC6DF78794FA578FFF202A2C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>14F04E8DA04E44C74E2A8F32218B4F35</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCAllDayEventsViewLayout.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>16AE9884517C38E792D2CD96C9AD9885</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCMonthPlannerViewLayout.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>173E97C9E05AFF72D64EB6C5E3081704</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCInteractiveEventView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>177153C58A62084F7BCCFBD493B6E768</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCMonthMiniCalendarView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>17B7D64812854ACD156C75C946043AEB</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>84EFFEA70CE3F29C1F727328CD11F594</string>
+				<string>7B109FCF8326A98A81D6FE07BA9A2CE3</string>
+				<string>653A87F57774EEDCAB59C3835F515F39</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>OSCache</string>
+			<key>path</key>
+			<string>OSCache</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>17BEDB9BC932EF8C2E93AE836578200B</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>13E1F173FF380B6FE1ACDFF95A720D25</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEFINES_MODULE</key>
+				<string>YES</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_INSTALL_NAME_BASE</key>
+				<string>@rpath</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/CalendarLib/CalendarLib-prefix.pch</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Target Support Files/CalendarLib/Info.plist</string>
+				<key>INSTALL_PATH</key>
+				<string>$(LOCAL_LIBRARY_DIR)/Frameworks</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+					<string>@loader_path/Frameworks</string>
+				</array>
+				<key>MODULEMAP_FILE</key>
+				<string>Target Support Files/CalendarLib/CalendarLib.modulemap</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>NO</string>
+				<key>PRODUCT_NAME</key>
+				<string>CalendarLib</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>VERSIONING_SYSTEM</key>
+				<string>apple-generic</string>
+				<key>VERSION_INFO_PREFIX</key>
+				<string></string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>19D9432C8FDCBBAD21D583CDE57C7196</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCEventCell.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1A68918EB506E02C8A73349927D7EC64</key>
+		<dict>
+			<key>fileRef</key>
+			<string>868BF247B873DB150FB4FF2F333536EB</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>1AD65AD1E8EA604E566FDD158774D415</key>
+		<dict>
+			<key>fileRef</key>
+			<string>177153C58A62084F7BCCFBD493B6E768</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>1B94386917E027282A208311CA3D8394</key>
+		<dict>
+			<key>fileRef</key>
+			<string>349A65DFDE8D7EA965D16F49220F1D76</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>1BA43E4921C844EED1E4952C0B22438E</key>
+		<dict>
+			<key>fileRef</key>
+			<string>16AE9884517C38E792D2CD96C9AD9885</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>1C463EC4C11597AB9150D39C874F8EFD</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCDayPlannerViewController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1EC64EB638F6BCDC5F10055A15FFF2D7</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>BEB60AF82C3EED21DD5312549F9CD440</string>
+				<string>CB1D841474DF4838328E304EF4CBAF97</string>
+				<string>3A1FDFA2751210F6171F72495EB3CD30</string>
+				<string>F8A60A7130AC5347C61F40D6D030BFB8</string>
+				<string>DEF1FBD0689397BC6AB8BDA6BB8AB78A</string>
+				<string>DF0507A59387E5CBE881FD0E56A6EFCC</string>
+				<string>830ED6D9A509095FDFFDF2318D3D527F</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>207A1972E30A93AB18D345EC64D59A66</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>D414A4CDE4116258F210D5FA18D0F06B</string>
+				<string>3A865200D6DA2CA2394B39060FF21453</string>
+				<string>CA6A2957B0D8809A9F6F3A173CAC5A75</string>
+				<string>5D39AF81A0F8E48F554E38EC0E237D15</string>
+				<string>707183B33831E2C9D2771125C823C584</string>
+				<string>334F0D464F275262D14ACFCE6E1E9D68</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Support Files</string>
+			<key>path</key>
+			<string>../Target Support Files/OrderedDictionary</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>224B8E71DC2AFB5E9434F98EFE5EE2B5</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCYearCalendarView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>22C50F339CFEB4B9F818C3D0C28993BA</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>CalendarLib-prefix.pch</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>25F31B28D694ECFA1BD8B70EC40E1FBC</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCMonthMiniCalendarView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2673FB444CAD63D7872199869D12B242</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>07144BF1E580A3278D85202D9E0EA237</string>
+			<key>buildPhases</key>
+			<array>
+				<string>CDD2092E21B82B3A3B72CC48D207F924</string>
+				<string>F843E9A69A061049F1525728BB17C353</string>
+				<string>CEAC95CC33396F30D3AE7158AF0FAE52</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>CalendarLib-CalendarLib</string>
+			<key>productName</key>
+			<string>CalendarLib-CalendarLib</string>
+			<key>productReference</key>
+			<string>BFB05F60FF64650501495DF93FCD0016</string>
+			<key>productType</key>
+			<string>com.apple.product-type.bundle</string>
+		</dict>
+		<key>268A30C10F88B7C793A44321FAF58E30</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>625F46F8A89DCEC0A5EFD27412FAB475</string>
+				<string>5F1DBEE7472B55137D28A2E07CC09217</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>28A45B78CD0459C6135CD08CE61D0A1F</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>en.lproj</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>28F9BDA61B9C749A357770C19ACD3B8A</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>OSCache.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>29FA38DDCB381803E35FE2E1FB182FB4</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>CalendarLib-dummy.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2A2E84EB44D8393D76388370043817EC</key>
+		<dict>
+			<key>fileRef</key>
+			<string>BEDB74732E8FA8ABDB56D334EA784583</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>2BCC458FDD5F692BBB2BFC64BB5701FC</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>Pods-umbrella.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2BE2EA39F8FE5E48E7B9712F35754B74</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>OrderedDictionary.m</string>
+			<key>path</key>
+			<string>OrderedDictionary/OrderedDictionary.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2CA1D8744FF974863198C19D4DFC2B08</key>
+		<dict>
+			<key>fileRef</key>
+			<string>57AC7E7EFB3A0F7D2B668A48ADCB0A1F</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>2CFC8D6234DC7F9245240C9C81D389E2</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCDayPlannerEKViewController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2D8E8EC45A3A1A1D94AE762CB5028504</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>A70CDAD61F90AC503C7D04CC22DA2923</string>
+				<string>FB45FFD90572718D82AB9092B750F0CA</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>2FC01E4F46F5CF26A1F11369827D8A74</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCMonthPlannerViewLayout.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2FE0EFCA5E07076A4529E60BA8C6C8BC</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4971DB9B4537CD58C96AFEAD8352CA0C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>30DC81CEC32D28A3FA47B4D4057E07E1</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>OSCache-umbrella.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>316CFB56138D6EE584BD602F6BC565F3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D799D67E0F515860CD6F3BDA4FE2BC7E</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>32FB3B5FADC69ACFED3957D67EC8FF0C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCMonthPlannerBackgroundView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>334F0D464F275262D14ACFCE6E1E9D68</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>OrderedDictionary-umbrella.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3399B5A113761BFA223BB37882BA914D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4BB17EBA92B686089D2E33F55328BB3E</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>34023C9D2F76E5CD4716B8BEBB929B92</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>OSCache.modulemap</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>349A65DFDE8D7EA965D16F49220F1D76</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCDayPlannerView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>34A195D9FB4A9B50F0F1B11ED70A896D</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>D41D8CD98F00B204E9800998ECF8427E</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>C4C32B98A88C3F59ADE6A79B82E1867F</string>
+			<key>remoteInfo</key>
+			<string>OrderedDictionary</string>
+		</dict>
+		<key>35756405C5C29A7AB144DF29A08BEAC9</key>
+		<dict>
+			<key>fileRef</key>
+			<string>894E5DA93A9F359521A89826BE6DA777</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>361B1A664A1700E5D552757703BC07ED</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>03F3AFA7B9DB61F6AC47C2A678FA8D97</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Development Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3A1FDFA2751210F6171F72495EB3CD30</key>
+		<dict>
+			<key>fileRef</key>
+			<string>5F120AB14CD686BB8BDA2E3F76373AA3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>3A865200D6DA2CA2394B39060FF21453</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>OrderedDictionary.modulemap</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3AF00EE9C8D84368563E95CD80B42BB1</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>13E1F173FF380B6FE1ACDFF95A720D25</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>PRODUCT_NAME</key>
+				<string>CalendarLib</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>WRAPPER_EXTENSION</key>
+				<string>bundle</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>3CC8891570BE8E1A33A407A1C2B1D477</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>E10EBBD3238863511594DC15D7FFDD5E</string>
+				<string>6DD2A1D0B12483C9A99B709AA4B41446</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>3D821EA31EFFFEE575FC81544E42FAD9</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCInteractiveEventView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3E15075FFCE96DA464247FFF3F5AB123</key>
+		<dict>
+			<key>fileRef</key>
+			<string>643B774F1BA0580984A95E4781874056</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>3F5F2CEFF434DDCA14403D6B50D9D5DC</key>
+		<dict>
+			<key>fileRef</key>
+			<string>5D39AF81A0F8E48F554E38EC0E237D15</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>3F9D0CB907404DAD75801F0CBEF180EB</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>CDF6776683F9A26C142EB3AD5A8CCDA5</string>
+			</array>
+			<key>isa</key>
+			<string>PBXHeadersBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>4095B5A90CF1C4DF2350A3C3C93F7977</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>71D6E0D174F4DE38CD29304BC2BA2282</string>
+				<string>0AC2F4E580C735F08DDD3E5212CA9F43</string>
+				<string>5B8B87F7E454A7457A9A4759932A2BFD</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>414BE1B86DC3EBB8BB2F9607F5417355</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>DA8C3C0C9761CCF4865068E83CD0336F</string>
+				<string>17B7D64812854ACD156C75C946043AEB</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>43180FA54E0ADA359E116BF780A0861A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>1C463EC4C11597AB9150D39C874F8EFD</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>448D8FD1681C98E2CA12DBD1B68BF2BF</key>
+		<dict>
+			<key>fileRef</key>
+			<string>BDFA63791DFDD5257416485651A2E072</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>44C3A8E49CF779F8E6C61A9E1F51A74D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>28A45B78CD0459C6135CD08CE61D0A1F</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>46254016F6E4E65C9DF1017286E58227</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>name</key>
+			<string>OSCache</string>
+			<key>target</key>
+			<string>14730700B2D60DF9994CA196CE7ADE3C</string>
+			<key>targetProxy</key>
+			<string>97485090F1FDFA3AC28DD381A407CE10</string>
+		</dict>
+		<key>4922375228078DC8286BD4E99CD1EE21</key>
+		<dict>
+			<key>fileRef</key>
+			<string>7B109FCF8326A98A81D6FE07BA9A2CE3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string>-DOS_OBJECT_USE_OBJC=0</string>
+			</dict>
+		</dict>
+		<key>4971DB9B4537CD58C96AFEAD8352CA0C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCMonthPlannerWeekView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4A54168DC4E5134ABD87C35A80AE6308</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0BAA841B43F921E5A0BE8A85BACF0892</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4B2D02F6BD7A7815D23E41AD12F267FA</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCMonthPlannerView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4BB17EBA92B686089D2E33F55328BB3E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>NSCalendar+MGCAdditions.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4C158374D44E686E0383DBE1170208F5</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4DC4BDC86958534A4D489D3F9BF8CA29</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4C3F85ED16E791CA73F003E24F2DC96A</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCReusableObjectQueue.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4C73C2B01A568ABF521256C755BFDBD4</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCEventCellLayoutAttributes.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4C86210C01450F83D4978FD91ECCDC12</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCEventsRowView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4C9205FFA436A893B473EB3170EB6A4D</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCStandardEventView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4CBB24793DE31904DE12AAE27652CDAF</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>582A148EB9E8E6D781A10313EDAFD28D</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>4D1A3CA0C8EFA6829CE89D5DDB875B4D</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCTimeRowsView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4DA978D8E7883CF9E15EF4D234D8F8FA</key>
+		<dict>
+			<key>fileRef</key>
+			<string>6C240FEFC55395725437955D8667CCE8</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4DC4BDC86958534A4D489D3F9BF8CA29</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCEventCellLayoutAttributes.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>50D81BD235B84058BD74961EF509EF19</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCMonthPlannerWeekView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>51395D7B9E463D3582E9D3E38F9030D6</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCMonthPlannerEKViewController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>515CC15644244BB3E9549C97E9217B44</key>
+		<dict>
+			<key>fileRef</key>
+			<string>50D81BD235B84058BD74961EF509EF19</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>52D29E09B21FD9EBDE45BF9AB4BA9D25</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCYearCalendarView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>55228806D6E41F63ECB1B943DD9E88AC</key>
+		<dict>
+			<key>fileRef</key>
+			<string>CC9F46198745FBB5026A2C2C203BC54B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>57AC7E7EFB3A0F7D2B668A48ADCB0A1F</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCEventsRowView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>582A148EB9E8E6D781A10313EDAFD28D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0A82847ABC6DF78794FA578FFF202A2C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>5AB3A0A8F9E42CD9117D7886FDF11FFB</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>CalendarLib.modulemap</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5AF40903545821C2654D818E75824FFD</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>EE28978F11AFE40399519F0257F2F874</string>
+				<string>D7DADE730263D45F5C1A1B2010FDA82D</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>5B8B87F7E454A7457A9A4759932A2BFD</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>E524F0731E49CF4022FB3189C3DCC219</string>
+				<string>A0B211F444FCCBCAE98DDE85F7F7F079</string>
+				<string>5F120AB14CD686BB8BDA2E3F76373AA3</string>
+				<string>0A82847ABC6DF78794FA578FFF202A2C</string>
+				<string>C403EBA0CEE858AACDCF7A80322B8B86</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>iOS</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5D306E4F4171CF53A9C1E43F48841283</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCDayPlannerEKViewController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5D39AF81A0F8E48F554E38EC0E237D15</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>OrderedDictionary-dummy.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5DE1912BFD3CC1D9E0C97641EF70CA68</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>7CB4DDDC12B79389CFC8C49DCF39C1A2</string>
+				<string>EC8FF04893A567958DF9E6CE758D24EB</string>
+			</array>
+			<key>isa</key>
+			<string>PBXHeadersBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>5F0F87492240D8A980862113E48EBE88</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCDayColumnCell.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>5F120AB14CD686BB8BDA2E3F76373AA3</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>EventKitUI.framework</string>
+			<key>path</key>
+			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/EventKitUI.framework</string>
+			<key>sourceTree</key>
+			<string>DEVELOPER_DIR</string>
+		</dict>
+		<key>5F1DBEE7472B55137D28A2E07CC09217</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>DA312349A49333542E6F4B36B329960E</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEFINES_MODULE</key>
+				<string>YES</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_INSTALL_NAME_BASE</key>
+				<string>@rpath</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Target Support Files/Pods/Info.plist</string>
+				<key>INSTALL_PATH</key>
+				<string>$(LOCAL_LIBRARY_DIR)/Frameworks</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+					<string>@loader_path/Frameworks</string>
+				</array>
+				<key>MACH_O_TYPE</key>
+				<string>staticlib</string>
+				<key>MODULEMAP_FILE</key>
+				<string>Target Support Files/Pods/Pods.modulemap</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>NO</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>OTHER_LIBTOOLFLAGS</key>
+				<string></string>
+				<key>PODS_ROOT</key>
+				<string>$(SRCROOT)</string>
+				<key>PRODUCT_NAME</key>
+				<string>Pods</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>VERSIONING_SYSTEM</key>
+				<string>apple-generic</string>
+				<key>VERSION_INFO_PREFIX</key>
+				<string></string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>625F46F8A89DCEC0A5EFD27412FAB475</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>977577C045EDA9D9D1F46E2598D19FC7</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEFINES_MODULE</key>
+				<string>YES</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_INSTALL_NAME_BASE</key>
+				<string>@rpath</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Target Support Files/Pods/Info.plist</string>
+				<key>INSTALL_PATH</key>
+				<string>$(LOCAL_LIBRARY_DIR)/Frameworks</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+					<string>@loader_path/Frameworks</string>
+				</array>
+				<key>MACH_O_TYPE</key>
+				<string>staticlib</string>
+				<key>MODULEMAP_FILE</key>
+				<string>Target Support Files/Pods/Pods.modulemap</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>YES</string>
+				<key>OTHER_LDFLAGS</key>
+				<string></string>
+				<key>OTHER_LIBTOOLFLAGS</key>
+				<string></string>
+				<key>PODS_ROOT</key>
+				<string>$(SRCROOT)</string>
+				<key>PRODUCT_NAME</key>
+				<string>Pods</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>VERSIONING_SYSTEM</key>
+				<string>apple-generic</string>
+				<key>VERSION_INFO_PREFIX</key>
+				<string></string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>63C3E1EAF0EBC90A8CAEEF6880290C8D</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>NSCalendar+MGCAdditions.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>643B774F1BA0580984A95E4781874056</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCEventCell.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>653A87F57774EEDCAB59C3835F515F39</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>0621FC5DD83F68E761116875B059412C</string>
+				<string>34023C9D2F76E5CD4716B8BEBB929B92</string>
+				<string>28F9BDA61B9C749A357770C19ACD3B8A</string>
+				<string>D312E569E43BEDEAB80ABB313B2DA37B</string>
+				<string>03ED48CF8AC5E601600DC1AF567A32DB</string>
+				<string>30DC81CEC32D28A3FA47B4D4057E07E1</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Support Files</string>
+			<key>path</key>
+			<string>../Target Support Files/OSCache</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>65FB564643A6A8EBAAEE53B23527BFDE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>19D9432C8FDCBBAD21D583CDE57C7196</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>660257778686EB1C8F9E857E3E8CB144</key>
+		<dict>
+			<key>fileRef</key>
+			<string>EB30EA1DDCF5EC25C62B4AF631EC0011</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>670ADB43FFF6197D391D8A388B1B1A88</key>
+		<dict>
+			<key>fileRef</key>
+			<string>F505E3A11C22E0F13192827083185A73</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>690591D27D2C822C43B2C4C87F6D6C5C</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>F0BFAF44B9F2E107744B1EC5ED51A912</string>
+				<string>4922375228078DC8286BD4E99CD1EE21</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>6B4BB46789E6BC08401D8990F8EAD4BA</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D3B789D705E8ACE18B77386317749E55</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>6C240FEFC55395725437955D8667CCE8</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCMonthPlannerHeaderView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>6DD2A1D0B12483C9A99B709AA4B41446</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>CA6A2957B0D8809A9F6F3A173CAC5A75</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEFINES_MODULE</key>
+				<string>YES</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_INSTALL_NAME_BASE</key>
+				<string>@rpath</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/OrderedDictionary/OrderedDictionary-prefix.pch</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Target Support Files/OrderedDictionary/Info.plist</string>
+				<key>INSTALL_PATH</key>
+				<string>$(LOCAL_LIBRARY_DIR)/Frameworks</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+					<string>@loader_path/Frameworks</string>
+				</array>
+				<key>MODULEMAP_FILE</key>
+				<string>Target Support Files/OrderedDictionary/OrderedDictionary.modulemap</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>NO</string>
+				<key>PRODUCT_NAME</key>
+				<string>OrderedDictionary</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>VERSIONING_SYSTEM</key>
+				<string>apple-generic</string>
+				<key>VERSION_INFO_PREFIX</key>
+				<string></string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>6F394DFBC8BE1F02F73C83828C87677C</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>28A45B78CD0459C6135CD08CE61D0A1F</string>
+				<string>11B36C9E180E0B2E5C952E6D9C3BC8C3</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>CalendarLib</string>
+			<key>path</key>
+			<string>CalendarLib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>6FEA29E4417D769DA40A95A37BCFEAEE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C76E285B24403495D2A8DDEECC16225C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>707183B33831E2C9D2771125C823C584</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>OrderedDictionary-prefix.pch</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>718E0893C0CABFBF2047FF27C149D018</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCMonthPlannerViewDayCell.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>71CD1BA7D52FEB05402CC302C62D64D7</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B908EEBA5DA44E3EA13F687C20F4A474</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>71D6E0D174F4DE38CD29304BC2BA2282</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>OrderedDictionary.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>73429CAFEA0D66F3A04C6C25C8D87448</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCDayPlannerView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>7459FCBB40DCF0877A6CCA3823421D1B</key>
+		<dict>
+			<key>fileRef</key>
+			<string>ABD854D3D86FBC00D0CC14E15B59B0B1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>75D98FF52E597A11900E131B6C4E1ADA</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>E8446514FBAD26C0E18F24A5715AEF67</string>
+				<string>79A9DEDC89FE8336BF5FEDAAF75BF7FC</string>
+				<string>D0405803033A2A777B8E4DFA0C1800ED</string>
+				<string>87B213035BAC5F75386F62D3C75D2342</string>
+				<string>894E5DA93A9F359521A89826BE6DA777</string>
+				<string>E7F21354943D9F42A70697D5A5EF72E9</string>
+				<string>CBC0F7C552B739C909B650A0F42F7F38</string>
+				<string>2BCC458FDD5F692BBB2BFC64BB5701FC</string>
+				<string>977577C045EDA9D9D1F46E2598D19FC7</string>
+				<string>DA312349A49333542E6F4B36B329960E</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>path</key>
+			<string>Target Support Files/Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>78A80E0305A12836504FDF275B95EA1C</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B73E3FF6C49EF175333A390526757AA9</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>79A9DEDC89FE8336BF5FEDAAF75BF7FC</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>Pods.modulemap</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>7A02B3D0D0A5C4F9A05668A732FDF73F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>334F0D464F275262D14ACFCE6E1E9D68</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>7A2880A1B14B71456FA6C3AB3AF556B9</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D030CA497730EBE06F8123CF9E53378B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>7B109FCF8326A98A81D6FE07BA9A2CE3</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>name</key>
+			<string>OSCache.m</string>
+			<key>path</key>
+			<string>OSCache/OSCache.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>7CB4DDDC12B79389CFC8C49DCF39C1A2</key>
+		<dict>
+			<key>fileRef</key>
+			<string>30DC81CEC32D28A3FA47B4D4057E07E1</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>7DB346D0F39D3F0E887471402A8071AB</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>BA6428E9F66FD5A23C0A2E06ED26CD2F</string>
+				<string>361B1A664A1700E5D552757703BC07ED</string>
+				<string>4095B5A90CF1C4DF2350A3C3C93F7977</string>
+				<string>414BE1B86DC3EBB8BB2F9607F5417355</string>
+				<string>D9D9EFCD173B15ACCFADB71E420FF42E</string>
+				<string>B7B80995527643776607AFFA75B91E24</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>7DCBC711C5406FD730BE590C94D32D96</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>NSString+MGCAdditions.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>7E64DB0CBBE14E3F65D21FDFCB61808C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCMonthPlannerViewDayCell.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>808035F5FB563724B6A159E5DB21FE8D</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>268A30C10F88B7C793A44321FAF58E30</string>
+			<key>buildPhases</key>
+			<array>
+				<string>B7499E9D3BDE6FBA11869199BF3F9393</string>
+				<string>A6EE71199FE4AFDA4E845D520D324B5C</string>
+				<string>3F9D0CB907404DAD75801F0CBEF180EB</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array>
+				<string>E03058838AAD2DBAEA06A87C1AA4FFEF</string>
+				<string>46254016F6E4E65C9DF1017286E58227</string>
+				<string>13DC16DDFED439792B834335828FF8E5</string>
+			</array>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>Pods</string>
+			<key>productName</key>
+			<string>Pods</string>
+			<key>productReference</key>
+			<string>DDE229E2B0D71508B3D7CD5CABEB73D6</string>
+			<key>productType</key>
+			<string>com.apple.product-type.framework</string>
+		</dict>
+		<key>825CEF5CEA1E4176EA361436A550BC1E</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4C86210C01450F83D4978FD91ECCDC12</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>8278A713DFCC290E209F1CFFDC7D5986</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>3F5F2CEFF434DDCA14403D6B50D9D5DC</string>
+				<string>B826786804B51980ECAEA62B1B41B2BC</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>830ED6D9A509095FDFFDF2318D3D527F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>C403EBA0CEE858AACDCF7A80322B8B86</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>844AAEA2314DBF36E7B3C403B5AC31DC</key>
+		<dict>
+			<key>fileRef</key>
+			<string>14F04E8DA04E44C74E2A8F32218B4F35</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>84A07A7FFF9C2A776980FEE43091F865</key>
+		<dict>
+			<key>fileRef</key>
+			<string>11B36C9E180E0B2E5C952E6D9C3BC8C3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>84EFFEA70CE3F29C1F727328CD11F594</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>OSCache.h</string>
+			<key>path</key>
+			<string>OSCache/OSCache.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>86088999E94190F5A44EF7FB2911D067</key>
+		<dict>
+			<key>fileRef</key>
+			<string>9788D10CC2A0D1D03DB12DF49872F7B8</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>864073C25FB11CE21771CD99CB679631</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCMonthPlannerViewController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>868BF247B873DB150FB4FF2F333536EB</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCDayColumnCell.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>86BEAB42A06BD01B4947B5D7B7C17270</key>
+		<dict>
+			<key>fileRef</key>
+			<string>B660C7DD7EEA0DEAD2EFC98AB74DE485</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>87B213035BAC5F75386F62D3C75D2342</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>Pods-acknowledgements.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>894E5DA93A9F359521A89826BE6DA777</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>Pods-dummy.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8A637532D7C717B031F5479C9DFDCF96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E63EF56F13F78687828039FC20CB4645</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>8A8C2E04A3A9AA85D81A443081CB7AF6</key>
+		<dict>
+			<key>fileRef</key>
+			<string>119D19EC4AB9AA19EC1BE5925AFC22AD</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>8BB1D7AB0293B9DD77C6276E9A786485</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>OSCache.framework</string>
+			<key>path</key>
+			<string>OSCache.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>8E686535BB1799D4855A77C145E50881</key>
+		<dict>
+			<key>fileRef</key>
+			<string>AE2762ADDD61B8D6E6E7F68BD0FEB368</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>908C7D6B8E56352C1A2DF253EA9546DA</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4D1A3CA0C8EFA6829CE89D5DDB875B4D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>954B3024145E89BE4F9E6E9D69C08294</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>F26F9C94C86D2CEE93EC87FD35694730</string>
+			<key>buildPhases</key>
+			<array>
+				<string>A0CCB06886AE216DBCB19BC2DA95411D</string>
+				<string>1EC64EB638F6BCDC5F10055A15FFF2D7</string>
+				<string>05B843E94270077471F87E84B4003FE5</string>
+				<string>9CF62721D1003DE6E932A3D51464CC30</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array>
+				<string>01B8A5375E02A752828EE107C73EC16F</string>
+				<string>D77B8F103B746F42F033679A3279BB50</string>
+				<string>B30A607B34FB56CCE2734DC48D203E0B</string>
+			</array>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>CalendarLib</string>
+			<key>productName</key>
+			<string>CalendarLib</string>
+			<key>productReference</key>
+			<string>9CF52C57A2CCC3BAA85FF1F21F54DD99</string>
+			<key>productType</key>
+			<string>com.apple.product-type.framework</string>
+		</dict>
+		<key>95611D76BC830E4713740F7558763A48</key>
+		<dict>
+			<key>fileRef</key>
+			<string>BCA55FBF590ECA4155FB2D825D3F6AFF</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>97485090F1FDFA3AC28DD381A407CE10</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>D41D8CD98F00B204E9800998ECF8427E</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>14730700B2D60DF9994CA196CE7ADE3C</string>
+			<key>remoteInfo</key>
+			<string>OSCache</string>
+		</dict>
+		<key>977577C045EDA9D9D1F46E2598D19FC7</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>9788D10CC2A0D1D03DB12DF49872F7B8</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>NSString+MGCAdditions.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>98FD5FE69CE35EF0F16975CBF05136CF</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2FC01E4F46F5CF26A1F11369827D8A74</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>9CF52C57A2CCC3BAA85FF1F21F54DD99</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>CalendarLib.framework</string>
+			<key>path</key>
+			<string>CalendarLib.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>9CF62721D1003DE6E932A3D51464CC30</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>55228806D6E41F63ECB1B943DD9E88AC</string>
+				<string>D3E6C03053EA235030E950897AC1B668</string>
+				<string>71CD1BA7D52FEB05402CC302C62D64D7</string>
+				<string>448D8FD1681C98E2CA12DBD1B68BF2BF</string>
+				<string>1A68918EB506E02C8A73349927D7EC64</string>
+				<string>C484182C3BC0571251950EBBCB5B9C7A</string>
+				<string>C595E0FD629CC1F9E531591DC423A7E9</string>
+				<string>43180FA54E0ADA359E116BF780A0861A</string>
+				<string>65FB564643A6A8EBAAEE53B23527BFDE</string>
+				<string>9CF803E6076B451E7EE27E2B99283C38</string>
+				<string>6B4BB46789E6BC08401D8990F8EAD4BA</string>
+				<string>2CA1D8744FF974863198C19D4DFC2B08</string>
+				<string>670ADB43FFF6197D391D8A388B1B1A88</string>
+				<string>A4816C9351AF67DAB7AC33A158999EBA</string>
+				<string>D2BC017FFBC07DADC4796889B1FB6519</string>
+				<string>8A8C2E04A3A9AA85D81A443081CB7AF6</string>
+				<string>07A60E73123D9E4243072109870ABD5F</string>
+				<string>0BA4202AF3F26C0318214DCA8BCEF4B1</string>
+				<string>011E1FCF975A08E676DDC0C7584AE406</string>
+				<string>B9BA7AE9DF853ED4D905C4934CD6CD78</string>
+				<string>A35398AC6EDCA18BA74A2E7726932067</string>
+				<string>98FD5FE69CE35EF0F16975CBF05136CF</string>
+				<string>515CC15644244BB3E9549C97E9217B44</string>
+				<string>EB4DC730A5280E325342B8BC2F074A87</string>
+				<string>2A2E84EB44D8393D76388370043817EC</string>
+				<string>B1BF7A873640EFC81C4A147D6579544F</string>
+				<string>908C7D6B8E56352C1A2DF253EA9546DA</string>
+				<string>CABA10FB1ACF5D94EC9B2D11A6ECFD0A</string>
+				<string>C504EE17BDA49FD8BE2ECEB54C6284A0</string>
+				<string>DCB9A9D721883F51FCEF0F9847FA8460</string>
+				<string>9FE67B8BF6B89AC40DBABB6EC56AAE6B</string>
+				<string>D6B0F7FFCD0A440C5F5C1F4EC551D8E1</string>
+				<string>DDAA83269203D943727FA2FEF67233B2</string>
+			</array>
+			<key>isa</key>
+			<string>PBXHeadersBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>9CF803E6076B451E7EE27E2B99283C38</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4C73C2B01A568ABF521256C755BFDBD4</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>9DD2E24E413DC847B0033DF85707DD8B</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>D41D8CD98F00B204E9800998ECF8427E</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>14730700B2D60DF9994CA196CE7ADE3C</string>
+			<key>remoteInfo</key>
+			<string>OSCache</string>
+		</dict>
+		<key>9FE67B8BF6B89AC40DBABB6EC56AAE6B</key>
+		<dict>
+			<key>fileRef</key>
+			<string>DC0EDE45EA1E20820EC678FC4D788BC4</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>A0B211F444FCCBCAE98DDE85F7F7F079</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>EventKit.framework</string>
+			<key>path</key>
+			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/EventKit.framework</string>
+			<key>sourceTree</key>
+			<string>DEVELOPER_DIR</string>
+		</dict>
+		<key>A0CCB06886AE216DBCB19BC2DA95411D</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>CF725EA7491D7FB394ABA14091D782A5</string>
+				<string>844AAEA2314DBF36E7B3C403B5AC31DC</string>
+				<string>660257778686EB1C8F9E857E3E8CB144</string>
+				<string>EA1E0F63856E964CA3215CF03EDCE523</string>
+				<string>C083B936483C063074FA23DF4380E5C9</string>
+				<string>1B94386917E027282A208311CA3D8394</string>
+				<string>86BEAB42A06BD01B4947B5D7B7C17270</string>
+				<string>3E15075FFCE96DA464247FFF3F5AB123</string>
+				<string>4C158374D44E686E0383DBE1170208F5</string>
+				<string>78A80E0305A12836504FDF275B95EA1C</string>
+				<string>825CEF5CEA1E4176EA361436A550BC1E</string>
+				<string>95611D76BC830E4713740F7558763A48</string>
+				<string>CADAAD7DD69914E53E63F112A65D70E3</string>
+				<string>1AD65AD1E8EA604E566FDD158774D415</string>
+				<string>04E7116C3CB7E6EBE2FAE0ECEDE21335</string>
+				<string>4A54168DC4E5134ABD87C35A80AE6308</string>
+				<string>4DA978D8E7883CF9E15EF4D234D8F8FA</string>
+				<string>6FEA29E4417D769DA40A95A37BCFEAEE</string>
+				<string>AEB1BF05E17037477C8D1E9A06B3097F</string>
+				<string>AB2EA245A5B68CFDC292A051BB1E904A</string>
+				<string>1BA43E4921C844EED1E4952C0B22438E</string>
+				<string>2FE0EFCA5E07076A4529E60BA8C6C8BC</string>
+				<string>F4EBD297A3D92B1C8C650187DC9BA559</string>
+				<string>F315116EB4FF2E89C6B932ACC94692C0</string>
+				<string>7459FCBB40DCF0877A6CCA3823421D1B</string>
+				<string>E2F03A12603AF6A706991E3DE54CAA47</string>
+				<string>7A2880A1B14B71456FA6C3AB3AF556B9</string>
+				<string>8E686535BB1799D4855A77C145E50881</string>
+				<string>D3A850D422210ED01D8EF0BF94321D46</string>
+				<string>316CFB56138D6EE584BD602F6BC565F3</string>
+				<string>3399B5A113761BFA223BB37882BA914D</string>
+				<string>86088999E94190F5A44EF7FB2911D067</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>A35398AC6EDCA18BA74A2E7726932067</key>
+		<dict>
+			<key>fileRef</key>
+			<string>718E0893C0CABFBF2047FF27C149D018</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>A4816C9351AF67DAB7AC33A158999EBA</key>
+		<dict>
+			<key>fileRef</key>
+			<string>173E97C9E05AFF72D64EB6C5E3081704</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>A5F65F53A35650CE96D8696F64DD6F7B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCTimedEventsViewLayout.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>A6EE71199FE4AFDA4E845D520D324B5C</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>DCE1E8BB8CCF57868664D0EA0544B116</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>A70CDAD61F90AC503C7D04CC22DA2923</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+				<string>NO</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>ONLY_ACTIVE_ARCH</key>
+				<string>YES</string>
+				<key>STRIP_INSTALLED_PRODUCT</key>
+				<string>NO</string>
+				<key>SYMROOT</key>
+				<string>${SRCROOT}/../build</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>AB2EA245A5B68CFDC292A051BB1E904A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>7E64DB0CBBE14E3F65D21FDFCB61808C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>ABD854D3D86FBC00D0CC14E15B59B0B1</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCTimedEventsViewLayout.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>AD89FEF23EE4D7ACB313CC398C64934E</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>D41D8CD98F00B204E9800998ECF8427E</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>954B3024145E89BE4F9E6E9D69C08294</string>
+			<key>remoteInfo</key>
+			<string>CalendarLib</string>
+		</dict>
+		<key>AE2762ADDD61B8D6E6E7F68BD0FEB368</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCYearCalendarMonthHeaderView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>AEB1BF05E17037477C8D1E9A06B3097F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>864073C25FB11CE21771CD99CB679631</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>B0323A9F0ED6DBBF4EC492669B68076F</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>OrderedDictionary.framework</string>
+			<key>path</key>
+			<string>OrderedDictionary.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>B1BF7A873640EFC81C4A147D6579544F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A5F65F53A35650CE96D8696F64DD6F7B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>B30A607B34FB56CCE2734DC48D203E0B</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>name</key>
+			<string>OrderedDictionary</string>
+			<key>target</key>
+			<string>C4C32B98A88C3F59ADE6A79B82E1867F</string>
+			<key>targetProxy</key>
+			<string>34A195D9FB4A9B50F0F1B11ED70A896D</string>
+		</dict>
+		<key>B371DB50A8D4C71C99452B2087E37A42</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCMonthPlannerHeaderView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B660C7DD7EEA0DEAD2EFC98AB74DE485</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCDayPlannerViewController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B73E3FF6C49EF175333A390526757AA9</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCEventKitSupport.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B7499E9D3BDE6FBA11869199BF3F9393</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>35756405C5C29A7AB144DF29A08BEAC9</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>B7B80995527643776607AFFA75B91E24</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>75D98FF52E597A11900E131B6C4E1ADA</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Targets Support Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B826786804B51980ECAEA62B1B41B2BC</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2BE2EA39F8FE5E48E7B9712F35754B74</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>COMPILER_FLAGS</key>
+				<string>-DOS_OBJECT_USE_OBJC=0</string>
+			</dict>
+		</dict>
+		<key>B908EEBA5DA44E3EA13F687C20F4A474</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCAllDayEventsViewLayout.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>B9BA7AE9DF853ED4D905C4934CD6CD78</key>
+		<dict>
+			<key>fileRef</key>
+			<string>11DCC70782EFCAFBDF8839E208D8DA20</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>BA6428E9F66FD5A23C0A2E06ED26CD2F</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text</string>
+			<key>name</key>
+			<string>Podfile</string>
+			<key>path</key>
+			<string>../Podfile</string>
+			<key>sourceTree</key>
+			<string>SOURCE_ROOT</string>
+			<key>xcLanguageSpecificationIdentifier</key>
+			<string>xcode.lang.ruby</string>
+		</dict>
+		<key>BC129756EB184EB7B54FC078D77EAE6F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>BFB05F60FF64650501495DF93FCD0016</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BCA55FBF590ECA4155FB2D825D3F6AFF</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCEventView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BDFA63791DFDD5257416485651A2E072</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCDateRange.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BEB60AF82C3EED21DD5312549F9CD440</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E524F0731E49CF4022FB3189C3DCC219</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>BEDB74732E8FA8ABDB56D334EA784583</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCStandardEventView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BFB05F60FF64650501495DF93FCD0016</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.cfbundle</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>CalendarLib.bundle</string>
+			<key>path</key>
+			<string>CalendarLib.bundle</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>C083B936483C063074FA23DF4380E5C9</key>
+		<dict>
+			<key>fileRef</key>
+			<string>5D306E4F4171CF53A9C1E43F48841283</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C403EBA0CEE858AACDCF7A80322B8B86</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>UIKit.framework</string>
+			<key>path</key>
+			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/UIKit.framework</string>
+			<key>sourceTree</key>
+			<string>DEVELOPER_DIR</string>
+		</dict>
+		<key>C484182C3BC0571251950EBBCB5B9C7A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2CFC8D6234DC7F9245240C9C81D389E2</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>C4C32B98A88C3F59ADE6A79B82E1867F</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>3CC8891570BE8E1A33A407A1C2B1D477</string>
+			<key>buildPhases</key>
+			<array>
+				<string>8278A713DFCC290E209F1CFFDC7D5986</string>
+				<string>DDD37FE54B9E2C86B5DFECBEA28EFF5D</string>
+				<string>FA4E72657FE4E8A1695BD505C8E7BDB1</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>OrderedDictionary</string>
+			<key>productName</key>
+			<string>OrderedDictionary</string>
+			<key>productReference</key>
+			<string>B0323A9F0ED6DBBF4EC492669B68076F</string>
+			<key>productType</key>
+			<string>com.apple.product-type.framework</string>
+		</dict>
+		<key>C504EE17BDA49FD8BE2ECEB54C6284A0</key>
+		<dict>
+			<key>fileRef</key>
+			<string>1277870414018BAF910A8665C4B4C3A5</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>C595E0FD629CC1F9E531591DC423A7E9</key>
+		<dict>
+			<key>fileRef</key>
+			<string>73429CAFEA0D66F3A04C6C25C8D87448</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>C76E285B24403495D2A8DDEECC16225C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCMonthPlannerView.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C85C715465865C471DDA212DDDCD19A8</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>13E1F173FF380B6FE1ACDFF95A720D25</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEFINES_MODULE</key>
+				<string>YES</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_INSTALL_NAME_BASE</key>
+				<string>@rpath</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/CalendarLib/CalendarLib-prefix.pch</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Target Support Files/CalendarLib/Info.plist</string>
+				<key>INSTALL_PATH</key>
+				<string>$(LOCAL_LIBRARY_DIR)/Frameworks</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+					<string>@loader_path/Frameworks</string>
+				</array>
+				<key>MODULEMAP_FILE</key>
+				<string>Target Support Files/CalendarLib/CalendarLib.modulemap</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>YES</string>
+				<key>PRODUCT_NAME</key>
+				<string>CalendarLib</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>VERSIONING_SYSTEM</key>
+				<string>apple-generic</string>
+				<key>VERSION_INFO_PREFIX</key>
+				<string></string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>CA6A2957B0D8809A9F6F3A173CAC5A75</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>OrderedDictionary.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>CABA10FB1ACF5D94EC9B2D11A6ECFD0A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D1623498681F65D111BAFE40D11EC0B8</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>CADAAD7DD69914E53E63F112A65D70E3</key>
+		<dict>
+			<key>fileRef</key>
+			<string>3D821EA31EFFFEE575FC81544E42FAD9</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>CB1D841474DF4838328E304EF4CBAF97</key>
+		<dict>
+			<key>fileRef</key>
+			<string>A0B211F444FCCBCAE98DDE85F7F7F079</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>CBC0F7C552B739C909B650A0F42F7F38</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.script.sh</string>
+			<key>path</key>
+			<string>Pods-resources.sh</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>CC9F46198745FBB5026A2C2C203BC54B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>CalendarLib-umbrella.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>CDD2092E21B82B3A3B72CC48D207F924</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>CDF6776683F9A26C142EB3AD5A8CCDA5</key>
+		<dict>
+			<key>fileRef</key>
+			<string>2BCC458FDD5F692BBB2BFC64BB5701FC</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>CEAC95CC33396F30D3AE7158AF0FAE52</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>44C3A8E49CF779F8E6C61A9E1F51A74D</string>
+				<string>84A07A7FFF9C2A776980FEE43091F865</string>
+			</array>
+			<key>isa</key>
+			<string>PBXResourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>CF725EA7491D7FB394ABA14091D782A5</key>
+		<dict>
+			<key>fileRef</key>
+			<string>29FA38DDCB381803E35FE2E1FB182FB4</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>D030CA497730EBE06F8123CF9E53378B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCYearCalendarMonthCell.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D0405803033A2A777B8E4DFA0C1800ED</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text</string>
+			<key>path</key>
+			<string>Pods-acknowledgements.markdown</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D1623498681F65D111BAFE40D11EC0B8</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCYearCalendarMonthCell.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D2BC017FFBC07DADC4796889B1FB6519</key>
+		<dict>
+			<key>fileRef</key>
+			<string>25F31B28D694ECFA1BD8B70EC40E1FBC</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>D312E569E43BEDEAB80ABB313B2DA37B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>OSCache-dummy.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D3A850D422210ED01D8EF0BF94321D46</key>
+		<dict>
+			<key>fileRef</key>
+			<string>52D29E09B21FD9EBDE45BF9AB4BA9D25</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>D3B789D705E8ACE18B77386317749E55</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCEventKitSupport.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D3E6C03053EA235030E950897AC1B668</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D5BFA0A928E101E695F431DD950D2368</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>D414A4CDE4116258F210D5FA18D0F06B</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>Info.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D41D8CD98F00B204E9800998ECF8427E</key>
+		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>LastSwiftUpdateCheck</key>
+				<string>0700</string>
+				<key>LastUpgradeCheck</key>
+				<string>0700</string>
+			</dict>
+			<key>buildConfigurationList</key>
+			<string>2D8E8EC45A3A1A1D94AE762CB5028504</string>
+			<key>compatibilityVersion</key>
+			<string>Xcode 3.2</string>
+			<key>developmentRegion</key>
+			<string>English</string>
+			<key>hasScannedForEncodings</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXProject</string>
+			<key>knownRegions</key>
+			<array>
+				<string>en</string>
+			</array>
+			<key>mainGroup</key>
+			<string>7DB346D0F39D3F0E887471402A8071AB</string>
+			<key>productRefGroup</key>
+			<string>D9D9EFCD173B15ACCFADB71E420FF42E</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectReferences</key>
+			<array/>
+			<key>projectRoot</key>
+			<string></string>
+			<key>targets</key>
+			<array>
+				<string>954B3024145E89BE4F9E6E9D69C08294</string>
+				<string>2673FB444CAD63D7872199869D12B242</string>
+				<string>C4C32B98A88C3F59ADE6A79B82E1867F</string>
+				<string>14730700B2D60DF9994CA196CE7ADE3C</string>
+				<string>808035F5FB563724B6A159E5DB21FE8D</string>
+			</array>
+		</dict>
+		<key>D5BFA0A928E101E695F431DD950D2368</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>Constant.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D6B0F7FFCD0A440C5F5C1F4EC551D8E1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>63C3E1EAF0EBC90A8CAEEF6880290C8D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>D77B8F103B746F42F033679A3279BB50</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>name</key>
+			<string>OSCache</string>
+			<key>target</key>
+			<string>14730700B2D60DF9994CA196CE7ADE3C</string>
+			<key>targetProxy</key>
+			<string>9DD2E24E413DC847B0033DF85707DD8B</string>
+		</dict>
+		<key>D799D67E0F515860CD6F3BDA4FE2BC7E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>NSAttributedString+MGCAdditions.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D7DADE730263D45F5C1A1B2010FDA82D</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>28F9BDA61B9C749A357770C19ACD3B8A</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEFINES_MODULE</key>
+				<string>YES</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_INSTALL_NAME_BASE</key>
+				<string>@rpath</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/OSCache/OSCache-prefix.pch</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Target Support Files/OSCache/Info.plist</string>
+				<key>INSTALL_PATH</key>
+				<string>$(LOCAL_LIBRARY_DIR)/Frameworks</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+					<string>@loader_path/Frameworks</string>
+				</array>
+				<key>MODULEMAP_FILE</key>
+				<string>Target Support Files/OSCache/OSCache.modulemap</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>NO</string>
+				<key>PRODUCT_NAME</key>
+				<string>OSCache</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>VERSIONING_SYSTEM</key>
+				<string>apple-generic</string>
+				<key>VERSION_INFO_PREFIX</key>
+				<string></string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>D9D9EFCD173B15ACCFADB71E420FF42E</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>BFB05F60FF64650501495DF93FCD0016</string>
+				<string>9CF52C57A2CCC3BAA85FF1F21F54DD99</string>
+				<string>B0323A9F0ED6DBBF4EC492669B68076F</string>
+				<string>8BB1D7AB0293B9DD77C6276E9A786485</string>
+				<string>DDE229E2B0D71508B3D7CD5CABEB73D6</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>DA312349A49333542E6F4B36B329960E</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>path</key>
+			<string>Pods.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>DA8C3C0C9761CCF4865068E83CD0336F</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>E63EF56F13F78687828039FC20CB4645</string>
+				<string>2BE2EA39F8FE5E48E7B9712F35754B74</string>
+				<string>207A1972E30A93AB18D345EC64D59A66</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>OrderedDictionary</string>
+			<key>path</key>
+			<string>OrderedDictionary</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>DC0EDE45EA1E20820EC678FC4D788BC4</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>NSAttributedString+MGCAdditions.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>DCB9A9D721883F51FCEF0F9847FA8460</key>
+		<dict>
+			<key>fileRef</key>
+			<string>224B8E71DC2AFB5E9434F98EFE5EE2B5</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>DCE1E8BB8CCF57868664D0EA0544B116</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0A82847ABC6DF78794FA578FFF202A2C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>DDAA83269203D943727FA2FEF67233B2</key>
+		<dict>
+			<key>fileRef</key>
+			<string>7DCBC711C5406FD730BE590C94D32D96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Project</string>
+				</array>
+			</dict>
+		</dict>
+		<key>DDD37FE54B9E2C86B5DFECBEA28EFF5D</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>14B190E699B439B79982AB719CBCA65F</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>DDE229E2B0D71508B3D7CD5CABEB73D6</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>name</key>
+			<string>Pods.framework</string>
+			<key>path</key>
+			<string>Pods.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>DEF1FBD0689397BC6AB8BDA6BB8AB78A</key>
+		<dict>
+			<key>fileRef</key>
+			<string>71D6E0D174F4DE38CD29304BC2BA2282</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>DF0507A59387E5CBE881FD0E56A6EFCC</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0AC2F4E580C735F08DDD3E5212CA9F43</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>DF91B5D1789262D7E8D4AA5322675C03</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>5AB3A0A8F9E42CD9117D7886FDF11FFB</string>
+				<string>13E1F173FF380B6FE1ACDFF95A720D25</string>
+				<string>29FA38DDCB381803E35FE2E1FB182FB4</string>
+				<string>22C50F339CFEB4B9F818C3D0C28993BA</string>
+				<string>CC9F46198745FBB5026A2C2C203BC54B</string>
+				<string>F5AB33DF189AD3A8000A3E256FA9E734</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Support Files</string>
+			<key>path</key>
+			<string>Pods/Target Support Files/CalendarLib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E03058838AAD2DBAEA06A87C1AA4FFEF</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>name</key>
+			<string>CalendarLib</string>
+			<key>target</key>
+			<string>954B3024145E89BE4F9E6E9D69C08294</string>
+			<key>targetProxy</key>
+			<string>AD89FEF23EE4D7ACB313CC398C64934E</string>
+		</dict>
+		<key>E10EBBD3238863511594DC15D7FFDD5E</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>CA6A2957B0D8809A9F6F3A173CAC5A75</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEFINES_MODULE</key>
+				<string>YES</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_INSTALL_NAME_BASE</key>
+				<string>@rpath</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/OrderedDictionary/OrderedDictionary-prefix.pch</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Target Support Files/OrderedDictionary/Info.plist</string>
+				<key>INSTALL_PATH</key>
+				<string>$(LOCAL_LIBRARY_DIR)/Frameworks</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+					<string>@loader_path/Frameworks</string>
+				</array>
+				<key>MODULEMAP_FILE</key>
+				<string>Target Support Files/OrderedDictionary/OrderedDictionary.modulemap</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>YES</string>
+				<key>PRODUCT_NAME</key>
+				<string>OrderedDictionary</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>VERSIONING_SYSTEM</key>
+				<string>apple-generic</string>
+				<key>VERSION_INFO_PREFIX</key>
+				<string></string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>E2F03A12603AF6A706991E3DE54CAA47</key>
+		<dict>
+			<key>fileRef</key>
+			<string>071A1F91B444D57F30C5D7535DBEB27E</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>E524F0731E49CF4022FB3189C3DCC219</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>CoreGraphics.framework</string>
+			<key>path</key>
+			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/CoreGraphics.framework</string>
+			<key>sourceTree</key>
+			<string>DEVELOPER_DIR</string>
+		</dict>
+		<key>E63EF56F13F78687828039FC20CB4645</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>OrderedDictionary.h</string>
+			<key>path</key>
+			<string>OrderedDictionary/OrderedDictionary.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E7F21354943D9F42A70697D5A5EF72E9</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.script.sh</string>
+			<key>path</key>
+			<string>Pods-frameworks.sh</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E8446514FBAD26C0E18F24A5715AEF67</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>Info.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>EA1E0F63856E964CA3215CF03EDCE523</key>
+		<dict>
+			<key>fileRef</key>
+			<string>5F0F87492240D8A980862113E48EBE88</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>EB30EA1DDCF5EC25C62B4AF631EC0011</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>MGCDateRange.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>EB4DC730A5280E325342B8BC2F074A87</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0A872286FBE445770A8D03573B5DA997</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>EBFF017FC953CCA3AC12B82707F2AF66</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>13E1F173FF380B6FE1ACDFF95A720D25</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>PRODUCT_NAME</key>
+				<string>CalendarLib</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>WRAPPER_EXTENSION</key>
+				<string>bundle</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>EC8FF04893A567958DF9E6CE758D24EB</key>
+		<dict>
+			<key>fileRef</key>
+			<string>84EFFEA70CE3F29C1F727328CD11F594</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>settings</key>
+			<dict>
+				<key>ATTRIBUTES</key>
+				<array>
+					<string>Public</string>
+				</array>
+			</dict>
+		</dict>
+		<key>EE28978F11AFE40399519F0257F2F874</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>28F9BDA61B9C749A357770C19ACD3B8A</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEFINES_MODULE</key>
+				<string>YES</string>
+				<key>DYLIB_COMPATIBILITY_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_CURRENT_VERSION</key>
+				<string>1</string>
+				<key>DYLIB_INSTALL_NAME_BASE</key>
+				<string>@rpath</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Target Support Files/OSCache/OSCache-prefix.pch</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Target Support Files/OSCache/Info.plist</string>
+				<key>INSTALL_PATH</key>
+				<string>$(LOCAL_LIBRARY_DIR)/Frameworks</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+					<string>@loader_path/Frameworks</string>
+				</array>
+				<key>MODULEMAP_FILE</key>
+				<string>Target Support Files/OSCache/OSCache.modulemap</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>YES</string>
+				<key>PRODUCT_NAME</key>
+				<string>OSCache</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SKIP_INSTALL</key>
+				<string>YES</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+				<key>VERSIONING_SYSTEM</key>
+				<string>apple-generic</string>
+				<key>VERSION_INFO_PREFIX</key>
+				<string></string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>F0BFAF44B9F2E107744B1EC5ED51A912</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D312E569E43BEDEAB80ABB313B2DA37B</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>F26F9C94C86D2CEE93EC87FD35694730</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>C85C715465865C471DDA212DDDCD19A8</string>
+				<string>17BEDB9BC932EF8C2E93AE836578200B</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>F2D659C466006058FAC3AD5F73739042</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>D5BFA0A928E101E695F431DD950D2368</string>
+				<string>B908EEBA5DA44E3EA13F687C20F4A474</string>
+				<string>14F04E8DA04E44C74E2A8F32218B4F35</string>
+				<string>BDFA63791DFDD5257416485651A2E072</string>
+				<string>EB30EA1DDCF5EC25C62B4AF631EC0011</string>
+				<string>868BF247B873DB150FB4FF2F333536EB</string>
+				<string>5F0F87492240D8A980862113E48EBE88</string>
+				<string>2CFC8D6234DC7F9245240C9C81D389E2</string>
+				<string>5D306E4F4171CF53A9C1E43F48841283</string>
+				<string>73429CAFEA0D66F3A04C6C25C8D87448</string>
+				<string>349A65DFDE8D7EA965D16F49220F1D76</string>
+				<string>1C463EC4C11597AB9150D39C874F8EFD</string>
+				<string>B660C7DD7EEA0DEAD2EFC98AB74DE485</string>
+				<string>19D9432C8FDCBBAD21D583CDE57C7196</string>
+				<string>643B774F1BA0580984A95E4781874056</string>
+				<string>4C73C2B01A568ABF521256C755BFDBD4</string>
+				<string>4DC4BDC86958534A4D489D3F9BF8CA29</string>
+				<string>D3B789D705E8ACE18B77386317749E55</string>
+				<string>B73E3FF6C49EF175333A390526757AA9</string>
+				<string>57AC7E7EFB3A0F7D2B668A48ADCB0A1F</string>
+				<string>4C86210C01450F83D4978FD91ECCDC12</string>
+				<string>F505E3A11C22E0F13192827083185A73</string>
+				<string>BCA55FBF590ECA4155FB2D825D3F6AFF</string>
+				<string>173E97C9E05AFF72D64EB6C5E3081704</string>
+				<string>3D821EA31EFFFEE575FC81544E42FAD9</string>
+				<string>25F31B28D694ECFA1BD8B70EC40E1FBC</string>
+				<string>177153C58A62084F7BCCFBD493B6E768</string>
+				<string>119D19EC4AB9AA19EC1BE5925AFC22AD</string>
+				<string>32FB3B5FADC69ACFED3957D67EC8FF0C</string>
+				<string>51395D7B9E463D3582E9D3E38F9030D6</string>
+				<string>0BAA841B43F921E5A0BE8A85BACF0892</string>
+				<string>B371DB50A8D4C71C99452B2087E37A42</string>
+				<string>6C240FEFC55395725437955D8667CCE8</string>
+				<string>4B2D02F6BD7A7815D23E41AD12F267FA</string>
+				<string>C76E285B24403495D2A8DDEECC16225C</string>
+				<string>11DCC70782EFCAFBDF8839E208D8DA20</string>
+				<string>864073C25FB11CE21771CD99CB679631</string>
+				<string>718E0893C0CABFBF2047FF27C149D018</string>
+				<string>7E64DB0CBBE14E3F65D21FDFCB61808C</string>
+				<string>2FC01E4F46F5CF26A1F11369827D8A74</string>
+				<string>16AE9884517C38E792D2CD96C9AD9885</string>
+				<string>50D81BD235B84058BD74961EF509EF19</string>
+				<string>4971DB9B4537CD58C96AFEAD8352CA0C</string>
+				<string>0A872286FBE445770A8D03573B5DA997</string>
+				<string>4C3F85ED16E791CA73F003E24F2DC96A</string>
+				<string>BEDB74732E8FA8ABDB56D334EA784583</string>
+				<string>4C9205FFA436A893B473EB3170EB6A4D</string>
+				<string>A5F65F53A35650CE96D8696F64DD6F7B</string>
+				<string>ABD854D3D86FBC00D0CC14E15B59B0B1</string>
+				<string>4D1A3CA0C8EFA6829CE89D5DDB875B4D</string>
+				<string>071A1F91B444D57F30C5D7535DBEB27E</string>
+				<string>D1623498681F65D111BAFE40D11EC0B8</string>
+				<string>D030CA497730EBE06F8123CF9E53378B</string>
+				<string>1277870414018BAF910A8665C4B4C3A5</string>
+				<string>AE2762ADDD61B8D6E6E7F68BD0FEB368</string>
+				<string>224B8E71DC2AFB5E9434F98EFE5EE2B5</string>
+				<string>52D29E09B21FD9EBDE45BF9AB4BA9D25</string>
+				<string>DC0EDE45EA1E20820EC678FC4D788BC4</string>
+				<string>D799D67E0F515860CD6F3BDA4FE2BC7E</string>
+				<string>63C3E1EAF0EBC90A8CAEEF6880290C8D</string>
+				<string>4BB17EBA92B686089D2E33F55328BB3E</string>
+				<string>7DCBC711C5406FD730BE590C94D32D96</string>
+				<string>9788D10CC2A0D1D03DB12DF49872F7B8</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>CalendarLib</string>
+			<key>path</key>
+			<string>CalendarLib</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F315116EB4FF2E89C6B932ACC94692C0</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4C9205FFA436A893B473EB3170EB6A4D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>F4EBD297A3D92B1C8C650187DC9BA559</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4C3F85ED16E791CA73F003E24F2DC96A</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>F505E3A11C22E0F13192827083185A73</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>MGCEventView.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F5AB33DF189AD3A8000A3E256FA9E734</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>Info.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F843E9A69A061049F1525728BB17C353</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>F8A60A7130AC5347C61F40D6D030BFB8</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0A82847ABC6DF78794FA578FFF202A2C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>FA4E72657FE4E8A1695BD505C8E7BDB1</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>7A02B3D0D0A5C4F9A05668A732FDF73F</string>
+				<string>8A637532D7C717B031F5479C9DFDCF96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXHeadersBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>FB45FFD90572718D82AB9092B750F0CA</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>ENABLE_NS_ASSERTIONS</key>
+				<string>NO</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>RELEASE=1</string>
+				</array>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>8.0</string>
+				<key>STRIP_INSTALLED_PRODUCT</key>
+				<string>NO</string>
+				<key>SYMROOT</key>
+				<string>${SRCROOT}/../build</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+	</dict>
+	<key>rootObject</key>
+	<string>D41D8CD98F00B204E9800998ECF8427E</string>
+</dict>
+</plist>

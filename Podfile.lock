@@ -1,13 +1,20 @@
 PODS:
+  - CalendarLib (1.0):
+    - OrderedDictionary (~> 1.2)
+    - OSCache (~> 1.2)
   - OrderedDictionary (1.2)
-  - OSCache (1.2)
+  - OSCache (1.2.1)
 
 DEPENDENCIES:
-  - OrderedDictionary (~> 1.2)
-  - OSCache (~> 1.2)
+  - CalendarLib (from `.`)
+
+EXTERNAL SOURCES:
+  CalendarLib:
+    :path: .
 
 SPEC CHECKSUMS:
+  CalendarLib: 8e775c243bca9c6ad32815fe4de33b0094b6a7f5
   OrderedDictionary: 9cc5d69c5c5314ad696ed1839190724e83d534c7
-  OSCache: 10cdb5da579364aacfb8b7612dab13cf9c7aa4dc
+  OSCache: 826996b68e8542a8a3d8af1ab0a0fc3070d8f357
 
-COCOAPODS: 0.38.1
+COCOAPODS: 0.39.0

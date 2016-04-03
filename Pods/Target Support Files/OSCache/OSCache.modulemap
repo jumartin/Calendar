@@ -1,4 +1,4 @@
-module OSCache {
+framework module OSCache {
   umbrella header "OSCache-umbrella.h"
 
   export *
