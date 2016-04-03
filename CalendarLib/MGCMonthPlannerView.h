@@ -58,6 +58,12 @@ typedef enum : NSUInteger {
     MGCMonthPlannerStyleEmpty = 2
 } MGCMonthPlannerStyle;
 
+typedef enum : NSUInteger {
+    MGCMonthPlannerPagingModeNone = 0,
+    MGCMonthPlannerPagingModeHeaderTop = 1,
+    MGCMonthPlannerPagingModeHeaderBottom = 2
+} MGCMonthPlannerPagingMode;
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 // MGCMonthPlannerView
@@ -165,6 +171,15 @@ typedef enum : NSUInteger {
 	@discussion If the currently visible month is outside the new range, the view scrolls to the range starting date.
  */
 @property (nonatomic, copy) MGCDateRange *dateRange;
+
+
+/*!
+	@abstract	The paging style for the view.
+	@discussion If set MGCMonthPlannerPagingModeNone, paging is disabled.
+                If set to MGCMonthPlannerPagingModeHeaderBottom, scrolling stops below the header.
+                If set to MGCMonthPlannerPagingModeHeaderTop, scrolling stops above the header.
+ */
+@property (nonatomic) MGCMonthPlannerPagingMode pagingMode;
 
 @property (nonatomic, strong) UIColor *calendarBackgroundColor; //Default: [UIColor whiteColor]
 

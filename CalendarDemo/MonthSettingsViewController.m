@@ -12,7 +12,8 @@
 
 
 const NSUInteger kStyleSection = 1;
-const NSUInteger kDateRangeSection = 3;
+const NSUInteger kPagingSection = 2;
+const NSUInteger kDateRangeSection = 4;
 
 
 @interface MonthSettingsViewController ()
@@ -134,8 +135,12 @@ const NSUInteger kDateRangeSection = 3;
         [tableView reloadSections:[NSIndexSet indexSetWithIndex:kStyleSection] withRowAnimation:UITableViewRowAnimationNone];
         return;
     }
-    
-    
+    else if (indexPath.section == kPagingSection) {
+        self.monthPlannerView.pagingMode = indexPath.item;
+        [tableView reloadSections:[NSIndexSet indexSetWithIndex:kPagingSection] withRowAnimation:UITableViewRowAnimationNone];
+        return;
+    }
+
 	UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
 	[tableView beginUpdates];
 	
@@ -177,6 +182,9 @@ const NSUInteger kDateRangeSection = 3;
     UITableViewCell *cell = [super tableView:tableView cellForRowAtIndexPath:indexPath];
     if (indexPath.section == kStyleSection) {
         cell.accessoryType = (self.monthPlannerView.style == indexPath.item) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+    }
+    else if (indexPath.section == kPagingSection) {
+        cell.accessoryType = (self.monthPlannerView.pagingMode == indexPath.item) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     }
     return cell;
 }

@@ -48,10 +48,6 @@ static NSString* const MonthHeaderViewIdentifier = @"MonthHeaderViewIdentifier";
 static NSString* const MonthBackgroundViewIdentifier = @"MonthBackgroundViewIdentifier";
 static NSString* const EventsRowViewIdentifier = @"EventsRowViewIdentifier";
 
-// we only load in the collection view (2 * kMonthsLoadingStep + 1) months each at a time.
-// this value can be tweaked for performance or smoother scrolling (between 2 and 4 seems reasonable)
-static const NSUInteger kMonthsLoadingStep = 2;
-
 static const NSUInteger kRowCacheSize = 40;			// number of rows to cache (cells / layout)
 static const CGFloat kDragScrollOffset = 20.;
 static const CGFloat kDragScrollZoneSize = 20.;
@@ -312,6 +308,12 @@ typedef enum
     [self.eventsView reloadData];
 }
 
+- (void)setPagingMode:(MGCMonthPlannerPagingMode)pagingMode
+{
+    _pagingMode = pagingMode;
+    self.eventsView.decelerationRate = pagingMode == MGCMonthPlannerPagingModeNone ? UIScrollViewDecelerationRateNormal : UIScrollViewDecelerationRateFast;
+}
+
 #pragma mark - Private properties
 
 - (NSDate*)startDate
@@ -344,7 +346,7 @@ typedef enum
     
     if (self.dateRange) {
         NSDateComponents *comps = [NSDateComponents new];
-        comps.month = -(2 * kMonthsLoadingStep + 1);
+        comps.month = -self.numberOfLoadedMonths;
         date = [self.calendar dateByAddingComponents:comps toDate:self.dateRange.end options:0];
         
         if ([date compare:self.dateRange.start] == NSOrderedAscending) {
@@ -354,13 +356,46 @@ typedef enum
     return date;
 }
 
+// minimum height of a month
+- (CGFloat)monthMinimumHeight
+{
+    NSUInteger numWeeks = [self.calendar minimumRangeOfUnit:NSCalendarUnitWeekOfMonth].length;
+    return numWeeks * self.rowHeight + self.monthInsets.top + self.monthInsets.bottom;
+}
+
+// maximum height of a month
+- (CGFloat)monthMaximumHeight
+{
+    NSUInteger numWeeks = [self.calendar maximumRangeOfUnit:NSCalendarUnitWeekOfMonth].length;
+    return numWeeks * self.rowHeight + self.monthInsets.top + self.monthInsets.bottom;
+}
+
+// height for month containing date
+- (CGFloat)heightForMonthAtDate:(NSDate*)date
+{
+    NSDate *monthStart = [self.calendar mgc_startOfMonthForDate:date];
+    NSUInteger numWeeks = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:monthStart].length;
+    return numWeeks * self.rowHeight + self.monthInsets.top + self.monthInsets.bottom;
+}
+
+// number of months loaded at once in the collection view
 - (NSUInteger)numberOfLoadedMonths
 {
-	NSUInteger numMonths = (2 * kMonthsLoadingStep + 1);
-	if (self.dateRange) {
+    // default number of loaded month
+    // this can eventually be tweaked for performance or smoother scrolling
+    NSUInteger numMonths = 9;
+    
+    // it cannot be less than the number of months displayable on one screen plus one on each size to accomodate paging
+    CGFloat minContentHeight = CGRectGetHeight(self.eventsView.bounds) + 2 * self.monthMaximumHeight;
+    NSUInteger minLoadedMonths = ceilf(minContentHeight / self.monthMinimumHeight);
+    
+    numMonths = MAX(numMonths, minLoadedMonths);
+    
+    if (self.dateRange) {
 		NSInteger diff = [self.dateRange components:NSCalendarUnitMonth forCalendar:self.calendar].month;
 		numMonths = MIN(numMonths, diff);  // cannot load more than the total number of scrollable months
 	}
+    
 	return numMonths;
 }
 
@@ -462,9 +497,7 @@ typedef enum
     
     NSDate *month = [startOfMonth earlierDate:self.startDate];
     for (int i = 0; i < monthsDiff; i++) {
-        NSUInteger numWeeks = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:month].length;
-        offset += numWeeks * self.rowHeight + self.monthInsets.top + self.monthInsets.bottom;
-        
+        offset += [self heightForMonthAtDate:month];
         month = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:month options:0];
     }
     
@@ -472,6 +505,20 @@ typedef enum
         offset = -offset;
     }
     return offset;
+}
+
+// returns start date for the month at given offset
+- (NSDate*)monthFromOffset:(CGFloat)yOffset
+{
+    NSDate *month = self.startDate;
+    CGFloat y = yOffset > 0 ? [self heightForMonthAtDate:month] : 0;
+    
+    while (y < fabs(yOffset)) {
+        month = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:(yOffset > 0 ? 1 : -1) toDate:month options:0];
+        y += [self heightForMonthAtDate:month];
+    };
+    
+    return month;
 }
 
 - (void)reload
@@ -744,51 +791,53 @@ typedef enum
 
 }
 
-// adjusts startDate by offsetting date by given months within calendar date range.
-// returns the distance in months between date and new start.
-- (NSUInteger)adjustStartDateByMonths:(NSInteger)months
+// adjusts startDate so that month at given date is centered.
+// returns the distance in months between old and new start date
+- (NSInteger)adjustStartDateForCenteredMonth:(NSDate*)date
 {
-	NSDateComponents *comps = [NSDateComponents new];
-	comps.month = months;
-	NSDate *start = [self.calendar dateByAddingComponents:comps toDate:self.startDate options:0];
-	
-	if ([start compare:self.dateRange.start] == NSOrderedAscending) {
-		start = self.dateRange.start;
-	}
-	else if ([start compare:self.maxStartDate] == NSOrderedDescending) {
-		start = self.maxStartDate;
-	}
-	
-    NSUInteger diff = abs((int)[self.calendar components:NSCalendarUnitMonth fromDate:self.startDate toDate:start options:0].month);
-
+    CGFloat contentHeight = self.eventsView.contentSize.height;
+    CGFloat boundsHeight = CGRectGetHeight(self.eventsView.bounds);
+    
+    NSUInteger offset = floorf((contentHeight - boundsHeight) / self.monthMaximumHeight) / 2;
+    
+    NSDate *start = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:-offset toDate:date options:0];
+    if ([start compare:self.dateRange.start] == NSOrderedAscending) {
+        start = self.dateRange.start;
+    }
+    else if ([start compare:self.maxStartDate] == NSOrderedDescending) {
+        start = self.maxStartDate;
+    }
+    
+    NSInteger diff = [self.calendar components:NSCalendarUnitMonth fromDate:self.startDate toDate:start options:0].month;
+    
     self.startDate = start;
     return diff;
 }
 
-// returns YES if collection views were reloaded
+// returns YES if the collection view was reloaded
 - (BOOL)recenterIfNeeded
 {
     CGFloat yOffset = self.eventsView.contentOffset.y;
     CGFloat contentHeight = self.eventsView.contentSize.height;
 
-    NSDate *oldStart = [self.startDate copy];
-    NSUInteger monthOffset = 0;
-    
-    if (yOffset <= 0) {
-        monthOffset = [self adjustStartDateByMonths:-kMonthsLoadingStep];
-    }
-     else if (CGRectGetMaxY(self.eventsView.bounds) >= contentHeight) {
-        monthOffset = [self adjustStartDateByMonths:kMonthsLoadingStep];
-    }
-    
-    if (monthOffset != 0) {
-        CGFloat y = [self yOffsetForMonth:oldStart];
-        [self.eventsView reloadData];
+    if (yOffset < self.monthMaximumHeight || CGRectGetMaxY(self.eventsView.bounds) + self.monthMaximumHeight > contentHeight) {
         
-        CGPoint offset = self.eventsView.contentOffset;
-        offset.y = y + yOffset;
-        self.eventsView.contentOffset = offset;
-        return YES;
+        NSDate *oldStart = [self.startDate copy];
+        
+        NSDate *centerMonth = [self monthFromOffset:yOffset];
+        NSInteger monthOffset = [self adjustStartDateForCenteredMonth:centerMonth];
+    
+        if (monthOffset != 0) {
+            CGFloat y = [self yOffsetForMonth:oldStart];
+            [self.eventsView reloadData];
+        
+            CGPoint offset = self.eventsView.contentOffset;
+            offset.y = y + yOffset;
+            self.eventsView.contentOffset = offset;
+            
+            //NSLog(@"recentered - startdate offset by %d months", monthOffset);
+            return YES;
+        }
     }
     return NO;
 }
@@ -1555,6 +1604,50 @@ typedef enum
     
     if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidScroll:)]) {
         [self.delegate monthPlannerViewDidScroll:self];
+    }
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView*)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint*)targetContentOffset
+{
+    if (self.pagingMode == MGCMonthPlannerPagingModeNone) return;
+    
+    const CGFloat kFlickVelocity = .5;
+    
+    CGFloat yOffsetMin = self.pagingMode == MGCMonthPlannerPagingModeHeaderTop ? 0 : self.monthInsets.top;
+    CGFloat yOffsetMax = 0;
+    
+    NSDate *monthStart = [self.startDate copy];
+    for (int i = 0; i < self.numberOfLoadedMonths; i++) {
+        CGFloat offset = yOffsetMin + [self heightForMonthAtDate:monthStart];
+        if (offset > scrollView.contentOffset.y) {
+            yOffsetMax = offset;
+            break;
+        }
+        yOffsetMin = offset;
+        
+        monthStart = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:monthStart options:0];
+    }
+    
+    // we need to had a few checks to avoid flickering when swiping fast on a small distance
+    // see http://stackoverflow.com/a/14291208/740949
+    CGFloat deltaY = targetContentOffset->y - scrollView.contentOffset.y;
+    BOOL mightFlicker = (velocity.y > 0.0 && deltaY > 0.0) || (velocity.y < 0.0 && deltaY < 0.0);
+    
+    if (fabs(velocity.y) < kFlickVelocity && !mightFlicker) {
+        // stick to nearest section
+        if (scrollView.contentOffset.y - yOffsetMin < yOffsetMax - scrollView.contentOffset.y) {
+            targetContentOffset->y = yOffsetMin;
+        } else {
+            targetContentOffset->y = yOffsetMax;
+        }
+    }
+    else {
+        // scroll to next page
+        if (velocity.y > 0) {
+            targetContentOffset->y = yOffsetMax;
+        } else {
+            targetContentOffset->y = yOffsetMin;
+        }
     }
 }
 
