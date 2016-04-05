@@ -38,37 +38,37 @@
 @protocol MGCMonthPlannerViewDelegate;
 
 
-typedef enum : NSUInteger {
+typedef NS_OPTIONS(NSUInteger, MGCMonthHeaderStyle) {
     MGCMonthHeaderStyleDefault = 0,
     MGCMonthHeaderStyleShort = 1 << 0,
     MGCMonthHeaderStyleHidden = 1 << 1
-} MGCMonthHeaderStyle;
+};
 
-typedef enum : NSUInteger {
+typedef NS_OPTIONS(NSUInteger, MGCMonthPlannerGridStyle) {
     MGCMonthPlannerGridStyleFill = 1 << 0,
     MGCMonthPlannerGridStyleVerticalLines = 1 << 1,
     MGCMonthPlannerGridStyleHorizontalLines = 1 << 2,
     MGCMonthPlannerGridStyleBottomDayLabel = 1 << 3,
     MGCMonthPlannerGridStyleDefault = (MGCMonthPlannerGridStyleHorizontalLines|MGCMonthPlannerGridStyleVerticalLines)
-} MGCMonthPlannerGridStyle;
+};
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, MGCMonthPlannerStyle) {
     MGCMonthPlannerStyleEvents = 0,
     MGCMonthPlannerStyleDots = 1,
     MGCMonthPlannerStyleEmpty = 2
-} MGCMonthPlannerStyle;
+};
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, MGCMonthPlannerPagingMode) {
     MGCMonthPlannerPagingModeNone = 0,
     MGCMonthPlannerPagingModeHeaderTop = 1,
     MGCMonthPlannerPagingModeHeaderBottom = 2
-} MGCMonthPlannerPagingMode;
+};
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
     MGCMonthPlannerScrollAlignmentHeaderTop = 0,
     MGCMonthPlannerScrollAlignmentHeaderBottom = 1,
     MGCMonthPlannerScrollAlignmentWeekRow = 2
-} MGCMonthPlannerScrollAlignment;
+};
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////

@@ -37,25 +37,24 @@
 @protocol MGCDayPlannerViewDelegate;
 
 
-typedef enum : NSUInteger
-{
+typedef NS_ENUM(NSUInteger, MGCEventType) {
 	MGCAllDayEventType = 0,
 	MGCTimedEventType
-} MGCEventType;
+};
 
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, MGCDayPlannerScrollType) {
 	MGCDayPlannerScrollDateTime = 0,
 	MGCDayPlannerScrollDate = 1,
 	MGCDayPlannerScrollTime = 2
-} MGCDayPlannerScrollType;
+};
 
 
-typedef enum : NSUInteger {
+typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
     MGCDayPlannerTimeMarkHeader = 0,
     MGCDayPlannerTimeMarkCurrent = 1,
     MGCDayPlannerTimeMarkFloating = 2,
-} MGCDayPlannerTimeMark;
+};
 
 
 /*!

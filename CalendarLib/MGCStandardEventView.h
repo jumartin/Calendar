@@ -32,15 +32,14 @@
 
 
 /*! Presentation styles for the view */
-typedef enum : NSUInteger
-{
+typedef NS_OPTIONS(NSUInteger, MGCStandardEventViewStyle) {
 	MGCStandardEventViewStyleDefault = 0,		// transparent background
 	MGCStandardEventViewStylePlain	 = 1 << 0,	// plain background
 	MGCStandardEventViewStyleDot	 = 1 << 1,	// event details are preceded by a dot (e.g to indicate a timed event in the month planner view)
 	MGCStandardEventViewStyleBorder	 = 1 << 2,	// view shows a left border (e.g timed events in the day planner view)
 	MGCStandardEventViewStyleSubtitle = 1 << 3, // view shows the subtitle string
 	MGCStandardEventViewStyleDetail  = 1 << 4	// view shows the detail string
-} MGCStandardEventViewStyle;
+};
 
 
 /*! 
