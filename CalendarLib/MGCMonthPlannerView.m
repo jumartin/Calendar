@@ -38,6 +38,7 @@
 #import "MGCMonthPlannerWeekView.h"
 #import "MGCEventsRowView.h"
 #import "MGCMonthPlannerHeaderView.h"
+#import "MGCStandardEventView.h"
 #import "Constant.h"
 
 
@@ -1182,10 +1183,16 @@ typedef enum
 		if ([self.dataSource respondsToSelector:@selector(monthPlannerView:cellForNewEventAtDate:)])
 		{
 			self.interactiveCell = [self.dataSource monthPlannerView:self cellForNewEventAtDate:date];
-			self.interactiveCell.frame = CGRectMake(0, 0, [self.layout columnWidth:0], self.itemHeight);
-			self.interactiveCelltouchPoint = CGPointMake([self.layout columnWidth:0]/2., self.itemHeight/2.);
-			self.interactiveCell.center = [self convertPoint:pt toView:self.eventsView];
+            NSAssert(self.interactiveCell, @"monthPlannerView:cellForNewEventAtDate: can't return nil");
 		}
+        else {
+            MGCStandardEventView *cell= [[MGCStandardEventView alloc]initWithFrame:CGRectZero];
+            cell.title = NSLocalizedString(@"New Event", nil);
+            self.interactiveCell = cell;
+        }
+        self.interactiveCell.frame = CGRectMake(0, 0, [self.layout columnWidth:0], self.itemHeight);
+        self.interactiveCelltouchPoint = CGPointMake([self.layout columnWidth:0]/2., self.itemHeight/2.);
+        self.interactiveCell.center = [self convertPoint:pt toView:self.eventsView];
 	}
 	
 	// show the interactive cell

@@ -37,6 +37,7 @@
 #import "MGCDayColumnCell.h"
 #import "MGCEventCell.h"
 #import "MGCEventView.h"
+#import "MGCStandardEventView.h"
 #import "MGCInteractiveEventView.h"
 #import "MGCTimeRowsView.h"
 
@@ -1180,7 +1181,9 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		NSAssert(self.interactiveCell, @"dayPlannerView:viewForNewEventOfType:atDate can't return nil");
 	}
 	else {
-		self.interactiveCell.eventView = [[MGCEventView alloc]initWithFrame:CGRectZero];
+        MGCStandardEventView *eventView = [[MGCStandardEventView alloc]initWithFrame:CGRectZero];
+        eventView.title = NSLocalizedString(@"New Event", nil);
+        self.interactiveCell.eventView = eventView;
 	}
 	
 	self.acceptsTarget = YES;
