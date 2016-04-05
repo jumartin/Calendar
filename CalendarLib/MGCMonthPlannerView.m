@@ -121,7 +121,8 @@ typedef enum
     _eventsDotColor = [UIColor lightGrayColor];
     _allowsSelection = YES;
     _selectedEventDate = nil;
-    
+    _canCreateEvents = YES;
+    _canMoveEvents = YES;
     _calendarBackgroundColor   = [UIColor whiteColor];
     _weekDayBackgroundColor    = [UIColor whiteColor];
     _weekendDayBackgroundColor = [UIColor colorWithWhite:.97 alpha:.8];
@@ -1143,7 +1144,8 @@ typedef enum
 	
 	if (eventCell)  // a cell was touched
 	{
-		// can we move it ?
+        if (!self.canMoveEvents) return NO;
+        
 		if ([self.dataSource respondsToSelector:@selector(monthPlannerView:canMoveCellForEventAtIndex:date:)])
 		{
 			if (![self.dataSource monthPlannerView:self canMoveCellForEventAtIndex:index date:date]) {
@@ -1178,7 +1180,9 @@ typedef enum
 	}
 	else	// an empty space was touched
 	{
-		self.isInteractiveCellForNewEvent = YES;
+        if (!self.canCreateEvents) return NO;
+        
+        self.isInteractiveCellForNewEvent = YES;
 		// create a new cell
 		if ([self.dataSource respondsToSelector:@selector(monthPlannerView:cellForNewEventAtDate:)])
 		{

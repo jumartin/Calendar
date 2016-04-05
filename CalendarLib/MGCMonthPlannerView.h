@@ -150,6 +150,17 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
  */
 @property (nonatomic) CGFloat itemHeight;
 
+/*!
+	@abstract	Determines whether an event can be created with a long-press on the view.
+	@discussion The default value is YES. This has no effect if the style property of the view is not set to MGCMonthPlannerStyleEvents.
+ */
+@property (nonatomic) BOOL canCreateEvents;
+
+/*!
+	@abstract	Determines whether an event can be moved around after a long-press on the view.
+	@discussion The default value is YES. This has no effect if the style property of the view is not set to MGCMonthPlannerStyleEvents.
+ */
+@property (nonatomic) BOOL canMoveEvents;
 
 /*!
 	@abstract	The object that provides the data for the month planner view
