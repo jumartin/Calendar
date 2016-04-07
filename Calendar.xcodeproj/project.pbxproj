@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		6E1A83BA9C16D9BA4D7F2B25 /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28486480EAA57CF147A3825F /* Pods.framework */; };
 		720041BA1879B2B600F3C497 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 720041B91879B2B600F3C497 /* Settings.bundle */; };
+		721A12A21CB585CF00749F18 /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = 721A12A11CB585CF00749F18 /* CHANGELOG.md */; };
 		721CA1B41A9382990083F41A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 721CA1B21A9382990083F41A /* Localizable.strings */; };
 		721DC18918219C4D00F9470C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721DC18818219C4D00F9470C /* MainViewController.m */; };
 		7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7258E8B01A5A98DD007F88AF /* WeekSettingsViewController.m */; };
@@ -56,6 +57,7 @@
 		720DAE521C6269D900DF8AAA /* NSAttributedString+MGCAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSAttributedString+MGCAdditions.m"; sourceTree = "<group>"; };
 		720DAE541C66531300DF8AAA /* MGCEventKitSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCEventKitSupport.m; sourceTree = "<group>"; };
 		720DAE561C66534A00DF8AAA /* MGCEventKitSupport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MGCEventKitSupport.h; sourceTree = "<group>"; };
+		721A12A11CB585CF00749F18 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		721CA1B31A9382990083F41A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		721CA1B51A9382A80083F41A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		721DC18718219C4D00F9470C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -305,6 +307,7 @@
 				722ABE391CB19C6600713ED3 /* CalendarLib.podspec */,
 				723925AF188B0AE800DE9578 /* README.md */,
 				722ABE331CB19BAC00713ED3 /* LICENSE */,
+				721A12A11CB585CF00749F18 /* CHANGELOG.md */,
 				72CD8BAA18228A7500F12339 /* Lib */,
 				72B5D8F7180D73E0004ADB86 /* Demo */,
 				72B5D910180D73E0004ADB86 /* Tests */,
@@ -595,6 +598,7 @@
 				72B5D902180D73E0004ADB86 /* AppDelegate.m in Sources */,
 				721DC18918219C4D00F9470C /* MainViewController.m in Sources */,
 				72B5D8FE180D73E0004ADB86 /* main.m in Sources */,
+				721A12A21CB585CF00749F18 /* CHANGELOG.md in Sources */,
 				7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
