@@ -46,7 +46,6 @@ static const CGFloat kDefaultDayFontSize = 13;			// default font size for the da
 static const CGFloat kDefaultMonthHeaderFontSize = 20;	// default font size for the month headers
 static const CGFloat kDefaultYearHeaderFontSize = 40;	// deafult font size for the year headers
 
-static const NSUInteger kYearsLoadingStepiPhone = 10;			// number of years in a loaded page = 2 * kYearsLoadingStep  + 1
 static const CGFloat kCellMinimumSpacingiPhone = 0;			// minimum distance between month cells
 static const CGFloat kDefaultDayFontSizeiPhone = 7;			// default font size for the day ordinals
 static const CGFloat kDefaultMonthHeaderFontSizeiPhone = 12;	// default font size for the month headers
