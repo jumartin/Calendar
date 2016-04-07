@@ -30,6 +30,7 @@
 
 #import "MGCTimedEventsViewLayout.h"
 #import "MGCEventCellLayoutAttributes.h"
+#import "MGCAlignedGeometry.h"
 
 
 // In iOS 8.1.2 and older, there is a bug with UICollectionView that will make
@@ -93,7 +94,7 @@
                 rect.size.width = self.dayColumnSize.width;
                 rect.size.height = fmax(self.minimumVisibleHeight, rect.size.height);
                 
-                cellAttribs.frame = CGRectInset(rect, 0, 1);
+                cellAttribs.frame = MGCAlignedRect(CGRectInset(rect , 0, 1));
                 cellAttribs.visibleHeight = cellAttribs.frame.size.height;
                 
                 [attribs addObject:cellAttribs];
@@ -163,7 +164,7 @@
 		CGFloat x = section * self.dayColumnSize.width + groupOffset;
 		
 		for (MGCEventCellLayoutAttributes* attribs in [layoutGroup reverseObjectEnumerator]) {
-			attribs.frame = CGRectMake(x, attribs.frame.origin.y, colWidth, attribs.frame.size.height);
+			attribs.frame = MGCAlignedRectMake(x, attribs.frame.origin.y, colWidth, attribs.frame.size.height);
 			x += colWidth;
 		}
 	}

@@ -133,16 +133,15 @@ static const CGFloat dotSize = 4;
     // border
     CGRect borderFrame = CGRectZero;
     if (self.accessoryTypes & MGCDayColumnCellAccessoryBorder) {
-        CGFloat width = 1. / [UIScreen mainScreen].scale;
-        borderFrame = CGRectMake(0, self.headerHeight, width, self.contentView.bounds.size.height-self.headerHeight);
+        borderFrame = CGRectMake(0, self.headerHeight, 1./[UIScreen mainScreen].scale, self.contentView.bounds.size.height-self.headerHeight);
     }
     else if (self.accessoryTypes & MGCDayColumnCellAccessorySeparator) {
-        CGFloat width = 2. / [UIScreen mainScreen].scale;
-        borderFrame = CGRectMake(0, 0, width, self.contentView.bounds.size.height);
+        borderFrame = CGRectMake(0, 0, 2./[UIScreen mainScreen].scale, self.contentView.bounds.size.height);
     }
     
     self.leftBorder.frame = borderFrame;
-    self.leftBorder.backgroundColor = self.separatorColor.CGColor;
+    self.leftBorder.borderColor = self.separatorColor.CGColor;
+    self.leftBorder.borderWidth = borderFrame.size.width / 2.;
 
 	[CATransaction commit];
 }

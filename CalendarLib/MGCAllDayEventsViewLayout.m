@@ -29,6 +29,7 @@
 //
 
 #import "MGCAllDayEventsViewLayout.h"
+#import "MGCAlignedGeometry.h"
 
 
 static const CGFloat kCellSpacing = 2.;		// space around cells
@@ -155,7 +156,7 @@ static const CGFloat kCellInset = 4.;
 		width -= kCellInset;
 	}
 	
-	CGRect rect = CGRectMake(x, y, width, self.eventCellHeight);
+	CGRect rect = MGCAlignedRectMake(x, y, width, self.eventCellHeight);
 	return CGRectInset(rect, kCellSpacing, 0);
 }
 

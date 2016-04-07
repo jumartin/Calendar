@@ -89,6 +89,8 @@
 		72707CE1188592AC00830A8E /* MGCMonthPlannerViewDayCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCMonthPlannerViewDayCell.m; sourceTree = "<group>"; };
 		72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "main-iPhone.storyboard"; sourceTree = "<group>"; };
 		7275C49F1C46E87B0036C9A3 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		72780F8F1CB6D0DF00CA5513 /* MGCAlignedGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCAlignedGeometry.h; sourceTree = "<group>"; };
+		72780F901CB6D0DF00CA5513 /* MGCAlignedGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCAlignedGeometry.m; sourceTree = "<group>"; };
 		727A94B018F3B9C300260D6E /* MGCEventsRowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventsRowView.h; sourceTree = "<group>"; };
 		727A94B118F3B9C300260D6E /* MGCEventsRowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCEventsRowView.m; sourceTree = "<group>"; };
 		727A94B618F3D28F00260D6E /* MGCEventView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCEventView.h; sourceTree = "<group>"; };
@@ -420,6 +422,8 @@
 				723A2BAC181449F500834697 /* NSCalendar+MGCAdditions.m */,
 				720DAE511C6269D900DF8AAA /* NSAttributedString+MGCAdditions.h */,
 				720DAE521C6269D900DF8AAA /* NSAttributedString+MGCAdditions.m */,
+				72780F8F1CB6D0DF00CA5513 /* MGCAlignedGeometry.h */,
+				72780F901CB6D0DF00CA5513 /* MGCAlignedGeometry.m */,
 				723925AB188B040200DE9578 /* EventKit */,
 				723345D81A3BA75300BAE7A9 /* Events view */,
 				72B5D954180DB304004ADB86 /* Day planner */,

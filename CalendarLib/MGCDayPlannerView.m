@@ -40,6 +40,7 @@
 #import "MGCStandardEventView.h"
 #import "MGCInteractiveEventView.h"
 #import "MGCTimeRowsView.h"
+#import "MGCAlignedGeometry.h"
 
 
 // used to restrict scrolling to one direction / axis
@@ -247,7 +248,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     CGFloat yCenterOffset = self.timeScrollView.contentOffset.y + self.timeScrollView.bounds.size.height / 2.;
     NSTimeInterval ti = [self timeFromOffset:yCenterOffset rounding:0];
    
-    _hourSlotHeight = fminf(fmaxf(hourSlotHeight, kMinHourSlotHeight), kMaxHourSlotHeight);
+    _hourSlotHeight = fminf(fmaxf(MGCAlignedFloat(hourSlotHeight), kMinHourSlotHeight), kMaxHourSlotHeight);
     
     self.timedEventsViewLayout.dayColumnSize = self.dayColumnSize;
     [self.timedEventsViewLayout invalidateLayout];
@@ -266,13 +267,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 // public
 - (CGSize)dayColumnSize
 {
- 	CGFloat height = roundf((self.hourSlotHeight * self.hourRange.length + 2 * self.eventsViewInnerMargin));
+ 	CGFloat height = self.hourSlotHeight * self.hourRange.length + 2 * self.eventsViewInnerMargin;
 	
 	// if the number of days in dateRange is less than numberOfVisibleDays, spread the days over the view
 	NSUInteger numberOfDays = MIN(self.numberOfVisibleDays, self.numberOfLoadedDays);
-	CGFloat width = roundf((self.bounds.size.width - self.timeColumnWidth) / numberOfDays);
+    CGFloat width = (self.bounds.size.width - self.timeColumnWidth) / numberOfDays;
 	
-	return CGSizeMake(width, height);
+	return MGCAlignedSizeMake(width, height);
 }
 
 // public
