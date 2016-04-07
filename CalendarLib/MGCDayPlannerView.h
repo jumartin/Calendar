@@ -279,8 +279,7 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@param		viewClass	The class of the view that you want to use.
 	@param		identifier	The reuse identifier to associate with the specified class. 
 							This parameter must not be nil and must not be an empty string.
-	@discussion	Prior to calling the dequeueReusableViewWithIdentifier:forEventViewWithReuseIdentifier method, you must 
-				use this method to tell the day planer view how to create a new event cell of the given type.
+	@discussion	Prior to calling the dequeueReusableViewWithIdentifier:forEventOfType:atIndex:date: method, you must use this method to tell the day planer view how to create a new event cell of the given type.
  */
 - (void)registerClass:(Class)viewClass forEventViewWithReuseIdentifier:(NSString*)identifier;
 
@@ -510,15 +509,13 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 
 /*!
 	@abstract	Asks the data source for the view to be displayed when a new event is about to be created.
-	@discussion	If this method is not implemented by the delegate, a standard event view will be used.
- 
+	@discussion	If this method is not implemented by the data source, a standard event view will be used.
  */
 - (MGCEventView*)dayPlannerView:(MGCDayPlannerView*)view viewForNewEventOfType:(MGCEventType)type atDate:(NSDate*)date;
 
 /*!
 	@abstract	Asks the data source if an event can be created with given type and date. 
 	@discussion	This method is not called if day planner view's canCreateEvents property is set to NO.
- 
  */
 - (BOOL)dayPlannerView:(MGCDayPlannerView*)view canCreateNewEventOfType:(MGCEventType)type atDate:(NSDate*)date;
 
