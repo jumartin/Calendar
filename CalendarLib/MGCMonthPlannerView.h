@@ -30,7 +30,6 @@
 
 #import <UIKit/UIKit.h>
 #import "MGCDateRange.h"
-#import "MGCMonthPlannerViewDayCell.h"
 
 
 @class MGCEventView;
