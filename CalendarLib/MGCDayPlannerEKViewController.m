@@ -366,7 +366,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     evCell.font = [UIFont systemFontOfSize:11];
     evCell.title = ev.title;
     evCell.subtitle = ev.location;
-    evCell.color = [UIColor colorWithCGColor:ev.calendar.CGColor];
+    evCell.eventNormalBackgroundColor = [UIColor colorWithCGColor:ev.calendar.CGColor];
+    evCell.eventSelectedBackgroundColor = [UIColor colorWithCGColor:ev.calendar.CGColor];
     evCell.style = MGCStandardEventViewStylePlain|MGCStandardEventViewStyleSubtitle;
     evCell.style |= (type == MGCAllDayEventType) ?: MGCStandardEventViewStyleBorder;
     return evCell;
@@ -424,7 +425,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     
     MGCStandardEventView *evCell = [MGCStandardEventView new];
     evCell.title = NSLocalizedString(@"New Event", nil);
-    evCell.color = [UIColor colorWithCGColor:defaultCalendar.CGColor];
+    evCell.eventNormalBackgroundColor = [UIColor colorWithCGColor:defaultCalendar.CGColor];
+    evCell.eventSelectedBackgroundColor = [UIColor colorWithCGColor:defaultCalendar.CGColor];
     return evCell;
 }
 

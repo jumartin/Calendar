@@ -390,7 +390,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 		evCell.title = ev.title;
 		evCell.subtitle = ev.location;
 		evCell.detail = [self.dateFormatter stringFromDate:ev.startDate];
-		evCell.color = [UIColor colorWithCGColor:ev.calendar.CGColor];
+        evCell.eventNormalBackgroundColor = [UIColor colorWithCGColor:ev.calendar.CGColor];
+        evCell.eventSelectedBackgroundColor = [UIColor colorWithCGColor:ev.calendar.CGColor];
 		
 		NSDate *start = [self.calendar mgc_startOfDayForDate:ev.startDate];
 		NSDate *end = [self.calendar mgc_nextStartOfDayForDate:ev.endDate];
@@ -416,7 +417,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     
     MGCStandardEventView *evCell = [MGCStandardEventView new];
     evCell.title = NSLocalizedString(@"New Event", nil);
-    evCell.color = [UIColor colorWithCGColor:defaultCalendar.CGColor];
+    evCell.eventNormalBackgroundColor = [UIColor colorWithCGColor:defaultCalendar.CGColor];
+    evCell.eventSelectedBackgroundColor = [UIColor colorWithCGColor:defaultCalendar.CGColor];
     return evCell;
 }
 

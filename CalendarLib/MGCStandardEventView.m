@@ -49,7 +49,9 @@ static CGFloat kSpace = 2;
     if (self = [super initWithFrame:frame]) {
 		self.contentMode = UIViewContentModeRedraw;
 		
-		_color = [UIColor blackColor];
+		_textColor = [UIColor blackColor];
+        _eventNormalBackgroundColor = [UIColor lightGrayColor];
+        _eventSelectedBackgroundColor = [UIColor grayColor];
 		_style = MGCStandardEventViewStylePlain|MGCStandardEventViewStyleSubtitle;
 		_font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
 		_leftBorderView = [[UIView alloc]initWithFrame:CGRectNull];
@@ -94,7 +96,7 @@ static CGFloat kSpace = 2;
 	//style.lineBreakMode = NSLineBreakByTruncatingMiddle;
 	[as addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, as.length)];
 	
-	UIColor *color = self.selected ? [UIColor whiteColor] : self.color;
+	UIColor *color = self.selected ? [UIColor whiteColor] : self.textColor;
 	[as addAttribute:NSForegroundColorAttributeName value:color range:NSMakeRange(0, as.length)];
 	
 	self.attrString = as;
@@ -110,7 +112,7 @@ static CGFloat kSpace = 2;
 
 - (void)setColor:(UIColor*)color
 {
-	_color = color;
+	_textColor = color;
 	[self resetColors];
 }
 
@@ -123,12 +125,12 @@ static CGFloat kSpace = 2;
 
 - (void)resetColors
 {
-	self.leftBorderView.backgroundColor = self.color;
+	self.leftBorderView.backgroundColor = self.textColor;
 	
 	if (self.selected)
-		self.backgroundColor = self.selected ? self.color : [self.color colorWithAlphaComponent:.3];
+		self.backgroundColor = self.selected ? self.eventSelectedBackgroundColor : self.eventNormalBackgroundColor;
 	else if (self.style & MGCStandardEventViewStylePlain)
-		self.backgroundColor = [self.color colorWithAlphaComponent:.3];
+		self.backgroundColor = self.eventNormalBackgroundColor;
 	else
 		self.backgroundColor = [UIColor clearColor];
 	
@@ -181,7 +183,9 @@ static CGFloat kSpace = 2;
 	cell.title = self.title;
 	cell.subtitle = self.subtitle;
 	cell.detail = self.detail;
-	cell.color = self.color;
+	cell.textColor = self.textColor;
+    cell.eventNormalBackgroundColor = self.eventNormalBackgroundColor;
+    cell.eventSelectedBackgroundColor = self.eventSelectedBackgroundColor;
 	cell.style = self.style;
 	
 	return cell;

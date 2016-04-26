@@ -30,6 +30,7 @@
 
 #import <UIKit/UIKit.h>
 #import "MGCDateRange.h"
+#import "MGCMonthPlannerViewDayCell.h"
 
 
 @class MGCEventView;
@@ -220,6 +221,12 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 	@discussion The default value is YES. This has no effect if the style property of the view is not set to MGCMonthPlannerStyleEvents.
  */
 @property (nonatomic) BOOL canMoveEvents;
+
+/*!
+	@abstract	Determines whether an day can have different background color.
+	@discussion The default value is NO.
+ */
+@property (nonatomic) BOOL allowCustomDayBackgroundColor;
 
 /*!
 	@abstract	The object that provides the data for the month planner view
@@ -462,6 +469,14 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
  
  */
 - (BOOL)monthPlannerView:(MGCMonthPlannerView*)view canMoveCellForEventAtIndex:(NSUInteger)index date:(NSDate*)date;
+
+/*!
+    @abstract Asks the data source for the color that corresponds to the specified date in the month planner view.
+    @discussion This method is not called when allowCustomDayBackgroundColor property is set to NO.
+ 
+ */
+- (UIColor*)monthPlannerView:(MGCMonthPlannerView*)view colorForDayCellAtDate:(NSDate*)date;
+
 
 @end
 

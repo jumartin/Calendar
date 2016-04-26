@@ -123,6 +123,7 @@ typedef enum
     _selectedEventDate = nil;
     _canCreateEvents = YES;
     _canMoveEvents = YES;
+    _allowCustomDayBackgroundColor = NO;
     _calendarBackgroundColor   = [UIColor whiteColor];
     _weekDayBackgroundColor    = [UIColor whiteColor];
     _weekendDayBackgroundColor = [UIColor colorWithWhite:.97 alpha:.8];
@@ -1398,6 +1399,10 @@ typedef enum
     
     cell.dayLabel.attributedText = attrStr;
     cell.backgroundColor = [self.calendar isDateInWeekend:date] ? self.weekendDayBackgroundColor : self.weekDayBackgroundColor;
+    
+    if ([self.dataSource respondsToSelector:@selector(monthPlannerView:colorForDayCellAtDate:)] && self.allowCustomDayBackgroundColor) {
+        cell.backgroundColor = [self.dataSource monthPlannerView:self colorForDayCellAtDate:date];
+    }
     
     if (self.style & MGCMonthPlannerStyleDots) {
         NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
