@@ -7,6 +7,8 @@ PODS:
 
 DEPENDENCIES:
   - CalendarLib (from `.`)
+  - OrderedDictionary (~> 1.2)
+  - OSCache (~> 1.2)
 
 EXTERNAL SOURCES:
   CalendarLib:
@@ -17,4 +19,6 @@ SPEC CHECKSUMS:
   OrderedDictionary: 9cc5d69c5c5314ad696ed1839190724e83d534c7
   OSCache: 826996b68e8542a8a3d8af1ab0a0fc3070d8f357
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: e0f5ba4e2a081bddd3f25b571f4d9dc4f76e13ba
+
+COCOAPODS: 1.0.1
