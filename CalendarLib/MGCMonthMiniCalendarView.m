@@ -186,7 +186,7 @@ static const CGFloat kDefaultHeaderFontSizeiPhone = 8;
     if ([self.highlightedDays containsIndex:index] || cellColor != nil)
     {
         color = [UIColor colorWithWhite:1 alpha:.9];
-        font = [UIFont fontWithDescriptor:[[self.daysFont fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold] size:self.daysFont.pointSize];
+        font = [UIFont fontWithDescriptor:[[self.daysFont fontDescriptor] fontDescriptorWithSymbolicTraits:UIFontDescriptorTraitBold] size:self.daysFont.pointSize-0.4];
     }
     
     NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
