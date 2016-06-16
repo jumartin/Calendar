@@ -45,6 +45,8 @@
 
 - (void)calendarYearViewDidScroll:(MGCYearCalendarView*)view
 {
+    return; //At this moment this function does not work properly, self.yearCalendarView.center is not changing
+    
     NSDate *date = [self.yearCalendarView dateForMonthAtPoint:self.yearCalendarView.center];
     if (date) {
         [self.delegate calendarViewController:self didShowDate:date];
