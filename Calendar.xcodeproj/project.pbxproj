@@ -35,6 +35,8 @@
 		72EF08151A3DB8C6005699CA /* MonthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EF080C1A3DB8C6005699CA /* MonthViewController.m */; };
 		72EF08181A3DB8C6005699CA /* YearViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EF080E1A3DB8C6005699CA /* YearViewController.m */; };
 		96A3FD1C9E6707E46CB36A87 /* Pods_CalendarDemo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F06A59852B476A0AA324A957 /* Pods_CalendarDemo.framework */; };
+		BC32A4601D30FED600AB19D7 /* DayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC32A45F1D30FED600AB19D7 /* DayViewController.m */; };
+		BC32A4681D3101BB00AB19D7 /* MGCCalendarHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BC32A4671D3101BB00AB19D7 /* MGCCalendarHeaderCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,6 +158,13 @@
 		72EF080C1A3DB8C6005699CA /* MonthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthViewController.m; sourceTree = "<group>"; };
 		72EF080D1A3DB8C6005699CA /* YearViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YearViewController.h; sourceTree = "<group>"; };
 		72EF080E1A3DB8C6005699CA /* YearViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YearViewController.m; sourceTree = "<group>"; };
+		BC32A45E1D30FED500AB19D7 /* DayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DayViewController.h; sourceTree = "<group>"; };
+		BC32A45F1D30FED600AB19D7 /* DayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DayViewController.m; sourceTree = "<group>"; };
+		BC32A4611D31003C00AB19D7 /* MGCCalendarHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCCalendarHeaderView.h; sourceTree = "<group>"; };
+		BC32A4621D31003C00AB19D7 /* MGCCalendarHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCCalendarHeaderView.m; sourceTree = "<group>"; };
+		BC32A4641D3100D600AB19D7 /* MGCCalendarHeaderCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MGCCalendarHeaderCell.h; sourceTree = "<group>"; };
+		BC32A4651D3100D600AB19D7 /* MGCCalendarHeaderCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MGCCalendarHeaderCell.m; sourceTree = "<group>"; };
+		BC32A4671D3101BB00AB19D7 /* MGCCalendarHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MGCCalendarHeaderCell.xib; sourceTree = "<group>"; };
 		EA537021B8BB04EA0A609FA9 /* Pods-CalendarDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CalendarDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-CalendarDemo/Pods-CalendarDemo.release.xcconfig"; sourceTree = "<group>"; };
 		F06A59852B476A0AA324A957 /* Pods_CalendarDemo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CalendarDemo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -235,6 +244,9 @@
 		723A2BAA1814331000834697 /* Collection view cells & subviews */ = {
 			isa = PBXGroup;
 			children = (
+				BC32A4641D3100D600AB19D7 /* MGCCalendarHeaderCell.h */,
+				BC32A4651D3100D600AB19D7 /* MGCCalendarHeaderCell.m */,
+				BC32A4671D3101BB00AB19D7 /* MGCCalendarHeaderCell.xib */,
 				724E03C4183F8F6A00490FC5 /* MGCDayColumnCell.h */,
 				724E03C5183F8F6A00490FC5 /* MGCDayColumnCell.m */,
 				72B5D92C180D7840004ADB86 /* MGCEventCell.h */,
@@ -347,6 +359,8 @@
 				72EF080C1A3DB8C6005699CA /* MonthViewController.m */,
 				72EF080D1A3DB8C6005699CA /* YearViewController.h */,
 				72EF080E1A3DB8C6005699CA /* YearViewController.m */,
+				BC32A45E1D30FED500AB19D7 /* DayViewController.h */,
+				BC32A45F1D30FED600AB19D7 /* DayViewController.m */,
 				72EF07FD1A3D9DF8005699CA /* WeekViewController.h */,
 				72EF07FE1A3D9DF8005699CA /* WeekViewController.m */,
 				7258E8AF1A5A98DD007F88AF /* WeekSettingsViewController.h */,
@@ -397,6 +411,8 @@
 			children = (
 				72DD627418155AAD00D270DB /* MGCDayPlannerView.h */,
 				72DD627518155AAD00D270DB /* MGCDayPlannerView.m */,
+				BC32A4611D31003C00AB19D7 /* MGCCalendarHeaderView.h */,
+				BC32A4621D31003C00AB19D7 /* MGCCalendarHeaderView.m */,
 				72EF07F21A3D8D13005699CA /* MGCDayPlannerViewController.h */,
 				72EF07F31A3D8D13005699CA /* MGCDayPlannerViewController.m */,
 				723A2BAA1814331000834697 /* Collection view cells & subviews */,
@@ -521,6 +537,7 @@
 			files = (
 				720041BA1879B2B600F3C497 /* Settings.bundle in Resources */,
 				72E9B9161C919EF20070EDD3 /* settings.storyboard in Resources */,
+				BC32A4681D3101BB00AB19D7 /* MGCCalendarHeaderCell.xib in Resources */,
 				7275C4A01C46E87B0036C9A3 /* Launch Screen.storyboard in Resources */,
 				72B5D8FC180D73E0004ADB86 /* InfoPlist.strings in Resources */,
 				721CA1B41A9382990083F41A /* Localizable.strings in Resources */,
@@ -602,6 +619,7 @@
 				72B5D8FE180D73E0004ADB86 /* main.m in Sources */,
 				721A12A21CB585CF00749F18 /* CHANGELOG.md in Sources */,
 				7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */,
+				BC32A4601D30FED600AB19D7 /* DayViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
