@@ -139,6 +139,11 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 @property (nonatomic) UIColor *eventsDotColor;
 
 /*!
+	@abstract	Returns the color of the dot displayed when the month planner view style is set to MGCMonthPlannerStyleDots & the day is selected
+ */
+@property (nonatomic) UIColor *eventsDaySelectedDotColor;
+
+/*!
 	@abstract	Returns the style of the months' background grid.
     @discussion If MGCMonthPlannerGridStyleFill is set, the view fills the grid for the first and last week of the month, and the month header, if displayed, is center-aligned.
                 Otherwise, the grid covers only the days of the months, and the month header, if displayed, is aligned on the first day.

@@ -1413,9 +1413,12 @@ typedef enum
     }
     
     cell.dayLabel.attributedText = attrStr;
+    
+    UIColor *dotColor = self.eventsDotColor;
     if (self.selectedDayBackgroundColor && [self.calendar mgc_isDate:date sameDayAsDate:self.daySelected]) {
         cell.selected = YES;
         cell.backgroundColor = self.selectedDayBackgroundColor;
+        dotColor = self.eventsDaySelectedDotColor ? : dotColor;
     } else {
         cell.selected = NO;
         cell.backgroundColor = [self.calendar isDateInWeekend:date] ? self.weekendDayBackgroundColor : self.weekDayBackgroundColor;
@@ -1424,7 +1427,7 @@ typedef enum
     if (self.style & MGCMonthPlannerStyleDots) {
         NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
         cell.showsDot = eventsCounts > 0;
-        cell.dotColor = self.eventsDotColor;
+        cell.dotColor = dotColor;
     }
     return cell;
 }
