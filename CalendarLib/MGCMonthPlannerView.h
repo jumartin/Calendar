@@ -178,6 +178,12 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 @property (nonatomic, strong) UIColor *weekendDayBackgroundColor;
 
 /*!
+	@abstract	Background color for selected day cell.
+	@discussion The default color is none.
+ */
+@property (nonatomic, strong) UIColor *selectedDayBackgroundColor;
+
+/*!
 	@abstract	Text color for the weekday headers on the top of the view.
 	@discussion The default color is black.
  */
@@ -242,6 +248,7 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
  */
 @property (nonatomic, copy) MGCDateRange *dateRange;
 
+@property (nonatomic, copy) NSDate *daySelected;
 
 /*!
 	@group Creating event views
