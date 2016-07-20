@@ -9,6 +9,7 @@
 #import "WeekViewController.h"
 #import "MonthViewController.h"
 #import "YearViewController.h"
+#import "DayViewController.h"
 #import "NSCalendar+MGCAdditions.h"
 #import "WeekSettingsViewController.h"
 #import "MonthSettingsViewController.h"
@@ -18,15 +19,18 @@ typedef enum : NSUInteger
 {
     CalendarViewWeekType  = 0,
     CalendarViewMonthType = 1,
-    CalendarViewYearType = 2
+    CalendarViewYearType = 2,
+    CalendarViewDayType
 } CalendarViewType;
 
 
-@interface MainViewController ()<YearViewControllerDelegate, WeekViewControllerDelegate>
+@interface MainViewController ()<YearViewControllerDelegate, WeekViewControllerDelegate, DayViewControllerDelegate>
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic) EKCalendarChooser *calendarChooser;
 @property (nonatomic) BOOL firstTimeAppears;
+
+@property (nonatomic) DayViewController *dayViewController;
 @property (nonatomic) WeekViewController *weekViewController;
 @property (nonatomic) MonthViewController *monthViewController;
 @property (nonatomic) YearViewController *yearViewController;
@@ -132,6 +136,17 @@ typedef enum : NSUInteger
 
 #pragma mark - Private
 
+- (DayViewController*)dayViewController
+{
+    if (_dayViewController == nil) {
+        _dayViewController = [[DayViewController alloc]initWithEventStore:self.eventStore];
+        _dayViewController.calendar = self.calendar;
+        _dayViewController.showsWeekHeaderView = YES;
+        _dayViewController.delegate = self;
+    }
+    return _dayViewController;
+}
+
 - (WeekViewController*)weekViewController
 {
     if (_weekViewController == nil) {
@@ -166,6 +181,7 @@ typedef enum : NSUInteger
 {
     switch (type)
     {
+        case CalendarViewDayType:  return self.dayViewController;
         case CalendarViewWeekType:  return self.weekViewController;
         case CalendarViewMonthType: return self.monthViewController;
         case CalendarViewYearType:  return self.yearViewController;
