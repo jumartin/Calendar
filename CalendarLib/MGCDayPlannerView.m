@@ -546,7 +546,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	rounding = MAX(rounding % 60, 1);
 	ti = roundf(ti / (rounding * 60)) * (rounding * 60);
 	CGFloat hour = ti / 3600. - self.hourRange.location;
-	return hour * self.hourSlotHeight + self.eventsViewInnerMargin;
+	return MGCAlignedFloat(hour * self.hourSlotHeight + self.eventsViewInnerMargin);
 }
 
 // returns the offset for a given event date and type in self coordinates
@@ -656,7 +656,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	NSTimeInterval ti = [date timeIntervalSinceDate:dayStart];
 	
     CGFloat y = [self offsetFromTime:ti rounding:0];
-	y = fmaxf(fminf(y, self.timedEventsView.contentSize.height - self.timedEventsView.bounds.size.height), 0);
+	y = fmaxf(fminf(y, MGCAlignedFloat(self.timedEventsView.contentSize.height - self.timedEventsView.bounds.size.height)), 0);
 	CGFloat x = [self xOffsetFromDayOffset:[self dayOffsetFromDate:dayStart]];
 
 	CGPoint offset = self.timedEventsView.contentOffset;
