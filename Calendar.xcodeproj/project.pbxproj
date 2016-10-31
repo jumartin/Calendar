@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		720041BA1879B2B600F3C497 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 720041B91879B2B600F3C497 /* Settings.bundle */; };
-		721A12A21CB585CF00749F18 /* CHANGELOG.md in Sources */ = {isa = PBXBuildFile; fileRef = 721A12A11CB585CF00749F18 /* CHANGELOG.md */; };
 		721CA1B41A9382990083F41A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 721CA1B21A9382990083F41A /* Localizable.strings */; };
 		721DC18918219C4D00F9470C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721DC18818219C4D00F9470C /* MainViewController.m */; };
 		7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7258E8B01A5A98DD007F88AF /* WeekSettingsViewController.m */; };
@@ -502,7 +501,7 @@
 		72B5D8E6180D73E0004ADB86 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Julien Martin";
 				TargetAttributes = {
 					72B5D8ED180D73E0004ADB86 = {
@@ -617,7 +616,6 @@
 				72B5D902180D73E0004ADB86 /* AppDelegate.m in Sources */,
 				721DC18918219C4D00F9470C /* MainViewController.m in Sources */,
 				72B5D8FE180D73E0004ADB86 /* main.m in Sources */,
-				721A12A21CB585CF00749F18 /* CHANGELOG.md in Sources */,
 				7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */,
 				BC32A4601D30FED600AB19D7 /* DayViewController.m in Sources */,
 			);
@@ -676,6 +674,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -683,11 +682,17 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -711,6 +716,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
@@ -718,12 +724,17 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -750,6 +761,7 @@
 				GCC_PREFIX_HEADER = "CalendarDemo/Calendar-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/CalendarDemo/Calendar-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jmartin.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -769,6 +781,7 @@
 				GCC_PREFIX_HEADER = "CalendarDemo/Calendar-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/CalendarDemo/Calendar-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jmartin.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -791,6 +804,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "CalendarTests/CalendarTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jmartin.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -807,6 +821,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CalendarDemo/Calendar-Prefix.pch";
 				INFOPLIST_FILE = "CalendarTests/CalendarTests-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.jmartin.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
