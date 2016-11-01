@@ -45,6 +45,10 @@
 #define BUG_FIX
 
 
+static NSString* const DimmingViewsKey = @"DimmingViewsKey";
+static NSString* const EventCellsKey = @"EventCellsKey";
+
+
 @interface MGCTimedEventsViewLayout()
 
 @property (nonatomic) NSMutableDictionary *layoutInfo;
@@ -75,38 +79,73 @@
 	return _layoutInfo;
 }
 
-- (NSArray*)layoutAttributesForSection:(NSUInteger)section
+- (NSArray*)layoutAttributesForDimmingViewsInSection:(NSUInteger)section
 {
-	NSArray *sectionAttribs = [self.layoutInfo objectForKey:@(section)];
-	if (!sectionAttribs) {
-		
-		NSInteger numItems = [self.collectionView numberOfItemsInSection:section];
-		NSMutableArray *attribs = [NSMutableArray arrayWithCapacity:numItems];
-		
-		for (NSInteger item = 0; item < numItems; item++) {
-			NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
-			
-            CGRect rect = [self.delegate collectionView:self.collectionView layout:self rectForEventAtIndexPath:indexPath];
-            if (!CGRectIsNull(rect)) {
-                MGCEventCellLayoutAttributes *cellAttribs = [MGCEventCellLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-                
-                rect.origin.x = self.dayColumnSize.width * indexPath.section;
-                rect.size.width = self.dayColumnSize.width;
-                rect.size.height = fmax(self.minimumVisibleHeight, rect.size.height);
-                
-                cellAttribs.frame = MGCAlignedRect(CGRectInset(rect , 0, 1));
-                cellAttribs.visibleHeight = cellAttribs.frame.size.height;
-                
-                [attribs addObject:cellAttribs];
-            }
+    NSArray *dimmingRects = [self.delegate collectionView:self.collectionView layout:self dimmingRectsForSection:section];
+
+    NSMutableArray *layoutAttribs = [NSMutableArray arrayWithCapacity:dimmingRects.count];
+    
+    for (NSInteger item = 0; item < dimmingRects.count; item++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+        
+        CGRect rect = [dimmingRects[item] CGRectValue];
+        if (!CGRectIsNull(rect)) {
+            UICollectionViewLayoutAttributes *viewAttribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:DimmingViewKind withIndexPath:indexPath];
+            rect.origin.x = self.dayColumnSize.width * indexPath.section;
+            rect.size.width = self.dayColumnSize.width;
+            
+            viewAttribs.frame = MGCAlignedRect(rect);
+        
+            [layoutAttribs addObject:viewAttribs];
         }
-		
-		sectionAttribs = [self adjustLayoutForOverlappingCells:attribs inSection:section];
-		
-		[self.layoutInfo setObject:sectionAttribs forKey:@(section)];
-	}
-	
-	return sectionAttribs;
+    }
+    
+    return layoutAttribs;
+}
+
+- (NSArray*)layoutAttributesForEventCellsInSection:(NSUInteger)section
+{
+    NSInteger numItems = [self.collectionView numberOfItemsInSection:section];
+    NSMutableArray *layoutAttribs = [NSMutableArray arrayWithCapacity:numItems];
+    
+    for (NSInteger item = 0; item < numItems; item++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+        
+        CGRect rect = [self.delegate collectionView:self.collectionView layout:self rectForEventAtIndexPath:indexPath];
+        if (!CGRectIsNull(rect)) {
+            MGCEventCellLayoutAttributes *cellAttribs = [MGCEventCellLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
+            
+            rect.origin.x = self.dayColumnSize.width * indexPath.section;
+            rect.size.width = self.dayColumnSize.width;
+            rect.size.height = fmax(self.minimumVisibleHeight, rect.size.height);
+            
+            cellAttribs.frame = MGCAlignedRect(CGRectInset(rect , 0, 1));
+            cellAttribs.visibleHeight = cellAttribs.frame.size.height;
+            cellAttribs.zIndex = 1;  // should appear above dimming views
+            
+            [layoutAttribs addObject:cellAttribs];
+        }
+    }
+    
+    return [self adjustLayoutForOverlappingCells:layoutAttribs inSection:section];
+}
+
+- (NSDictionary*)layoutAttributesForSection:(NSUInteger)section
+{
+    NSDictionary *sectionAttribs = [self.layoutInfo objectForKey:@(section)];
+    if (!sectionAttribs) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        
+        NSArray *dimmingViewsAttribs = [self layoutAttributesForDimmingViewsInSection:section];
+        NSArray *cellsAttribs = [self layoutAttributesForEventCellsInSection:section];
+        [dic setObject:dimmingViewsAttribs forKey:DimmingViewsKey];
+        [dic setObject:cellsAttribs forKey:EventCellsKey];
+        
+        [self.layoutInfo setObject:dic forKey:@(section)];
+        sectionAttribs = dic;
+    }
+    
+    return sectionAttribs;
 }
 
 - (NSArray*)adjustLayoutForOverlappingCells:(NSArray*)attributes inSection:(NSUInteger)section
@@ -183,8 +222,14 @@
 {
 	//NSLog(@"layoutAttributesForItemAtIndexPath %@", indexPath);
 	
-	NSArray *attribs = [self layoutAttributesForSection:indexPath.section];
+	NSArray *attribs = [[self layoutAttributesForSection:indexPath.section] objectForKey:EventCellsKey];
 	return [attribs objectAtIndex:indexPath.item];
+}
+
+- (UICollectionViewLayoutAttributes*)layoutAttributesForSupplementaryViewOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *attribs = [[self layoutAttributesForSection:indexPath.section] objectForKey:DimmingViewsKey];
+    return [attribs objectAtIndex:indexPath.item];
 }
 
 - (MGCEventCellLayoutAttributes*)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath*)indexPath
@@ -235,8 +280,9 @@
     NSUInteger last =  MIN(MAX(first, ceilf(CGRectGetMaxX(rect) / self.dayColumnSize.width)), maxSection);
     
 	for (NSInteger day = first; day < last; day++) {
-		NSArray *attribs = [self layoutAttributesForSection:day];
-		
+		NSDictionary *layoutDic = [self layoutAttributesForSection:day];
+        NSArray *attribs = [[layoutDic objectForKey:DimmingViewsKey]arrayByAddingObjectsFromArray:[layoutDic objectForKey:EventCellsKey]];
+        
 		for (MGCEventCellLayoutAttributes *a in attribs) {
 			if (CGRectIntersectsRect(rect, a.frame)) {
 #ifdef BUG_FIX

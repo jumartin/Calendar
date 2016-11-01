@@ -185,6 +185,11 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 @property (nonatomic) NSRange hourRange;
 
 /*!
+	@abstract	Color of dimmed time ranges.
+ */
+@property (nonatomic) UIColor *dimmingColor;
+
+/*!
 	@abstract	Determines whether zooming is enabled for this day planner view.
 				If set to YES, the user can decrease or increase the height of the one-hour slot by pinching in and out on the view.
 	@discussion The default value is YES.
@@ -559,6 +564,17 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
     @discussion If nil is returned or the method is not implemented, a default string is drawn using dateFormat property.
  */
 - (NSAttributedString*)dayPlannerView:(MGCDayPlannerView*)view attributedStringForDayHeaderAtDate:(NSDate*)date;
+
+/*!
+	@abstract   Asks the delegate for the number of dimmed timed ranges at given date.
+ */
+- (NSInteger)dayPlannerView:(MGCDayPlannerView*)view numberOfDimmedTimeRangesAtDate:(NSDate*)date;
+
+/*!
+	@abstract   Asks the delegate for the dimmed time range at given date and index.
+ */
+- (MGCDateRange*)dayPlannerView:(MGCDayPlannerView*)view dimmedTimeRangeAtIndex:(NSUInteger)index date:(NSDate*)date;
+
 
 /*!
 	@group Responding to scrolling

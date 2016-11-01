@@ -30,6 +30,8 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString* const DimmingViewKind = @"DimmingViewKind";
+
 
 @protocol MGCTimedEventsViewLayoutDelegate;
 
@@ -48,5 +50,6 @@
 
 // x and width of returned rect are ignored
 - (CGRect)collectionView:(UICollectionView*)collectionView layout:(MGCTimedEventsViewLayout*)layout rectForEventAtIndexPath:(NSIndexPath*)indexPath;
+- (NSArray*)collectionView:(UICollectionView*)collectionView layout:(MGCTimedEventsViewLayout*)layout dimmingRectsForSection:(NSUInteger)section;
 
 @end

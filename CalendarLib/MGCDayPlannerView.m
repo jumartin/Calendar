@@ -58,6 +58,7 @@ typedef enum: NSUInteger
 
 // collection views cell identifiers
 static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
+static NSString* const DimmingViewReuseIdentifier = @"DimmingViewReuseIdentifier";
 static NSString* const DayColumnCellReuseIdentifier = @"DayColumnCellReuseIdentifier";
 static NSString* const TimeRowCellReuseIdentifier = @"TimeRowCellReuseIdentifier";
 static NSString* const MoreEventsViewReuseIdentifier = @"MoreEventsViewReuseIdentifier";   // test
@@ -89,7 +90,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
     id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)self.collectionView.delegate;
     CGSize size = [delegate collectionView:self.collectionView layout:self sizeForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-    CGFloat x = roundf(proposedContentOffset.x / size.width) * size.width;
+    CGFloat x = MGCAlignedFloat((proposedContentOffset.x / size.width) * size.width);
     return CGPointMake(x, proposedContentOffset.y);
 }
 
@@ -181,6 +182,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_showsAllDayEvents = YES;
     _eventsViewInnerMargin = 15.;
 	_allDayEventCellHeight = 20;
+    _dimmingColor = [UIColor colorWithWhite:.9 alpha:.5];
 	_pagingEnabled = YES;
 	_zoomingEnabled = YES;
 	_canCreateEvents = YES;
@@ -249,6 +251,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     NSTimeInterval ti = [self timeFromOffset:yCenterOffset rounding:0];
    
     _hourSlotHeight = fminf(fmaxf(MGCAlignedFloat(hourSlotHeight), kMinHourSlotHeight), kMaxHourSlotHeight);
+    
+    [self.dayColumnsView.collectionViewLayout invalidateLayout];
     
     self.timedEventsViewLayout.dayColumnSize = self.dayColumnSize;
     [self.timedEventsViewLayout invalidateLayout];
@@ -796,7 +800,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		_timedEventsView.directionalLockEnabled = YES;
 		
 		[_timedEventsView registerClass:MGCEventCell.class forCellWithReuseIdentifier:EventCellReuseIdentifier];
-		
+        [_timedEventsView registerClass:UICollectionReusableView.class forSupplementaryViewOfKind:DimmingViewKind withReuseIdentifier:DimmingViewReuseIdentifier];
 		UILongPressGestureRecognizer *longPress = [UILongPressGestureRecognizer new];
 		[longPress addTarget:self action:@selector(handleLongPress:)];
 		[_timedEventsView addGestureRecognizer:longPress];
@@ -1563,16 +1567,21 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		[self addSubview:self.allDayEventsBackgroundView];
 	}
 	
-	self.dayColumnsView.frame = CGRectMake(self.timeColumnWidth, 0, timedEventsViewWidth, self.bounds.size.height);
-	if (!self.dayColumnsView.superview) {
-		[self addSubview:self.dayColumnsView];
-	}
+//	self.dayColumnsView.frame = CGRectMake(self.timeColumnWidth, 0, timedEventsViewWidth, self.bounds.size.height);
+//	if (!self.dayColumnsView.superview) {
+//		[self addSubview:self.dayColumnsView];
+//	}
 	
 	self.allDayEventsView.frame = CGRectMake(self.timeColumnWidth, self.dayHeaderHeight, timedEventsViewWidth, allDayEventsViewHeight);
 	if (!self.allDayEventsView.superview) {
 		[self addSubview:self.allDayEventsView];
 	}
 	
+    self.timedEventsView.frame = CGRectMake(self.timeColumnWidth, timedEventViewTop, timedEventsViewWidth, timedEventsViewHeight);
+    if (!self.timedEventsView.superview) {
+        [self addSubview:self.timedEventsView];
+    }
+
 	self.timeScrollView.contentSize = CGSizeMake(self.bounds.size.width, self.dayColumnSize.height);
 	self.timeRowsView.frame = CGRectMake(0, 0, self.timeScrollView.contentSize.width, self.timeScrollView.contentSize.height);
 
@@ -1583,10 +1592,19 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	
 	self.timeRowsView.showsCurrentTime = [self.visibleDays containsDate:[NSDate date]];
 	
-	self.timedEventsView.frame = CGRectMake(self.timeColumnWidth, timedEventViewTop, timedEventsViewWidth, timedEventsViewHeight);
-	if (!self.timedEventsView.superview) {
-		[self addSubview:self.timedEventsView];
-	}
+    self.timeScrollView.userInteractionEnabled = NO;
+    
+    
+    self.dayColumnsView.frame = CGRectMake(self.timeColumnWidth, 0, timedEventsViewWidth, self.bounds.size.height);
+    if (!self.dayColumnsView.superview) {
+        [self addSubview:self.dayColumnsView];
+    }
+
+    self.dayColumnsView.userInteractionEnabled = NO;
+//	self.timedEventsView.frame = CGRectMake(self.timeColumnWidth, timedEventViewTop, timedEventsViewWidth, timedEventsViewHeight);
+//	if (!self.timedEventsView.superview) {
+//		[self addSubview:self.timedEventsView];
+//	}
 
     // make sure collection views are synchronized
     self.dayColumnsView.contentOffset = CGPointMake(self.timedEventsView.contentOffset.x, 0);
@@ -1804,26 +1822,34 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString*)kind atIndexPath:(NSIndexPath*)indexPath
 {
-	UICollectionReusableView *view = [self.allDayEventsView dequeueReusableSupplementaryViewOfKind:MoreEventsViewKind withReuseIdentifier:MoreEventsViewReuseIdentifier forIndexPath:indexPath];
-	
-	view.autoresizesSubviews = YES;
-	
-	NSUInteger hiddenCount = [self.allDayEventsViewLayout numberOfHiddenEventsInSection:indexPath.section];
-	UILabel *label = [[UILabel alloc]initWithFrame:view.bounds];
-	label.text = [NSString stringWithFormat:NSLocalizedString(@"%d more...", nil), hiddenCount];
-	label.textColor = [UIColor blackColor];
-	label.font = [UIFont systemFontOfSize:11];
-	label.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-	
-	[view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-	[view addSubview:label];
-	
-	return view;
+    if ([kind isEqualToString:DimmingViewKind]) {
+        UICollectionReusableView *view = [self.timedEventsView dequeueReusableSupplementaryViewOfKind:DimmingViewKind withReuseIdentifier:DimmingViewReuseIdentifier forIndexPath:indexPath];
+        view.backgroundColor = self.dimmingColor;
+        
+        return view;
+    }
+    else if ([kind isEqualToString:DimmingViewKind]) {
+        UICollectionReusableView *view = [self.allDayEventsView dequeueReusableSupplementaryViewOfKind:MoreEventsViewKind withReuseIdentifier:MoreEventsViewReuseIdentifier forIndexPath:indexPath];
+        
+        view.autoresizesSubviews = YES;
+        
+        NSUInteger hiddenCount = [self.allDayEventsViewLayout numberOfHiddenEventsInSection:indexPath.section];
+        UILabel *label = [[UILabel alloc]initWithFrame:view.bounds];
+        label.text = [NSString stringWithFormat:NSLocalizedString(@"%d more...", nil), hiddenCount];
+        label.textColor = [UIColor blackColor];
+        label.font = [UIFont systemFontOfSize:11];
+        label.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+        
+        [view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [view addSubview:label];
+        
+        return view;
+    }
 }
 
 //////
 
-#pragma mark - WeekEventsViewLayoutDelegate
+#pragma mark - MGCTimedEventsViewLayoutDelegate
 
 - (CGRect)collectionView:(UICollectionView *)collectionView layout:(MGCTimedEventsViewLayout *)layout rectForEventAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -1850,7 +1876,36 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     return CGRectNull;
 }
 
-#pragma mark - AllDayEventsViewLayoutDelegate
+- (NSArray*)collectionView:(UICollectionView *)collectionView layout:(MGCTimedEventsViewLayout *)layout dimmingRectsForSection:(NSUInteger)section
+{
+    NSDate *date = [self dateFromDayOffset:section];
+    if ([self.delegate respondsToSelector:@selector(dayPlannerView:numberOfDimmedTimeRangesAtDate: )]) {
+        NSInteger count = [self.delegate dayPlannerView:self numberOfDimmedTimeRangesAtDate:date];
+        
+        NSMutableArray *rects = [NSMutableArray arrayWithCapacity:count];
+        
+        for (NSUInteger i = 0; i < count; i++) {
+            if ([self.delegate respondsToSelector:@selector(dayPlannerView:dimmedTimeRangeAtIndex:date:)]) {
+                MGCDateRange *range = [self.delegate dayPlannerView:self dimmedTimeRangeAtIndex:i date:date];
+                
+                if (!range.isEmpty) {
+                    NSDateComponents *comp = [self.calendar components:(NSCalendarUnitDay|NSCalendarUnitHour|NSCalendarUnitMinute) fromDate:range.start];
+                    CGFloat y = roundf((comp.hour + comp.minute / 60. - self.hourRange.location) * self.hourSlotHeight + self.eventsViewInnerMargin);
+                    
+                    NSTimeInterval ti = [range.end timeIntervalSinceDate:range.start];
+                    CGFloat height = roundf((ti / 3600.) * self.hourSlotHeight);
+                    
+                    [rects addObject:[NSValue valueWithCGRect:CGRectMake(0, y, 0, height)]];
+                }
+            }
+        }
+        
+        return rects;
+    }
+    return nil;
+}
+
+#pragma mark - MGCAllDayEventsViewLayoutDelegate
 
 - (NSRange)collectionView:(UICollectionView*)view layout:(MGCAllDayEventsViewLayout*)layout dayRangeForEventAtIndexPath:(NSIndexPath*)indexPath
 {
