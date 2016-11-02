@@ -49,6 +49,18 @@ static NSString* const DimmingViewsKey = @"DimmingViewsKey";
 static NSString* const EventCellsKey = @"EventCellsKey";
 
 
+@implementation MGCTimedEventsViewLayoutInvalidationContext
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.invalidateDimmingViews = NO;
+    }
+    return self;
+}
+
+@end
+
+
 @interface MGCTimedEventsViewLayout()
 
 @property (nonatomic) NSMutableDictionary *layoutInfo;
@@ -66,6 +78,7 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 - (instancetype)init {
 	if (self = [super init]) {
 		_minimumVisibleHeight = 15.;
+        _ignoreNextInvalidation = NO;
 	}
 	return self;
 }
@@ -132,19 +145,23 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 
 - (NSDictionary*)layoutAttributesForSection:(NSUInteger)section
 {
-    NSDictionary *sectionAttribs = [self.layoutInfo objectForKey:@(section)];
+    NSMutableDictionary *sectionAttribs = [self.layoutInfo objectForKey:@(section)];
+    
     if (!sectionAttribs) {
-        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-        
-        NSArray *dimmingViewsAttribs = [self layoutAttributesForDimmingViewsInSection:section];
-        NSArray *cellsAttribs = [self layoutAttributesForEventCellsInSection:section];
-        [dic setObject:dimmingViewsAttribs forKey:DimmingViewsKey];
-        [dic setObject:cellsAttribs forKey:EventCellsKey];
-        
-        [self.layoutInfo setObject:dic forKey:@(section)];
-        sectionAttribs = dic;
+        sectionAttribs = [NSMutableDictionary dictionary];
     }
     
+    if (![sectionAttribs objectForKey:DimmingViewsKey]) {
+        NSArray *dimmingViewsAttribs = [self layoutAttributesForDimmingViewsInSection:section];
+        [sectionAttribs setObject:dimmingViewsAttribs forKey:DimmingViewsKey];
+    }
+    if (![sectionAttribs objectForKey:EventCellsKey]) {
+        NSArray *cellsAttribs = [self layoutAttributesForEventCellsInSection:section];
+        [sectionAttribs setObject:cellsAttribs forKey:EventCellsKey];
+    }
+    
+    [self.layoutInfo setObject:sectionAttribs forKey:@(section)];
+   
     return sectionAttribs;
 }
 
@@ -218,6 +235,11 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 	return [MGCEventCellLayoutAttributes class];
 }
 
++ (Class)invalidationContextClass
+{
+    return [MGCTimedEventsViewLayoutInvalidationContext class];
+}
+
 - (MGCEventCellLayoutAttributes*)layoutAttributesForItemAtIndexPath:(NSIndexPath*)indexPath
 {
 	//NSLog(@"layoutAttributesForItemAtIndexPath %@", indexPath);
@@ -232,16 +254,6 @@ static NSString* const EventCellsKey = @"EventCellsKey";
     return [attribs objectAtIndex:indexPath.item];
 }
 
-- (MGCEventCellLayoutAttributes*)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath*)indexPath
-{
-	return (MGCEventCellLayoutAttributes*)[self layoutAttributesForItemAtIndexPath:indexPath];
-}
-
-- (MGCEventCellLayoutAttributes*)finalLayoutAttributesForDisappearingItemAtIndexPath:(NSIndexPath*)indexPath
-{
-	return (MGCEventCellLayoutAttributes*)[self layoutAttributesForItemAtIndexPath:indexPath];
-}
-
 - (void)prepareForCollectionViewUpdates:(NSArray*)updateItems
 {
 	//NSLog(@"prepare Collection updates");
@@ -249,12 +261,42 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 	[super prepareForCollectionViewUpdates:updateItems];
 }
 
+- (void)invalidateLayoutWithContext:(MGCTimedEventsViewLayoutInvalidationContext *)context
+{
+    //NSLog(@"invalidateLayoutWithContext");
+    
+    [super invalidateLayoutWithContext:context];
+    
+    if (self.ignoreNextInvalidation) {
+        self.ignoreNextInvalidation = NO;
+        return;
+        
+    }
+    
+    if (context.invalidateEverything) {
+        self.layoutInfo = nil;
+    }
+    else {
+        [context.invalidatedSections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
+            if (context.invalidateDimmingViews) {
+                [self.layoutInfo removeObjectForKey:@(idx)];
+            }
+            else {
+                [[self.layoutInfo objectForKey:@(idx)]removeObjectForKey:EventCellsKey];
+            }
+        }];
+    }
+}
+
 - (void)invalidateLayout
 {
 	//NSLog(@"invalidateLayout");
 	
+    if (!self.ignoreNextInvalidation) {
+        self.layoutInfo = nil;
+    }
+    
 	[super invalidateLayout];
-	self.layoutInfo = nil;
 }
 
 - (CGSize)collectionViewContentSize

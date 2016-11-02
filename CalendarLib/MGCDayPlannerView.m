@@ -1485,12 +1485,22 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	
 	if ([self.loadedDaysRange containsDate:date]) {
 	
+        // we have to reload everything for the all-day events view because some events might span several days
 		[self.allDayEventsView reloadData];
+        
 		if (!self.controllingScrollView) {
 			// only if we're not scrolling
 			[self setupSubviews];
 		}
-		[self.timedEventsView reloadData];
+        NSInteger section = [self dayOffsetFromDate:date];
+        
+        MGCTimedEventsViewLayoutInvalidationContext *context = [MGCTimedEventsViewLayoutInvalidationContext new];
+        context.invalidatedSections = [NSIndexSet indexSetWithIndex:section];
+        [self.timedEventsView.collectionViewLayout invalidateLayoutWithContext:context];
+        
+        // for some reason, reloadSections: does not work properly. See comment for ignoreNextInvalidation
+        self.timedEventsViewLayout.ignoreNextInvalidation = YES; 
+        [self.timedEventsView reloadData];
 		
 		[self refreshEventMarkForColumnAtDate:date];
 	}
