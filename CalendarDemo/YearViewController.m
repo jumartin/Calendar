@@ -98,7 +98,7 @@
 
 - (void)loadView
 {
-    MGCYearCalendarView *view = [[MGCYearCalendarView alloc]initWithFrame:CGRectNull];
+    MGCYearCalendarView *view = [[MGCYearCalendarView alloc]initWithFrame:CGRectZero];
     view.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     self.view = view;
 }

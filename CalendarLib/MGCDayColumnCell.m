@@ -53,7 +53,7 @@ static const CGFloat dotSize = 4;
         _separatorColor = [UIColor lightGrayColor];
 		_headerHeight = 50;
 		
-		_dayLabel = [[UILabel alloc] initWithFrame:CGRectNull];
+		_dayLabel = [[UILabel alloc] initWithFrame:CGRectZero];
 		_dayLabel.numberOfLines = 0;
 		_dayLabel.adjustsFontSizeToFitWidth = YES;
 		_dayLabel.minimumScaleFactor = .7;

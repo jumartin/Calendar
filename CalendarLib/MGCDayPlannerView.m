@@ -788,7 +788,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 - (UICollectionView*)timedEventsView
 {
     if (!_timedEventsView) {
-		_timedEventsView = [[UICollectionView alloc] initWithFrame:CGRectNull collectionViewLayout:self.timedEventsViewLayout];
+		_timedEventsView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.timedEventsViewLayout];
 		_timedEventsView.backgroundColor = [UIColor clearColor];
 		_timedEventsView.dataSource = self;
 		_timedEventsView.delegate = self;
@@ -819,7 +819,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 - (UICollectionView*)allDayEventsView
 {
 	if (!_allDayEventsView && self.showsAllDayEvents) {
-		_allDayEventsView = [[UICollectionView alloc] initWithFrame:CGRectNull collectionViewLayout:self.allDayEventsViewLayout];
+		_allDayEventsView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.allDayEventsViewLayout];
 		_allDayEventsView.backgroundColor = [UIColor clearColor];
 		_allDayEventsView.dataSource = self;
 		_allDayEventsView.delegate = self;
@@ -853,7 +853,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		layout.minimumInteritemSpacing = 0;
 		layout.minimumLineSpacing = 0;
         
-		_dayColumnsView = [[UICollectionView alloc] initWithFrame:CGRectNull collectionViewLayout:layout];
+		_dayColumnsView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
 		_dayColumnsView.backgroundColor = [UIColor clearColor];
 		_dayColumnsView.dataSource = self;
 		_dayColumnsView.delegate = self;
@@ -894,7 +894,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 - (UIView*)allDayEventsBackgroundView
 {
 	if (!_allDayEventsBackgroundView) {
-		_allDayEventsBackgroundView = [[UIView alloc] initWithFrame:CGRectNull];
+		_allDayEventsBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 		_allDayEventsBackgroundView.backgroundColor = [UIColor colorWithRed:.8 green:.8 blue:.83 alpha:1.];
 		_allDayEventsBackgroundView.clipsToBounds = YES;
 		_allDayEventsBackgroundView.layer.borderColor = [UIColor lightGrayColor].CGColor;

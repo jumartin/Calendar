@@ -52,7 +52,7 @@ static CGFloat kSpace = 2;
 		_color = [UIColor blackColor];
 		_style = MGCStandardEventViewStylePlain|MGCStandardEventViewStyleSubtitle;
 		_font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
-		_leftBorderView = [[UIView alloc]initWithFrame:CGRectNull];
+		_leftBorderView = [[UIView alloc]initWithFrame:CGRectZero];
 		[self addSubview:_leftBorderView];
 	}
     return self;
