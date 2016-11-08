@@ -29,6 +29,7 @@ CalendarLib is a set of views and controllers for displaying and scheduling even
 - Ability to show an activity indicator for days while events are loading
 - Restrict ability to create or move events to certain dates through datasource protocol methods
 - Zoom in/out the day planner view to increase or decrease the height of hour slots
+- Dim certain time ranges in the day planner view
 
 ## Compatibility
 

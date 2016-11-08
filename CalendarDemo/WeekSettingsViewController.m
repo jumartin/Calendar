@@ -34,6 +34,8 @@
 
 @property (nonatomic) NSDateFormatter *dateFormatter;
 
+@property (nonatomic) MGCDayPlannerView *dayPlannerView;
+
 @property (nonatomic) IBOutlet UILabel *visibleDaysLabel;
 @property (nonatomic) IBOutlet UIStepper *visibleDaysStepper;
 
@@ -63,6 +65,7 @@
 @property (nonatomic) IBOutlet UISwitch *eventSelectionSwitch;
 
 @property (nonatomic) IBOutlet UISwitch *customCellSwitch;
+@property (nonatomic) IBOutlet UISwitch *dimmedTimeRangeSwitch;
 
 @end
 
@@ -87,6 +90,11 @@
 	
 	[view addSubview:cancelButton];
 	return view;
+}
+
+- (MGCDayPlannerView*)dayPlannerView
+{
+    return self.weekViewController.dayPlannerView;
 }
 
 - (void)viewDidLoad
@@ -132,7 +140,9 @@
 	self.eventCreationSwitch.on = self.dayPlannerView.canCreateEvents;
 	self.eventMovingSwitch.on = self.dayPlannerView.canMoveEvents;
 	self.eventSelectionSwitch.on = self.dayPlannerView.allowsSelection;
-	
+    
+    self.dimmedTimeRangeSwitch.on = self.weekViewController.showDimmedTimeRanges;
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -262,6 +272,7 @@
 {
 	if (sender == self.pagingSwitch) {
 		self.dayPlannerView.pagingEnabled = sender.on;
+        [self.dayPlannerView reloadDimmedTimeRanges];
 	}
 	else if (sender == self.zoomingSwitch) {
 		self.dayPlannerView.zoomingEnabled = sender.on;
@@ -289,6 +300,10 @@
 		}
 		[self.dayPlannerView reloadAllEvents];
 	}
+    else if (sender == self.dimmedTimeRangeSwitch) {
+        self.weekViewController.showDimmedTimeRanges = sender.on;
+        [self.dayPlannerView reloadDimmedTimeRanges];
+    }
 }
 
 - (IBAction)dateAction:(id)sender

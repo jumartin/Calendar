@@ -6,13 +6,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MGCDayPlannerView.h"
+#import "WeekViewController.h"
+
 
 @protocol WeekSettingsViewControllerDelegate;
 
 
 @interface WeekSettingsViewController : UITableViewController
 
-@property (nonatomic) MGCDayPlannerView *dayPlannerView;
+@property (nonatomic) WeekViewController *weekViewController;
 
 @end

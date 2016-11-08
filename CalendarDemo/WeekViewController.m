@@ -120,19 +120,27 @@
 
 - (NSInteger)dayPlannerView:(MGCDayPlannerView *)view numberOfDimmedTimeRangesAtDate:(NSDate *)date
 {
+    if (!self.showDimmedTimeRanges) return 0;
     return [self.calendar isDateInWeekend:date] ? 1 : 2;
 }
 
 - (MGCDateRange*)dayPlannerView:(MGCDayPlannerView *)view dimmedTimeRangeAtIndex:(NSUInteger)index date:(NSDate *)date
 {
-    if ([self.calendar isDateInWeekend:date]) {
-        NSDate *start = [self.calendar dateBySettingHour:0 minute:0 second:0 ofDate:date options:0];
-        NSDate *end = [self.calendar dateBySettingHour:23 minute:59 second:0 ofDate:date options:0];
-        return [MGCDateRange dateRangeWithStart:start end:end];
+    NSDate *start, *end;
+    
+    if ([self.calendar isDateInWeekend:date] || index == 0) {
+        start = [self.calendar dateBySettingHour:0 minute:0 second:0 ofDate:date options:0];
+    }
+    else {
+        start = [self.calendar dateBySettingHour:19 minute:0 second:0 ofDate:date options:0];
     }
     
-    NSDate *start = [self.calendar dateBySettingHour:(index == 0 ? 0 : 19) minute:0 second:0 ofDate:date options:0];
-    NSDate *end = [self.calendar dateBySettingHour:(index == 0 ? 8 : 23) minute:(index == 0 ? 0 : 59) second:0 ofDate:date options:0];
+    if ([self.calendar isDateInWeekend:date] || index == 1) {
+        end = [self.calendar dateBySettingHour:23 minute:59 second:0 ofDate:date options:0];
+    }
+    else {
+        end = [self.calendar dateBySettingHour:8 minute:59 second:0 ofDate:date options:0];
+    }
     return [MGCDateRange dateRangeWithStart:start end:end];
 }
 

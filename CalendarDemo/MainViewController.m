@@ -109,7 +109,7 @@ typedef enum : NSUInteger
     if ([segue.identifier isEqualToString:@"dayPlannerSettingsSegue"]) {
         WeekSettingsViewController *settingsViewController = (WeekSettingsViewController*)nc.topViewController;
         WeekViewController *weekController = (WeekViewController*)self.calendarViewController;
-        settingsViewController.dayPlannerView = weekController.dayPlannerView;
+        settingsViewController.weekViewController = weekController;
     }
     else if ([segue.identifier isEqualToString:@"monthPlannerSettingsSegue"]) {
         MonthSettingsViewController *settingsViewController = (MonthSettingsViewController*)nc.topViewController;

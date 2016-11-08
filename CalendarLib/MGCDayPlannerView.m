@@ -1542,6 +1542,17 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 }
 
 // public
+- (void)reloadDimmedTimeRanges
+{
+    [self.dimmedTimeRangesCache removeAllObjects];
+    
+    MGCTimedEventsViewLayoutInvalidationContext *context = [MGCTimedEventsViewLayoutInvalidationContext new];
+    context.invalidatedSections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfLoadedDays)];
+    context.invalidateDimmingViews = YES;
+    [self.timedEventsView.collectionViewLayout invalidateLayoutWithContext:context];
+}
+
+// public
 - (void)insertEventOfType:(MGCEventType)type withDateRange:(MGCDateRange*)range
 {
 	NSInteger start = MAX([self dayOffsetFromDate:range.start], 0);

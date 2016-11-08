@@ -457,6 +457,12 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
  */
 - (void)endInteraction;
 
+/*!
+	@abstract	Reloads all dimmed time ranges.
+    @discussion Delegate methods dayPlannerView:numberOfDimmedTimeRangesAtDate: and dayPlannerView:dimmedTimeRangeAtIndex:date: are called for every visible day.
+ */
+- (void)reloadDimmedTimeRanges;
+
 @end
 
 

@@ -17,5 +17,6 @@
 @interface WeekViewController : MGCDayPlannerEKViewController <CalendarViewControllerNavigation>
 
 @property (nonatomic, weak) id<WeekViewControllerDelegate> delegate;
+@property (nonatomic) BOOL showDimmedTimeRanges;
 
 @end
