@@ -41,6 +41,7 @@
 #import "MGCInteractiveEventView.h"
 #import "MGCTimeRowsView.h"
 #import "MGCAlignedGeometry.h"
+#import "OSCache.h"
 
 
 // used to restrict scrolling to one direction / axis
@@ -150,6 +151,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 @property (nonatomic) CGFloat hourSlotHeightForGesture;
 @property (copy, nonatomic) dispatch_block_t scrollViewAnimationCompletionBlock;
 
+@property (nonatomic) OSCache *dimmedTimeRangesCache;          // cache for dimmed time ranges (indexed by date)
+
 @end
 
 
@@ -192,6 +195,9 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_reuseQueue = [[MGCReusableObjectQueue alloc] init];
 	_loadingDays = [NSMutableOrderedSet orderedSetWithCapacity:14];
 	
+    _dimmedTimeRangesCache = [[OSCache alloc]init];
+    _dimmedTimeRangesCache.countLimit = 200;
+    
 	self.backgroundColor = [UIColor whiteColor];
 	self.autoresizesSubviews = NO;
 	
@@ -383,6 +389,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     NSTimeInterval ti = [self timeFromOffset:yCenterOffset rounding:0];
     
     _hourRange = hourRange;
+    
+    [self.dimmedTimeRangesCache removeAllObjects];
     
     self.timedEventsViewLayout.dayColumnSize = self.dayColumnSize;
     [self.timedEventsViewLayout invalidateLayout];
@@ -1905,12 +1913,10 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     return CGRectNull;
 }
 
-- (NSArray*)collectionView:(UICollectionView *)collectionView layout:(MGCTimedEventsViewLayout *)layout dimmingRectsForSection:(NSUInteger)section
+- (NSArray*)dimmedTimeRangesAtDate:(NSDate*)date
 {
     NSMutableArray *ranges = [NSMutableArray array];
-    
-    NSDate *date = [self dateFromDayOffset:section];
-    
+        
     if ([self.delegate respondsToSelector:@selector(dayPlannerView:numberOfDimmedTimeRangesAtDate:)]) {
         NSInteger count = [self.delegate dayPlannerView:self numberOfDimmedTimeRangesAtDate:date];
         
@@ -1928,8 +1934,21 @@ static const CGFloat kMaxHourSlotHeight = 150.;
             }
         }
     }
-    
+    return ranges;
+}
+
+- (NSArray*)collectionView:(UICollectionView *)collectionView layout:(MGCTimedEventsViewLayout *)layout dimmingRectsForSection:(NSUInteger)section
+{
+    NSDate *date = [self dateFromDayOffset:section];
+
+    NSArray *ranges = [self.dimmedTimeRangesCache objectForKey:date];
+    if (!ranges) {
+        ranges = [self dimmedTimeRangesAtDate:date];
+        [self.dimmedTimeRangesCache setObject:ranges forKey:date];
+    }
+     
     NSMutableArray *rects = [NSMutableArray arrayWithCapacity:ranges.count];
+
     for (MGCDateRange *range in ranges) {
         if (!range.isEmpty) {
             CGFloat y1 = [self offsetFromDate:range.start];
@@ -1940,6 +1959,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     }
     return rects;
 }
+
 
 #pragma mark - MGCAllDayEventsViewLayoutDelegate
 
