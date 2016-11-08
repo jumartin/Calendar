@@ -1548,6 +1548,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     
     MGCTimedEventsViewLayoutInvalidationContext *context = [MGCTimedEventsViewLayoutInvalidationContext new];
     context.invalidatedSections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfLoadedDays)];
+    context.invalidateEventCells = NO;
     context.invalidateDimmingViews = YES;
     [self.timedEventsView.collectionViewLayout invalidateLayoutWithContext:context];
 }

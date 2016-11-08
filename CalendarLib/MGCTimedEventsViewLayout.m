@@ -54,6 +54,7 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 - (instancetype)init {
     if (self = [super init]) {
         self.invalidateDimmingViews = NO;
+        self.invalidateEventCells = YES;
     }
     return self;
 }
@@ -273,15 +274,15 @@ static NSString* const EventCellsKey = @"EventCellsKey";
         
     }
     
-    if (context.invalidateEverything) {
+    if (context.invalidateEverything || context.invalidatedSections == nil) {
         self.layoutInfo = nil;
     }
     else {
         [context.invalidatedSections enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
             if (context.invalidateDimmingViews) {
-                [self.layoutInfo removeObjectForKey:@(idx)];
+                [[self.layoutInfo objectForKey:@(idx)]removeObjectForKey:DimmingViewsKey];
             }
-            else {
+            if (context.invalidateEventCells) {
                 [[self.layoutInfo objectForKey:@(idx)]removeObjectForKey:EventCellsKey];
             }
         }];
@@ -291,12 +292,8 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 - (void)invalidateLayout
 {
 	//NSLog(@"invalidateLayout");
-	
-    if (!self.ignoreNextInvalidation) {
-        self.layoutInfo = nil;
-    }
     
-	[super invalidateLayout];
+    [super invalidateLayout];
 }
 
 - (CGSize)collectionViewContentSize
@@ -325,7 +322,7 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 		NSDictionary *layoutDic = [self layoutAttributesForSection:day];
         NSArray *attribs = [[layoutDic objectForKey:DimmingViewsKey]arrayByAddingObjectsFromArray:[layoutDic objectForKey:EventCellsKey]];
         
-		for (MGCEventCellLayoutAttributes *a in attribs) {
+		for (UICollectionViewLayoutAttributes *a in attribs) {
 			if (CGRectIntersectsRect(rect, a.frame)) {
 #ifdef BUG_FIX
 				CGRect frame = a.frame;

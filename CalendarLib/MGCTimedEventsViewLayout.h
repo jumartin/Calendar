@@ -40,7 +40,8 @@ static NSString* const DimmingViewKind = @"DimmingViewKind";
 @interface MGCTimedEventsViewLayoutInvalidationContext: UICollectionViewLayoutInvalidationContext
 
 @property (nonatomic) BOOL invalidateDimmingViews;  // set to true if layout attributes of dimming views must be recomputed
-@property (nonatomic) NSMutableIndexSet *invalidatedSections;   // sections whose layout attributes must be recomputed
+@property (nonatomic) BOOL invalidateEventCells;  // set to true if layout attributes of event cells must be recomputed
+@property (nonatomic) NSMutableIndexSet *invalidatedSections;   // sections whose layout attributes (dimming views or event cells) must be recomputed - if nil, recompute everything
 
 @end
 
