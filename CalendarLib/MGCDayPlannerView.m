@@ -87,13 +87,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     return context;
 }
 
+// we keep this for iOS 8 compatibility. As of iOS 9, this is replaced by collectionView:targetContentOffsetForProposedContentOffset:
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
 {
-    id<UICollectionViewDelegateFlowLayout> delegate = (id<UICollectionViewDelegateFlowLayout>)self.collectionView.delegate;
-    CGSize size = [delegate collectionView:self.collectionView layout:self sizeForItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
-    CGFloat x = MGCAlignedFloat((proposedContentOffset.x / size.width) * size.width);
-    return CGPointMake(x, proposedContentOffset.y);
+    id<UICollectionViewDelegate> delegate = (id<UICollectionViewDelegate>)self.collectionView.delegate;
+    return [delegate collectionView:self.collectionView targetContentOffsetForProposedContentOffset:proposedContentOffset];
 }
+
 
 @end
 
@@ -130,6 +130,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 @property (nonatomic) UIScrollView *controllingScrollView;		// the collection view which initiated scrolling - used for proper synchronization between the different collection views
 @property (nonatomic) CGPoint scrollStartOffset;				// content offset in the controllingScrollView where scrolling started - used to lock scrolling in one direction
 @property (nonatomic) ScrollDirection scrollDirection;			// direction or axis of the scroll movement
+@property (nonatomic) NSDate *scrollTargetDate;                 // target date after scrolling (initiated programmatically or following pan or swipe gesture)
 
 @property (nonatomic) MGCInteractiveEventView *interactiveCell;	// view used when dragging event around
 @property (nonatomic) CGPoint interactiveCellTouchPoint;		// point where touch occured in interactiveCell coordinates
@@ -202,6 +203,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	self.autoresizesSubviews = NO;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillChangeStatusBarOrientation:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
 }
 
 - (id)initWithCoder:(NSCoder*)coder
@@ -228,6 +231,18 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 - (void)applicationDidReceiveMemoryWarning:(NSNotification*)notification
 {
 	[self reloadAllEvents];
+}
+
+- (void)applicationWillChangeStatusBarOrientation:(NSNotification*)notification
+{
+    [self endInteraction];
+    
+    // cancel eventual pan gestures
+    self.timedEventsView.panGestureRecognizer.enabled = NO;
+    self.timedEventsView.panGestureRecognizer.enabled = YES;
+    
+    self.allDayEventsView.panGestureRecognizer.enabled = NO;
+    self.allDayEventsView.panGestureRecognizer.enabled = YES;
 }
 
 #pragma mark - Layout
@@ -692,6 +707,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	}
 	
 	NSDate *dayStart = [self.calendar mgc_startOfDayForDate:firstVisible];
+    self.scrollTargetDate = dayStart;
+    
 	NSTimeInterval ti = [date timeIntervalSinceDate:dayStart];
 	
     CGFloat y = [self offsetFromTime:ti rounding:0];
@@ -1446,6 +1463,9 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		self.interactiveCell.hidden = YES;
 		[self.interactiveCell removeFromSuperview];
 		self.interactiveCell = nil;
+        
+        [self.dragTimer invalidate];
+        self.dragTimer = nil;
 	}
 	self.interactiveCellTouchPoint = CGPointZero;
 	self.timeRowsView.timeMark = 0;
@@ -1471,9 +1491,9 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	[self.timedEventsView reloadData];
     [self.allDayEventsView reloadData];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self setupSubviews];
-    });
+    if (!self.controllingScrollView) {  // only if we're not scrolling
+       dispatch_async(dispatch_get_main_queue(), ^{ [self setupSubviews]; });
+    }
 }
 
 // public
@@ -1529,14 +1549,14 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		}
         NSInteger section = [self dayOffsetFromDate:date];
         
-        MGCTimedEventsViewLayoutInvalidationContext *context = [MGCTimedEventsViewLayoutInvalidationContext new];
-        context.invalidatedSections = [NSIndexSet indexSetWithIndex:section];
-        [self.timedEventsView.collectionViewLayout invalidateLayoutWithContext:context];
-        
         // for some reason, reloadSections: does not work properly. See comment for ignoreNextInvalidation
         self.timedEventsViewLayout.ignoreNextInvalidation = YES; 
         [self.timedEventsView reloadData];
 		
+        MGCTimedEventsViewLayoutInvalidationContext *context = [MGCTimedEventsViewLayoutInvalidationContext new];
+        context.invalidatedSections = [NSIndexSet indexSetWithIndex:section];
+        [self.timedEventsView.collectionViewLayout invalidateLayoutWithContext:context];
+
 		[self refreshEventMarkForColumnAtDate:date];
 	}
 }
@@ -2006,12 +2026,14 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 //{
 //}
 
-- (void)collectionView:(UICollectionView*)collectionView willDisplayCell:(UICollectionViewCell*)cell forItemAtIndexPath:(NSIndexPath*)indexPath
+// this is only supported on iOS 9 and above
+- (CGPoint)collectionView:(UICollectionView *)collectionView targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
 {
-}
-
-- (void)collectionView:(UICollectionView*)collectionView didEndDisplayingCell:(UICollectionViewCell*)cell forItemAtIndexPath:(NSIndexPath*)indexPath
-{
+    if (self.scrollTargetDate) {
+        NSInteger targetSection = [self dayOffsetFromDate:self.scrollTargetDate];
+        proposedContentOffset.x  = targetSection * self.dayColumnSize.width;
+    }
+    return proposedContentOffset;
 }
 
 #pragma mark - Scrolling utilities
@@ -2203,9 +2225,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
 	// animated programmatic scrolling is prohibited while another scrolling operation is in progress
 	if (self.controllingScrollView)  return;
-	
+    
 	CGPoint prevOffset = self.timedEventsView.contentOffset;
-	
+
+    if (animated && !CGPointEqualToPoint(offset, prevOffset)) {
+        [[UIDevice currentDevice]endGeneratingDeviceOrientationNotifications];
+    }
+
 	self.scrollViewAnimationCompletionBlock = completion;
 		
 	[self scrollViewWillStartScrolling:self.timedEventsView direction:ScrollDirectionUnknown];
@@ -2292,37 +2318,38 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 
 - (void)scrollViewWillEndDragging:(UIScrollView*)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint*)targetContentOffset
 {
-	//NSLog(@"scrollViewWillEndDragging horzVelocity: %f", velocity.x);
-	
-	if (self.pagingEnabled && self.scrollDirection & ScrollDirectionHorizontal) {
-		
-		CGFloat xOffset;
-		
-		if (fabs(velocity.x) < .7) {
-			// stick to nearest section
-			NSInteger section = roundf(targetContentOffset->x / self.dayColumnSize.width);
-			xOffset = section * self.dayColumnSize.width;
-		}
-		else {
-			// scroll to next page
-			if (velocity.x > 0) {
-				NSDate *date = [self nextDateForPagingAfterDate:self.visibleDays.start];
-				NSInteger section = [self dayOffsetFromDate:date];
-				xOffset = [self xOffsetFromDayOffset:section];
-			}
-			// scroll to previous page
-			else {
-				NSDate *date = [self prevDateForPagingBeforeDate:self.firstVisibleDate];
-				NSInteger section = [self dayOffsetFromDate:date];
-				xOffset = [self xOffsetFromDayOffset:section];
-			}
-		}
-		
-		xOffset = fminf(xOffset, scrollView.contentSize.width - scrollView.bounds.size.width);
-		xOffset = fmaxf(xOffset, 0);
-		targetContentOffset->x = xOffset;
-	}
+    //NSLog(@"scrollViewWillEndDragging horzVelocity: %f", velocity.x);
+    
+    if (!(self.scrollDirection & ScrollDirectionHorizontal)) return;
+    
+    CGFloat xOffset = targetContentOffset->x;
+    
+    if (fabs(velocity.x) < .7 || !self.pagingEnabled) {
+        // stick to nearest section
+        NSInteger section = roundf(targetContentOffset->x / self.dayColumnSize.width);
+        xOffset = section * self.dayColumnSize.width;
+        self.scrollTargetDate = [self dateFromDayOffset:section];
+    }
+    else if (self.pagingEnabled) {
+        NSDate *date;
+        
+        // scroll to next page
+        if (velocity.x > 0) {
+            date = [self nextDateForPagingAfterDate:self.visibleDays.start];
+         }
+        // scroll to previous page
+        else {
+            date = [self prevDateForPagingBeforeDate:self.firstVisibleDate];
+        }
+        NSInteger section = [self dayOffsetFromDate:date];
+        xOffset = [self xOffsetFromDayOffset:section];
+        self.scrollTargetDate = [self dateFromDayOffset:section];
+    }
+        
+    xOffset = fminf(fmax(xOffset, 0), scrollView.contentSize.width - scrollView.bounds.size.width);
+    targetContentOffset->x = xOffset;
 }
+
 
 - (void)scrollViewDidEndDragging:(UIScrollView*)scrollView willDecelerate:(BOOL)decelerate
 {
@@ -2336,6 +2363,10 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	if (!decelerate && !scrollView.decelerating) {
 		[self scrollViewDidEndScrolling:scrollView];
 	}
+
+    if (decelerate) {
+        [[UIDevice currentDevice]endGeneratingDeviceOrientationNotifications];
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView*)scrollView
@@ -2343,6 +2374,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	//NSLog(@"scrollViewDidEndDecelerating");
 
 	[self scrollViewDidEndScrolling:scrollView];
+    
+    [[UIDevice currentDevice]beginGeneratingDeviceOrientationNotifications];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView*)scrollView
@@ -2350,6 +2383,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	//NSLog(@"scrollViewDidEndScrollingAnimation");
 
 	[self scrollViewDidEndScrolling:scrollView];
+    
+    [[UIDevice currentDevice]beginGeneratingDeviceOrientationNotifications];
 }
 
 

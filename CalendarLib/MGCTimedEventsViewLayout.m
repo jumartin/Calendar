@@ -42,7 +42,7 @@
 // see http://stackoverflow.com/questions/13770484/large-uicollectionviewcells-disappearing-with-custom-layout
 // or https://github.com/mattjgalloway/CocoaBugs/blob/master/UICollectionView-MissingCells/README.md
 
-#define BUG_FIX
+//#define BUG_FIX   // cannot reproduce this bug anymore
 
 
 static NSString* const DimmingViewsKey = @"DimmingViewsKey";
@@ -337,12 +337,6 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 	return allAttribs;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
-{
-    CGFloat x = roundf(proposedContentOffset.x / self.dayColumnSize.width) * self.dayColumnSize.width;
-    return CGPointMake(x, proposedContentOffset.y);
-}
-
 - (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
     //NSLog(@"shouldInvalidateLayoutForBoundsChange %@", NSStringFromCGRect(newBounds));
@@ -356,4 +350,12 @@ static NSString* const EventCellsKey = @"EventCellsKey";
         oldBounds.size.width != newBounds.size.width;
 }
 
+// we keep this for iOS 8 compatibility. As of iOS 9, this is replaced by collectionView:targetContentOffsetForProposedContentOffset:
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
+{
+    id<UICollectionViewDelegate> delegate = (id<UICollectionViewDelegate>)self.collectionView.delegate;
+    return [delegate collectionView:self.collectionView targetContentOffsetForProposedContentOffset:proposedContentOffset];
+}
+
 @end
+

@@ -330,10 +330,12 @@ static const CGFloat kCellInset = 4.;
 	return shouldInvalidate;
 }
 
+// we keep this for iOS 8 compatibility. As of iOS 9, this is replaced by collectionView:targetContentOffsetForProposedContentOffset:
 - (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)proposedContentOffset
 {
-    CGFloat xOffset = roundf(proposedContentOffset.x / self.dayColumnWidth) * self.dayColumnWidth ;
-    return CGPointMake(xOffset, proposedContentOffset.y);
+    id<UICollectionViewDelegate> delegate = (id<UICollectionViewDelegate>)self.collectionView.delegate;
+    return [delegate collectionView:self.collectionView targetContentOffsetForProposedContentOffset:proposedContentOffset];
 }
+
 
 @end
