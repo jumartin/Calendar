@@ -199,6 +199,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     _dimmedTimeRangesCache = [[OSCache alloc]init];
     _dimmedTimeRangesCache.countLimit = 200;
     
+    _durationForNewTimedEvent = 60 * 60;
+    
 	self.backgroundColor = [UIColor whiteColor];
 	self.autoresizesSubviews = NO;
 	
@@ -1131,9 +1133,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	CGFloat x = section * self.dayColumnSize.width;
 	
 	if (type == MGCTimedEventType) {
-		NSDateComponents *comp = [self.calendar components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:date];
-        CGFloat y =  [self offsetFromTime:(comp.hour*3600. + comp.minute*60.) rounding:0];
- 		CGRect rect = CGRectMake(x, y, self.dayColumnSize.width, self.hourSlotHeight);
+        CGFloat y =  [self offsetFromTime:self.durationForNewTimedEvent rounding:0];
+ 		CGRect rect = CGRectMake(x, y, self.dayColumnSize.width, self.interactiveCellTimedEventHeight);
 		return [self convertRect:rect fromView:self.timedEventsView];
 	}
 	else if (type == MGCAllDayEventType) {
@@ -1170,7 +1171,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 			}
 		}
 		else {		// an empty space was touched
-			NSDate *date = [self dateAtPoint:CGPointMake(ptSelf.x, ptSelf.y - self.hourSlotHeight / 2) rounded:YES];
+            CGFloat createEventSlotHeight = floor(self.durationForNewTimedEvent * self.hourSlotHeight / 60.0f / 60.0f);
+			NSDate *date = [self dateAtPoint:CGPointMake(ptSelf.x, ptSelf.y - createEventSlotHeight / 2) rounded:YES];
 						
 			if (![self beginCreateEventOfType:type atDate:date]) {
 				gesture.enabled = NO;
@@ -1225,10 +1227,12 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	NSAssert([self.visibleDays containsDate:date], @"beginCreateEventOfType:atDate for non visible date");
 
 	if (!self.canCreateEvents) return NO;
-		
+	
+    self.interactiveCellTimedEventHeight = floor(self.durationForNewTimedEvent * self.hourSlotHeight / 60.0f / 60.0f);
+    
 	self.isInteractiveCellForNewEvent = YES;
 	self.interactiveCellType = type;
-	self.interactiveCellTouchPoint = CGPointMake(0, self.hourSlotHeight / 2);
+	self.interactiveCellTouchPoint = CGPointMake(0, self.interactiveCellTimedEventHeight / 2);
 	self.interactiveCellDate = date;
 	
 	self.interactiveCell = [[MGCInteractiveEventView alloc]initWithFrame:CGRectZero];
@@ -1251,8 +1255,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		}
 	}
 	
-	CGRect rect = [self rectForNewEventOfType:type atDate:date];
-	self.interactiveCellTimedEventHeight =  self.hourSlotHeight;
+    CGRect rect = [self rectForNewEventOfType:type atDate:date];
 	self.interactiveCell.frame = rect;
 	[self addSubview:self.interactiveCell];
 	self.interactiveCell.hidden = NO;

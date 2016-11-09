@@ -212,6 +212,12 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 @property (nonatomic) BOOL canMoveEvents;
 
 /*!
+	@abstract   The duration of newly created timed events
+	@discussion The default duration is 1 hour.
+ */
+@property (nonatomic) NSTimeInterval durationForNewTimedEvent;
+
+/*!
 	@abstract	The object that acts as the delegate of the day planner view.
 	@discussion The delegate must adopt the `MGCDayPlannerViewDelegate` protocol.
 				The day planner view view maintains a weak reference to the delegate object.
