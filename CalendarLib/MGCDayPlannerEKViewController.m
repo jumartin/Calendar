@@ -69,6 +69,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 {
     if (self = [super initWithNibName:nil bundle:nil]) {
         _eventKitSupport = [[MGCEventKitSupport alloc]initWithEventStore:eventStore];
+        self.durationForNewTimedEvent = 60 * 60;
     }
     return self;
 }
@@ -435,12 +436,22 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     
     EKEvent *ev = [EKEvent eventWithEventStore:self.eventStore];
     ev.startDate = date;
+    
     NSDateComponents *comps = [NSDateComponents new];
-    comps.hour = 1;
+    comps.day = ((NSInteger) self.durationForNewTimedEvent) / (60 * 60 * 24);
+    comps.hour = (((NSInteger) self.durationForNewTimedEvent) / (60 * 60)) - (comps.day * 24);
+    comps.minute = (((NSInteger) self.durationForNewTimedEvent) / 60) - (comps.day * 24 * 60) - (comps.hour * 60);
+    comps.second = ((NSInteger) round(self.durationForNewTimedEvent)) % 60;
+
     ev.endDate = [self.calendar dateByAddingComponents:comps toDate:date options:0];
     ev.allDay = (type == MGCAllDayEventType) ? YES : NO;
     
     [self showPopoverForNewEvent:ev];
+}
+
+- (NSTimeInterval)dayPlannerView:(MGCDayPlannerView *)view durationForNewTimedEventTypeAtDate:(NSDate *)date
+{
+    return self.durationForNewTimedEvent;
 }
 
 #pragma mark - MGCDayPlannerViewDelegate

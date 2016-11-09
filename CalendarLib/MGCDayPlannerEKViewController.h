@@ -42,6 +42,7 @@
 @property (nonatomic) NSSet *visibleCalendars;
 @property (nonatomic, readonly) EKEventStore *eventStore;
 @property (nonatomic, weak) id<MGCDayPlannerEKViewControllerDelegate> delegate;
+@property (nonatomic) NSTimeInterval durationForNewTimedEvent;
 
 /** designated initializer */
 - (instancetype)initWithEventStore:(EKEventStore*)eventStore;

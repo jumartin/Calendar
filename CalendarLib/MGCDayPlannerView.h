@@ -525,6 +525,12 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 - (MGCEventView*)dayPlannerView:(MGCDayPlannerView*)view viewForNewEventOfType:(MGCEventType)type atDate:(NSDate*)date;
 
 /*!
+	@abstract	Asks the data source for the duration for a new MGCTimedEventType
+	@discussion	If this method is not implemented by the data source, a standard duration will be used
+ */
+- (NSTimeInterval)dayPlannerView:(MGCDayPlannerView*)view durationForNewTimedEventTypeAtDate:(NSDate*)date;
+
+/*!
 	@abstract	Asks the data source if an event can be created with given type and date. 
 	@discussion	This method is not called if day planner view's canCreateEvents property is set to NO.
  */

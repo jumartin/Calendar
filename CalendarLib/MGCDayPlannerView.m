@@ -1133,7 +1133,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	if (type == MGCTimedEventType) {
 		NSDateComponents *comp = [self.calendar components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:date];
         CGFloat y =  [self offsetFromTime:(comp.hour*3600. + comp.minute*60.) rounding:0];
- 		CGRect rect = CGRectMake(x, y, self.dayColumnSize.width, self.hourSlotHeight);
+ 		CGRect rect = CGRectMake(x, y, self.dayColumnSize.width, self.interactiveCellTimedEventHeight);
 		return [self convertRect:rect fromView:self.timedEventsView];
 	}
 	else if (type == MGCAllDayEventType) {
@@ -1251,8 +1251,14 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		}
 	}
 	
-	CGRect rect = [self rectForNewEventOfType:type atDate:date];
-	self.interactiveCellTimedEventHeight =  self.hourSlotHeight;
+    if ([self.dataSource respondsToSelector:@selector(dayPlannerView:durationForNewTimedEventTypeAtDate:)]) {
+        NSTimeInterval durationInSeconds = [self.dataSource dayPlannerView:self durationForNewTimedEventTypeAtDate:date];
+        self.interactiveCellTimedEventHeight = floor(durationInSeconds * self.hourSlotHeight / 60.0f / 60.0f);  
+    }
+    else {
+        self.interactiveCellTimedEventHeight =  self.hourSlotHeight;
+    }
+    CGRect rect = [self rectForNewEventOfType:type atDate:date];
 	self.interactiveCell.frame = rect;
 	[self addSubview:self.interactiveCell];
 	self.interactiveCell.hidden = NO;
