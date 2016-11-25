@@ -180,15 +180,15 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 		}
 		return NSOrderedSame;
 	}];
-	
-	
+    
 	for (NSUInteger i = 0; i < adjustedAttributes.count; i++) {
 		MGCEventCellLayoutAttributes *attribs1 = [adjustedAttributes objectAtIndex:i];
-		
+        
 		NSMutableArray *layoutGroup = [NSMutableArray array];
-		MGCEventCellLayoutAttributes *covered = nil;
 		[layoutGroup addObject:attribs1];
 		
+        NSMutableArray *coveredLayoutAttributes = [NSMutableArray array];
+        
 		// iterate previous frames (i.e with highest or equal y-pos)
 		for (NSInteger j = i - 1; j >= 0; j--) {
 			
@@ -197,10 +197,9 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 				CGFloat visibleHeight = fabs(attribs1.frame.origin.y - attribs2.frame.origin.y);
 				
 				if (visibleHeight > self.minimumVisibleHeight) {
-					covered = attribs2;
-					covered.visibleHeight = visibleHeight;
+                    [coveredLayoutAttributes addObject:attribs2];
+					attribs2.visibleHeight = visibleHeight;
                     attribs1.zIndex = attribs2.zIndex + 1;
-					break;
 				}
 				else {
 					[layoutGroup addObject:attribs2];
@@ -208,12 +207,31 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 			}
 		}
 		
-		// now, distribute elements in layout group
-		CGFloat groupOffset = 0;
-		if (covered) {
-			CGFloat sectionXPos = section * self.dayColumnSize.width;
-			groupOffset += covered.frame.origin.x - sectionXPos + kOverlapOffset;
-		}
+
+        // now, distribute elements in layout group
+        CGFloat groupOffset = 0;
+        if (coveredLayoutAttributes.count > 0) {
+            BOOL lookForEmptySlot = YES;
+            NSUInteger slotNumber = 0;
+            CGFloat offset = 0;
+            
+            while (lookForEmptySlot) {
+                offset = slotNumber * kOverlapOffset;
+                
+                lookForEmptySlot = NO;
+                
+                for (MGCEventCellLayoutAttributes *attribs in coveredLayoutAttributes) {
+                    if (attribs.frame.origin.x - section * self.dayColumnSize.width == offset) {
+                        lookForEmptySlot = YES;
+                        break;
+                    }
+                }
+                
+                slotNumber += 1;
+            }
+            
+			groupOffset += offset;
+        }
 		
 		CGFloat totalWidth = (self.dayColumnSize.width - 1.) - groupOffset;
 		CGFloat colWidth = totalWidth / layoutGroup.count;
