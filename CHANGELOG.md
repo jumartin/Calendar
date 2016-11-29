@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v. 2.0.1
+- `MGCDayPlannerView` :
+    - new property `dayHeaderTextColor`
+
 ## v. 2.0
 
 - Deployment target is now iOS 8.0
