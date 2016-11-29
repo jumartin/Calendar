@@ -192,6 +192,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_canCreateEvents = YES;
 	_canMoveEvents = YES;
 	_allowsSelection = YES;
+    _eventCoveringType = TimedEventCoveringTypeClassic;
 	
 	_reuseQueue = [[MGCReusableObjectQueue alloc] init];
 	_loadingDays = [NSMutableOrderedSet orderedSetWithCapacity:14];
@@ -469,6 +470,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     for (UIView *v in [self.timedEventsView visibleSupplementaryViewsOfKind:DimmingViewKind]) {
         v.backgroundColor = dimmingColor;
     }
+}
+
+// public
+- (void)setEventCoveringType:(MGCDayPlannerCoveringType)eventCoveringType {
+    _eventCoveringType = eventCoveringType;
+    self.timedEventsViewLayout.coveringType = eventCoveringType == MGCDayPlannerCoveringTypeComplex ? TimedEventCoveringTypeComplex : TimedEventCoveringTypeClassic;
+    [self.dayColumnsView setNeedsDisplay];
 }
 
 #pragma mark - Private properties
@@ -966,6 +974,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		_timedEventsViewLayout = [MGCTimedEventsViewLayout new];
 		_timedEventsViewLayout.delegate = self;
 		_timedEventsViewLayout.dayColumnSize = self.dayColumnSize;
+        _timedEventsViewLayout.coveringType = self.eventCoveringType == TimedEventCoveringTypeComplex ? TimedEventCoveringTypeComplex : TimedEventCoveringTypeClassic;
 	}
 	return _timedEventsViewLayout;
 }

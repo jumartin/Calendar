@@ -57,6 +57,12 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 };
 
 
+typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
+    MGCDayPlannerCoveringTypeClassic = 0,
+    MGCDayPlannerCoveringTypeComplex = 1
+};
+
+
 /*!
  * You can use an instance of MGCDayPlannerView to display events as a schedule.
  *
@@ -232,6 +238,13 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
  */
 @property (nonatomic, weak) id<MGCDayPlannerViewDataSource> dataSource;
 
+/*!
+    @abstract   How to handle multiple overlapping events at displaying.
+    @discussion `MGCDayPlannerCoveringTypeClassic` is recommended for 2-3 covering events.
+                `MGCDayPlannerCoveringTypeComplex` is recommended for more. The first one tries to maximize the event box sizes. The latter one maximizes the disjunct space by splitting days into columns as neccessary.
+    @discussion Default value is `MGCDayPlannerCoveringTypeClassic`.
+ */
+@property (nonatomic) MGCDayPlannerCoveringType eventCoveringType;
 
 /*!
 	@group Navigating through a day planner view
