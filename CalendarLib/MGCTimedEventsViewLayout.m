@@ -297,6 +297,8 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 
 - (void)expandCellsToMaxWidthInCluster:(NSMutableArray<MGCEventCellLayoutAttributes *> *)cluster
 {
+    const NSUInteger padding = 2.f;
+    
     // Expand the attributes to maximum possible width
     NSMutableArray<NSMutableArray<MGCEventCellLayoutAttributes *> *> *columns = [NSMutableArray new];
     [columns addObject:[NSMutableArray new]];
@@ -324,15 +326,19 @@ static NSString* const EventCellsKey = @"EventCellsKey";
     for (NSMutableArray<MGCEventCellLayoutAttributes *> *column in columns) {
         maxRowCount = fmax(maxRowCount, column.count);
     }
+    
+    CGFloat totalWidth = self.dayColumnSize.width - 2.f;
+
     for (NSInteger i = 0; i < maxRowCount; i++) {
         // Set the x position of the rect
         NSInteger j = 0;
         for (NSMutableArray<MGCEventCellLayoutAttributes *> *column in columns) {
+            CGFloat colWidth = totalWidth / columns.count;
             if (column.count >= i + 1) {
                 MGCEventCellLayoutAttributes *attribs = [column objectAtIndex:i];
-                attribs.frame = MGCAlignedRectMake(attribs.frame.origin.x + j * attribs.frame.size.width / columns.count,
+                attribs.frame = MGCAlignedRectMake(attribs.frame.origin.x + j * colWidth,
                                                    attribs.frame.origin.y,
-                                                   attribs.frame.size.width / columns.count,
+                                                   colWidth,
                                                    attribs.frame.size.height);
             }
             j++;
