@@ -53,21 +53,6 @@ typedef enum : NSUInteger
 @end
 
 
-// Helper cluster objects for `TimedEventCoveringTypeComplex` layout calculations
-@interface MGCEventCellLayoutAttributesCluster : NSObject
-
-@property (nonatomic, strong) NSMutableArray<MGCEventCellLayoutAttributes *> *contents; // attributes sorted by time
-@property (nonatomic) NSUInteger columnSize;    // the maxmimum number of attributes which have covering points at the same time
-
-
-/**
- Refresh the `columnSize` property's value
- */
-- (void)calculateColumnSize;
-
-@end
-
-
 // This collection view layout is responsible for the layout of event views in the timed-events part
 // of the day planner view.
 @interface MGCTimedEventsViewLayout : UICollectionViewLayout

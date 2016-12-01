@@ -74,48 +74,6 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 @end
 
 
-@implementation MGCEventCellLayoutAttributesCluster
-
-- (instancetype)init {
-    if (self = [super init]) {
-        self.columnSize = 0;
-    }
-    return self;
-}
-
-// public
-- (NSMutableArray<MGCEventCellLayoutAttributes *> *)contents
-{
-    if (!_contents) {
-        _contents = [NSMutableArray new];
-    }
-    
-    return _contents;
-}
-
-// public
-- (void)calculateColumnSize
-{
-    for (NSInteger i = 0; i < self.contents.count; i++) {
-        MGCEventCellLayoutAttributes *attribs1 = [self.contents objectAtIndex:i];
-        NSUInteger numberOfCoveredAttribs = 0;
-        
-        for (NSInteger j = 0; j < self.contents.count; j++) {
-            MGCEventCellLayoutAttributes *attribs2 = [self.contents objectAtIndex:j];
-            
-            if (CGRectIntersectsRect(attribs1.frame, attribs2.frame)) {
-                numberOfCoveredAttribs += 1;
-            }
-        }
-        
-        if (numberOfCoveredAttribs > self.columnSize) {
-            self.columnSize = numberOfCoveredAttribs;
-        }
-    }
-}
-@end
-
-
 @implementation MGCTimedEventsViewLayout
 
 - (instancetype)init {
@@ -292,16 +250,16 @@ static NSString* const EventCellsKey = @"EventCellsKey";
         
     } else if (self.coveringType == TimedEventCoveringTypeComplex) {
         
-        // #1 Create clusters
+        // Create clusters - groups of rectangles which don't have common parts with other groups
         NSMutableArray *uninspectedAttributes = [adjustedAttributes mutableCopy];
-        NSMutableArray<MGCEventCellLayoutAttributesCluster *> *clusters = [NSMutableArray new];
+        NSMutableArray<NSMutableArray<MGCEventCellLayoutAttributes *> *> *clusters = [NSMutableArray new];
         
         while (uninspectedAttributes.count > 0) {
             MGCEventCellLayoutAttributes *attrib = [uninspectedAttributes firstObject];
-            MGCEventCellLayoutAttributesCluster *destinationCluster;
+            NSMutableArray<MGCEventCellLayoutAttributes *> *destinationCluster;
             
-            for (MGCEventCellLayoutAttributesCluster *cluster in clusters) {
-                for (MGCEventCellLayoutAttributes *clusteredAttrib in cluster.contents) {
+            for (NSMutableArray<MGCEventCellLayoutAttributes *> *cluster in clusters) {
+                for (MGCEventCellLayoutAttributes *clusteredAttrib in cluster) {
                     if (CGRectIntersectsRect(clusteredAttrib.frame, attrib.frame)) {
                         destinationCluster = cluster;
                         break;
@@ -310,48 +268,75 @@ static NSString* const EventCellsKey = @"EventCellsKey";
             }
             
             if (destinationCluster) {
-                [destinationCluster.contents addObject:attrib];
+                [destinationCluster addObject:attrib];
             } else {
-                MGCEventCellLayoutAttributesCluster *cluster = [MGCEventCellLayoutAttributesCluster new];
-                [cluster.contents addObject:attrib];
+                NSMutableArray<MGCEventCellLayoutAttributes *> *cluster = [NSMutableArray new];
+                [cluster addObject:attrib];
                 [clusters addObject:cluster];
             }
             
             [uninspectedAttributes removeObject:attrib];
         }
         
-        // #2 Determine cluster sizes
-        for (MGCEventCellLayoutAttributesCluster *cluster in clusters) {
-            [cluster calculateColumnSize];
+        // Distribute rectangles evenly in clusters
+        for (NSMutableArray<MGCEventCellLayoutAttributes *> *cluster in clusters) {
+            [self expandCellsToMaxWidthInCluster:cluster];
         }
         
-        // #3 Determine base offsets
-        NSMutableArray *adjustedAttributes = [NSMutableArray new];
+        // Gather all the attributes and return them
+        NSMutableArray *attributes = [NSMutableArray new];
+        for (NSMutableArray<MGCEventCellLayoutAttributes *> *cluster in clusters) {
+            [attributes addObjectsFromArray:cluster];
+        }
         
-        CGFloat totalWidth = (self.dayColumnSize.width - 1.);
+        return attributes;
+    }
+    
+    return @[];
+}
 
-        for (MGCEventCellLayoutAttributesCluster *cluster in clusters) {
-            CGFloat colWidth = totalWidth / cluster.columnSize;
-            CGFloat x = section * self.dayColumnSize.width; // + groupOffset;
-            
-            for (NSInteger i = 0; i < cluster.contents.count; i++) {
-                MGCEventCellLayoutAttributes *clusteredAttrib = [cluster.contents objectAtIndex:i];
-                
-                for (NSInteger j = 0; j < i; j++) {
-                    MGCEventCellLayoutAttributes *adjustedAttrib = [cluster.contents objectAtIndex:j];
-                    if (!CGRectIntersectsRect(clusteredAttrib.frame, adjustedAttrib.frame)) {
-                        x = adjustedAttrib.frame.origin.x;
-                    }
-                }
-                
-                clusteredAttrib.frame = MGCAlignedRectMake(x, clusteredAttrib.frame.origin.y, colWidth, clusteredAttrib.frame.size.height);
-                x += colWidth;
-            
-                [adjustedAttributes addObject:clusteredAttrib];
+- (void)expandCellsToMaxWidthInCluster:(NSMutableArray<MGCEventCellLayoutAttributes *> *)cluster
+{
+    // Expand the attributes to maximum possible width
+    NSMutableArray<NSMutableArray<MGCEventCellLayoutAttributes *> *> *columns = [NSMutableArray new];
+    [columns addObject:[NSMutableArray new]];
+    for (MGCEventCellLayoutAttributes *attribs in cluster) {
+        BOOL isPlaced = NO;
+        for (NSMutableArray<MGCEventCellLayoutAttributes *> *column in columns) {
+            if (column.count == 0) {
+                [column addObject:attribs];
+                isPlaced = YES;
+            } else if (!CGRectIntersectsRect(attribs.frame, [column lastObject].frame)) {
+                [column addObject:attribs];
+                isPlaced = YES;
+                break;
             }
         }
-        
-        return adjustedAttributes;
+        if (!isPlaced) {
+            NSMutableArray<MGCEventCellLayoutAttributes *> *column = [NSMutableArray new];
+            [column addObject:attribs];
+            [columns addObject:column];
+        }
+    }
+    
+    // Calculate left and right position for all the attributes, get the maxRowCount by looking in all columns
+    NSInteger maxRowCount = 0;
+    for (NSMutableArray<MGCEventCellLayoutAttributes *> *column in columns) {
+        maxRowCount = fmax(maxRowCount, column.count);
+    }
+    for (NSInteger i = 0; i < maxRowCount; i++) {
+        // Set the x position of the rect
+        NSInteger j = 0;
+        for (NSMutableArray<MGCEventCellLayoutAttributes *> *column in columns) {
+            if (column.count >= i + 1) {
+                MGCEventCellLayoutAttributes *attribs = [column objectAtIndex:i];
+                attribs.frame = MGCAlignedRectMake(attribs.frame.origin.x + j * attribs.frame.size.width / columns.count,
+                                                   attribs.frame.origin.y,
+                                                   attribs.frame.size.width / columns.count,
+                                                   attribs.frame.size.height);
+            }
+            j++;
+        }
     }
 }
 
