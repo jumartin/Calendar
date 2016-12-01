@@ -74,6 +74,48 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 @end
 
 
+@implementation MGCEventCellLayoutAttributesCluster
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.columnSize = 0;
+    }
+    return self;
+}
+
+// public
+- (NSMutableArray<MGCEventCellLayoutAttributes *> *)contents
+{
+    if (!_contents) {
+        _contents = [NSMutableArray new];
+    }
+    
+    return _contents;
+}
+
+// public
+- (void)calculateColumnSize
+{
+    for (NSInteger i = 0; i < self.contents.count; i++) {
+        MGCEventCellLayoutAttributes *attribs1 = [self.contents objectAtIndex:i];
+        NSUInteger numberOfCoveredAttribs = 0;
+        
+        for (NSInteger j = 0; j < self.contents.count; j++) {
+            MGCEventCellLayoutAttributes *attribs2 = [self.contents objectAtIndex:j];
+            
+            if (CGRectIntersectsRect(attribs1.frame, attribs2.frame)) {
+                numberOfCoveredAttribs += 1;
+            }
+        }
+        
+        if (numberOfCoveredAttribs > self.columnSize) {
+            self.columnSize = numberOfCoveredAttribs;
+        }
+    }
+}
+@end
+
+
 @implementation MGCTimedEventsViewLayout
 
 - (instancetype)init {
@@ -168,20 +210,20 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 
 - (NSArray*)adjustLayoutForOverlappingCells:(NSArray*)attributes inSection:(NSUInteger)section
 {
+    const CGFloat kOverlapOffset = 4.;
+    
+    // sort layout attributes by frame y-position
+    NSArray *adjustedAttributes = [attributes sortedArrayUsingComparator:^NSComparisonResult(MGCEventCellLayoutAttributes *att1, MGCEventCellLayoutAttributes *att2) {
+        if (att1.frame.origin.y > att2.frame.origin.y) {
+            return NSOrderedDescending;
+        }
+        else if (att1.frame.origin.y < att2.frame.origin.y) {
+            return NSOrderedAscending;
+        }
+        return NSOrderedSame;
+    }];
+
     if (self.coveringType == TimedEventCoveringTypeClassic) {
-        
-        const CGFloat kOverlapOffset = 4.;
-        
-        // sort layout attributes by frame y-position
-        NSArray *adjustedAttributes = [attributes sortedArrayUsingComparator:^NSComparisonResult(MGCEventCellLayoutAttributes *att1, MGCEventCellLayoutAttributes *att2) {
-            if (att1.frame.origin.y > att2.frame.origin.y) {
-                 return NSOrderedDescending;
-            }
-            else if (att1.frame.origin.y < att2.frame.origin.y) {
-                 return NSOrderedAscending;
-            }
-            return NSOrderedSame;
-        }];
         
         for (NSUInteger i = 0; i < adjustedAttributes.count; i++) {
             MGCEventCellLayoutAttributes *attribs1 = [adjustedAttributes objectAtIndex:i];
@@ -248,10 +290,68 @@ static NSString* const EventCellsKey = @"EventCellsKey";
         
         return adjustedAttributes;
         
-    } else {
+    } else if (self.coveringType == TimedEventCoveringTypeComplex) {
         
-        return attributes;
+        // #1 Create clusters
+        NSMutableArray *uninspectedAttributes = [adjustedAttributes mutableCopy];
+        NSMutableArray<MGCEventCellLayoutAttributesCluster *> *clusters = [NSMutableArray new];
         
+        while (uninspectedAttributes.count > 0) {
+            MGCEventCellLayoutAttributes *attrib = [uninspectedAttributes firstObject];
+            MGCEventCellLayoutAttributesCluster *destinationCluster;
+            
+            for (MGCEventCellLayoutAttributesCluster *cluster in clusters) {
+                for (MGCEventCellLayoutAttributes *clusteredAttrib in cluster.contents) {
+                    if (CGRectIntersectsRect(clusteredAttrib.frame, attrib.frame)) {
+                        destinationCluster = cluster;
+                        break;
+                    }
+                }
+            }
+            
+            if (destinationCluster) {
+                [destinationCluster.contents addObject:attrib];
+            } else {
+                MGCEventCellLayoutAttributesCluster *cluster = [MGCEventCellLayoutAttributesCluster new];
+                [cluster.contents addObject:attrib];
+                [clusters addObject:cluster];
+            }
+            
+            [uninspectedAttributes removeObject:attrib];
+        }
+        
+        // #2 Determine cluster sizes
+        for (MGCEventCellLayoutAttributesCluster *cluster in clusters) {
+            [cluster calculateColumnSize];
+        }
+        
+        // #3 Determine base offsets
+        NSMutableArray *adjustedAttributes = [NSMutableArray new];
+        
+        CGFloat totalWidth = (self.dayColumnSize.width - 1.);
+
+        for (MGCEventCellLayoutAttributesCluster *cluster in clusters) {
+            CGFloat colWidth = totalWidth / cluster.columnSize;
+            CGFloat x = section * self.dayColumnSize.width; // + groupOffset;
+            
+            for (NSInteger i = 0; i < cluster.contents.count; i++) {
+                MGCEventCellLayoutAttributes *clusteredAttrib = [cluster.contents objectAtIndex:i];
+                
+                for (NSInteger j = 0; j < i; j++) {
+                    MGCEventCellLayoutAttributes *adjustedAttrib = [cluster.contents objectAtIndex:j];
+                    if (!CGRectIntersectsRect(clusteredAttrib.frame, adjustedAttrib.frame)) {
+                        x = adjustedAttrib.frame.origin.x;
+                    }
+                }
+                
+                clusteredAttrib.frame = MGCAlignedRectMake(x, clusteredAttrib.frame.origin.y, colWidth, clusteredAttrib.frame.size.height);
+                x += colWidth;
+            
+                [adjustedAttributes addObject:clusteredAttrib];
+            }
+        }
+        
+        return adjustedAttributes;
     }
 }
 

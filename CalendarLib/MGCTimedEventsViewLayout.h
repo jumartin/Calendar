@@ -40,6 +40,7 @@ typedef enum : NSUInteger
 
 
 @protocol MGCTimedEventsViewLayoutDelegate;
+@class MGCEventCellLayoutAttributes;
 
 
 // Custom invalidation context for MGCTimedEventsViewLayout
@@ -48,6 +49,21 @@ typedef enum : NSUInteger
 @property (nonatomic) BOOL invalidateDimmingViews;  // set to true if layout attributes of dimming views must be recomputed
 @property (nonatomic) BOOL invalidateEventCells;  // set to true if layout attributes of event cells must be recomputed
 @property (nonatomic) NSMutableIndexSet *invalidatedSections;   // sections whose layout attributes (dimming views or event cells) must be recomputed - if nil, recompute everything
+
+@end
+
+
+// Helper cluster objects for `TimedEventCoveringTypeComplex` layout calculations
+@interface MGCEventCellLayoutAttributesCluster : NSObject
+
+@property (nonatomic, strong) NSMutableArray<MGCEventCellLayoutAttributes *> *contents; // attributes sorted by time
+@property (nonatomic) NSUInteger columnSize;    // the maxmimum number of attributes which have covering points at the same time
+
+
+/**
+ Refresh the `columnSize` property's value
+ */
+- (void)calculateColumnSize;
 
 @end
 
