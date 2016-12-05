@@ -403,7 +403,7 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     if (ev) {
         NSDateComponents *duration = [self.calendar components:NSMinuteCalendarUnit fromDate:ev.startDate toDate:ev.endDate options:0];
         if (ev.allDay && targetType == MGCTimedEventType) {
-            duration.minute = view.durationForNewTimedEvent * 60;
+            duration.minute = view.durationForNewTimedEvent / 60;
         }
         NSDate *end = [self.calendar dateByAddingComponents:duration toDate:targetDate options:0];
         
