@@ -168,65 +168,182 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 
 - (NSArray*)adjustLayoutForOverlappingCells:(NSArray*)attributes inSection:(NSUInteger)section
 {
-	const CGFloat kOverlapOffset = 4.;
-	
-	// sort layout attributes by frame y-position
-	NSArray *adjustedAttributes = [attributes sortedArrayUsingComparator:^NSComparisonResult(MGCEventCellLayoutAttributes *att1, MGCEventCellLayoutAttributes *att2) {
-		if (att1.frame.origin.y > att2.frame.origin.y) {
-			 return NSOrderedDescending;
-		}
-		else if (att1.frame.origin.y < att2.frame.origin.y) {
-			 return NSOrderedAscending;
-		}
-		return NSOrderedSame;
-	}];
-	
-	
-	for (NSUInteger i = 0; i < adjustedAttributes.count; i++) {
-		MGCEventCellLayoutAttributes *attribs1 = [adjustedAttributes objectAtIndex:i];
-		
-		NSMutableArray *layoutGroup = [NSMutableArray array];
-		MGCEventCellLayoutAttributes *covered = nil;
-		[layoutGroup addObject:attribs1];
-		
-		// iterate previous frames (i.e with highest or equal y-pos)
-		for (NSInteger j = i - 1; j >= 0; j--) {
-			
-			MGCEventCellLayoutAttributes *attribs2 = [adjustedAttributes objectAtIndex:j];
-			if (CGRectIntersectsRect(attribs1.frame, attribs2.frame)) {
-				CGFloat visibleHeight = fabs(attribs1.frame.origin.y - attribs2.frame.origin.y);
-				
-				if (visibleHeight > self.minimumVisibleHeight) {
-					covered = attribs2;
-					covered.visibleHeight = visibleHeight;
-                    attribs1.zIndex = attribs2.zIndex + 1;
-					break;
-				}
-				else {
-					[layoutGroup addObject:attribs2];
-				}
-			}
-		}
-		
-		// now, distribute elements in layout group
-		CGFloat groupOffset = 0;
-		if (covered) {
-			CGFloat sectionXPos = section * self.dayColumnSize.width;
-			groupOffset += covered.frame.origin.x - sectionXPos + kOverlapOffset;
-		}
-		
-		CGFloat totalWidth = (self.dayColumnSize.width - 1.) - groupOffset;
-		CGFloat colWidth = totalWidth / layoutGroup.count;
-		
-		CGFloat x = section * self.dayColumnSize.width + groupOffset;
-		
-		for (MGCEventCellLayoutAttributes* attribs in [layoutGroup reverseObjectEnumerator]) {
-			attribs.frame = MGCAlignedRectMake(x, attribs.frame.origin.y, colWidth, attribs.frame.size.height);
-			x += colWidth;
-		}
-	}
-	
-	return adjustedAttributes;
+    const CGFloat kOverlapOffset = 4.;
+    
+    // sort layout attributes by frame y-position
+    NSArray *adjustedAttributes = [attributes sortedArrayUsingComparator:^NSComparisonResult(MGCEventCellLayoutAttributes *att1, MGCEventCellLayoutAttributes *att2) {
+        if (att1.frame.origin.y > att2.frame.origin.y) {
+            return NSOrderedDescending;
+        }
+        else if (att1.frame.origin.y < att2.frame.origin.y) {
+            return NSOrderedAscending;
+        }
+        return NSOrderedSame;
+    }];
+
+    if (self.coveringType == TimedEventCoveringTypeClassic) {
+        
+        for (NSUInteger i = 0; i < adjustedAttributes.count; i++) {
+            MGCEventCellLayoutAttributes *attribs1 = [adjustedAttributes objectAtIndex:i];
+            
+            NSMutableArray *layoutGroup = [NSMutableArray array];
+            [layoutGroup addObject:attribs1];
+            
+            NSMutableArray *coveredLayoutAttributes = [NSMutableArray array];
+            
+            // iterate previous frames (i.e with highest or equal y-pos)
+            for (NSInteger j = i - 1; j >= 0; j--) {
+                
+                MGCEventCellLayoutAttributes *attribs2 = [adjustedAttributes objectAtIndex:j];
+                if (CGRectIntersectsRect(attribs1.frame, attribs2.frame)) {
+                    CGFloat visibleHeight = fabs(attribs1.frame.origin.y - attribs2.frame.origin.y);
+                    
+                    if (visibleHeight > self.minimumVisibleHeight) {
+                        [coveredLayoutAttributes addObject:attribs2];
+                        attribs2.visibleHeight = visibleHeight;
+                        attribs1.zIndex = attribs2.zIndex + 1;
+                    }
+                    else {
+                        [layoutGroup addObject:attribs2];
+                    }
+                }
+            }
+            
+
+            // now, distribute elements in layout group
+            CGFloat groupOffset = 0;
+            if (coveredLayoutAttributes.count > 0) {
+                BOOL lookForEmptySlot = YES;
+                NSUInteger slotNumber = 0;
+                CGFloat offset = 0;
+                
+                while (lookForEmptySlot) {
+                    offset = slotNumber * kOverlapOffset;
+                    
+                    lookForEmptySlot = NO;
+                    
+                    for (MGCEventCellLayoutAttributes *attribs in coveredLayoutAttributes) {
+                        if (attribs.frame.origin.x - section * self.dayColumnSize.width == offset) {
+                            lookForEmptySlot = YES;
+                            break;
+                        }
+                    }
+                    
+                    slotNumber += 1;
+                }
+                
+                groupOffset += offset;
+            }
+            
+            CGFloat totalWidth = (self.dayColumnSize.width - 1.) - groupOffset;
+            CGFloat colWidth = totalWidth / layoutGroup.count;
+            
+            CGFloat x = section * self.dayColumnSize.width + groupOffset;
+            
+            for (MGCEventCellLayoutAttributes* attribs in [layoutGroup reverseObjectEnumerator]) {
+                attribs.frame = MGCAlignedRectMake(x, attribs.frame.origin.y, colWidth, attribs.frame.size.height);
+                x += colWidth;
+            }
+        }
+        
+        return adjustedAttributes;
+        
+    } else if (self.coveringType == TimedEventCoveringTypeComplex) {
+        
+        // Create clusters - groups of rectangles which don't have common parts with other groups
+        NSMutableArray *uninspectedAttributes = [adjustedAttributes mutableCopy];
+        NSMutableArray<NSMutableArray<MGCEventCellLayoutAttributes *> *> *clusters = [NSMutableArray new];
+        
+        while (uninspectedAttributes.count > 0) {
+            MGCEventCellLayoutAttributes *attrib = [uninspectedAttributes firstObject];
+            NSMutableArray<MGCEventCellLayoutAttributes *> *destinationCluster;
+            
+            for (NSMutableArray<MGCEventCellLayoutAttributes *> *cluster in clusters) {
+                for (MGCEventCellLayoutAttributes *clusteredAttrib in cluster) {
+                    if (CGRectIntersectsRect(clusteredAttrib.frame, attrib.frame)) {
+                        destinationCluster = cluster;
+                        break;
+                    }
+                }
+            }
+            
+            if (destinationCluster) {
+                [destinationCluster addObject:attrib];
+            } else {
+                NSMutableArray<MGCEventCellLayoutAttributes *> *cluster = [NSMutableArray new];
+                [cluster addObject:attrib];
+                [clusters addObject:cluster];
+            }
+            
+            [uninspectedAttributes removeObject:attrib];
+        }
+        
+        // Distribute rectangles evenly in clusters
+        for (NSMutableArray<MGCEventCellLayoutAttributes *> *cluster in clusters) {
+            [self expandCellsToMaxWidthInCluster:cluster];
+        }
+        
+        // Gather all the attributes and return them
+        NSMutableArray *attributes = [NSMutableArray new];
+        for (NSMutableArray<MGCEventCellLayoutAttributes *> *cluster in clusters) {
+            [attributes addObjectsFromArray:cluster];
+        }
+        
+        return attributes;
+    }
+    
+    return @[];
+}
+
+- (void)expandCellsToMaxWidthInCluster:(NSMutableArray<MGCEventCellLayoutAttributes *> *)cluster
+{
+    const NSUInteger padding = 2.f;
+    
+    // Expand the attributes to maximum possible width
+    NSMutableArray<NSMutableArray<MGCEventCellLayoutAttributes *> *> *columns = [NSMutableArray new];
+    [columns addObject:[NSMutableArray new]];
+    for (MGCEventCellLayoutAttributes *attribs in cluster) {
+        BOOL isPlaced = NO;
+        for (NSMutableArray<MGCEventCellLayoutAttributes *> *column in columns) {
+            if (column.count == 0) {
+                [column addObject:attribs];
+                isPlaced = YES;
+            } else if (!CGRectIntersectsRect(attribs.frame, [column lastObject].frame)) {
+                [column addObject:attribs];
+                isPlaced = YES;
+                break;
+            }
+        }
+        if (!isPlaced) {
+            NSMutableArray<MGCEventCellLayoutAttributes *> *column = [NSMutableArray new];
+            [column addObject:attribs];
+            [columns addObject:column];
+        }
+    }
+    
+    // Calculate left and right position for all the attributes, get the maxRowCount by looking in all columns
+    NSInteger maxRowCount = 0;
+    for (NSMutableArray<MGCEventCellLayoutAttributes *> *column in columns) {
+        maxRowCount = fmax(maxRowCount, column.count);
+    }
+    
+    CGFloat totalWidth = self.dayColumnSize.width - 2.f;
+
+    for (NSInteger i = 0; i < maxRowCount; i++) {
+        // Set the x position of the rect
+        NSInteger j = 0;
+        for (NSMutableArray<MGCEventCellLayoutAttributes *> *column in columns) {
+            CGFloat colWidth = totalWidth / columns.count;
+            if (column.count >= i + 1) {
+                MGCEventCellLayoutAttributes *attribs = [column objectAtIndex:i];
+                attribs.frame = MGCAlignedRectMake(attribs.frame.origin.x + j * colWidth,
+                                                   attribs.frame.origin.y,
+                                                   colWidth,
+                                                   attribs.frame.size.height);
+            }
+            j++;
+        }
+    }
 }
 
 #pragma mark - UICollectionViewLayout
@@ -304,7 +421,7 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 - (NSArray*)layoutAttributesForElementsInRect:(CGRect)rect
 {
 	//NSLog(@"layoutAttributesForElementsInRect %@", NSStringFromCGRect(rect));
-	
+    
 #ifdef BUG_FIX
 	self.shouldInvalidate = self.visibleBounds.origin.y != rect.origin.y || self.visibleBounds.size.height != rect.size.height;
 	//self.shouldInvalidate = !CGRectEqualToRect(self.visibleBounds, rect);

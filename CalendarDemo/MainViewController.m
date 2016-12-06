@@ -143,6 +143,7 @@ typedef enum : NSUInteger
         _dayViewController.calendar = self.calendar;
         _dayViewController.showsWeekHeaderView = YES;
         _dayViewController.delegate = self;
+        _dayViewController.dayPlannerView.eventCoveringType = MGCDayPlannerCoveringTypeComplex;
     }
     return _dayViewController;
 }
