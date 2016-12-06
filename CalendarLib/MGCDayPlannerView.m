@@ -1705,7 +1705,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         frame.origin = [self offsetFromDate:self.interactiveCellDate eventType:self.interactiveCellType];
         frame.size.width = self.dayColumnSize.width;
 		self.interactiveCell.frame = frame;
-        self.interactiveCell.hidden = (self.interactiveCellType == MGCTimedEventType && !CGRectContainsRect(self.timedEventsView.frame, frame));
+        self.interactiveCell.hidden = (self.interactiveCellType == MGCTimedEventType && !CGRectIntersectsRect(self.timedEventsView.frame, frame));
 	}
 	
 	[self.allDayEventsView flashScrollIndicators];
