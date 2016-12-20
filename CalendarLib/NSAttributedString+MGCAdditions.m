@@ -63,7 +63,7 @@ NSString * const MGCCircleMarkAttributeName = @"MGCCircleMarkAttributeName";
             
             NSTextAttachment *attachment = [NSTextAttachment new];
             attachment.image = image;
-            attachment.bounds = CGRectMake(circleMark.margin, circleMark.yOffset, attachment.image.size.width, attachment.image.size.height);
+            attachment.bounds = CGRectMake(0, circleMark.yOffset, attachment.image.size.width, attachment.image.size.height);
             NSAttributedString *imgStr = [NSAttributedString attributedStringWithAttachment:attachment];
             
             [self replaceCharactersInRange:subrange withAttributedString:imgStr];
