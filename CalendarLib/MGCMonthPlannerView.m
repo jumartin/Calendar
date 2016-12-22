@@ -596,6 +596,7 @@ typedef enum
             if (cell) {
                 NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
                 cell.showsDot = eventsCounts > 0;
+                [self.eventsView reloadItemsAtIndexPaths:@[path]];
             }
         }
     }
@@ -1377,6 +1378,7 @@ typedef enum
 {
     MGCMonthPlannerViewDayCell* cell = [self.eventsView dequeueReusableCellWithReuseIdentifier:DayCellIdentifier forIndexPath:indexPath];
     cell.headerHeight = self.dayCellHeaderHeight;
+    cell.selectedBackgroundView = nil;
     
     NSDate *date = [self dateForDayAtIndexPath:indexPath];
     
