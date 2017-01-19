@@ -184,6 +184,18 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 @property (nonatomic, strong) UIColor *weekdaysLabelTextColor;
 
 /*!
+	@abstract	Border color for the header on the top of the view.
+	@discussion The default color is lightGray.
+ */
+@property (nonatomic, strong) UIColor *headerBorderColor;
+
+/*!
+	@abstract	Grid color for the calendar.
+	@discussion The default color is [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.].
+ */
+@property (nonatomic, strong) UIColor *calendarGridColor;
+
+/*!
 	@abstract	Font used for the weekday headers.
  */
 @property (nonatomic, strong) UIFont *weekdaysLabelFont;

@@ -128,6 +128,8 @@ typedef enum
     _weekendDayBackgroundColor = [UIColor colorWithWhite:.97 alpha:.8];
     _weekdaysLabelTextColor    = [UIColor blackColor];
     _monthLabelTextColor       = [UIColor blackColor];
+    _headerBorderColor         = [UIColor lightGrayColor];
+    _calendarGridColor         = [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.];
     _monthLabelFont            = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     
     _dayLabels = [NSMutableArray array];
@@ -894,7 +896,7 @@ typedef enum
 {
     if (!_headerBorderLayer) {
         _headerBorderLayer = [CALayer layer];
-        _headerBorderLayer.backgroundColor = [UIColor lightGrayColor].CGColor;
+        _headerBorderLayer.backgroundColor = self.headerBorderColor.CGColor;
     }
     return _headerBorderLayer;
 }
@@ -1466,6 +1468,7 @@ typedef enum
     NSUInteger numRows = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date].length;
     
     MGCMonthPlannerBackgroundView *view = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthBackgroundViewKind withReuseIdentifier:MonthBackgroundViewIdentifier forIndexPath:indexPath];
+    view.gridColor = self.calendarGridColor;
     view.numberOfColumns = 7;
     view.numberOfRows = numRows;
     view.firstColumn = self.gridStyle & MGCMonthPlannerGridStyleFill ? 0 : firstColumn;
