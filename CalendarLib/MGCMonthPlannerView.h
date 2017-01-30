@@ -154,6 +154,12 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 @property (nonatomic, copy) NSString *dateFormat;
 
 /*!
+    @abstract String format for month name displayed of top of each month
+    @discussion The default value is nil
+ */
+@property (nonatomic, copy) NSString *formatTemplateForMonthHeaderView;
+
+/*!
 	@abstract	Returns the height of event cells.
 	@discussion The default value is 16.
  */

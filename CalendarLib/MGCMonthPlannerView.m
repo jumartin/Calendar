@@ -1427,7 +1427,7 @@ typedef enum
     }
     dateFormatter.calendar = self.calendar;
 
-    NSString *fmtTemplate = self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMMM" : @"MMMMYYYY";
+    NSString *fmtTemplate = self.formatTemplateForMonthHeaderView ?: self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMMM" : @"MMMMYYYY";
     dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:fmtTemplate options:0 locale:locale];
 
     NSDate *date = [self dateStartingMonthAtIndex:indexPath.section];
@@ -1441,7 +1441,7 @@ typedef enum
     UICollectionViewLayoutAttributes *attribs = [self.layout layoutAttributesForSupplementaryViewOfKind:MonthHeaderViewKind atIndexPath:indexPath];
     
     if (strRect.size.width > attribs.frame.size.width) {
-        fmtTemplate = self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMM" : @"MMMYY";
+        fmtTemplate = self.formatTemplateForMonthHeaderView ?: self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMMM" : @"MMMMYYYY";
         dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:fmtTemplate options:0 locale:locale];
         
         str = [[dateFormatter stringFromDate:date]uppercaseStringWithLocale:locale];
