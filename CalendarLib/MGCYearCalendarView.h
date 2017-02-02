@@ -117,6 +117,7 @@
 - (NSAttributedString*)calendarYearView:(MGCYearCalendarView*)view headerTextForYearAtDate:(NSDate*)date;
 - (NSAttributedString*)calendarYearView:(MGCYearCalendarView*)view headerTextForMonthAtDate:(NSDate*)date;
 - (void)calendarYearViewDidScroll:(MGCYearCalendarView*)view;
+- (void)calendarYearViewDidEndScrolling:(MGCYearCalendarView*)view;
 - (void)calendarYearView:(MGCYearCalendarView*)view didSelectMonthAtDate:(NSDate*)date;
 
 @end

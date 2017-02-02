@@ -1634,8 +1634,8 @@ typedef enum
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidEndScroll:)]) {
-        [self.delegate monthPlannerViewDidEndScroll:self];
+    if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidEndScrolling:)]) {
+        [self.delegate monthPlannerViewDidEndScrolling:self];
     }
 }
 

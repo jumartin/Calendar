@@ -524,6 +524,13 @@ static const CGFloat kDefaultYearHeaderFontSizeiPhone = 20;	// deafult font size
     }
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if ([self.delegate respondsToSelector:@selector(calendarYearViewDidEndScrolling:)]) {
+        [self.delegate calendarYearViewDidEndScrolling:self];
+    }
+}
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self.delegate respondsToSelector:@selector(calendarYearView:didSelectMonthAtDate:)])
