@@ -40,6 +40,7 @@
 
 /** designated initializer */
 - (instancetype)initWithEventStore:(EKEventStore*)eventStore;
+- (EKEvent*)eventAtIndex:(NSUInteger)index date:(NSDate*)date;
 - (void)reloadEvents;
 
 @end
