@@ -1632,6 +1632,13 @@ typedef enum
     }
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidEndScrolling:)]) {
+        [self.delegate monthPlannerViewDidEndScrolling:self];
+    }
+}
+
 - (void)scrollViewWillEndDragging:(UIScrollView*)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint*)targetContentOffset
 {
     if (self.pagingMode == MGCMonthPlannerPagingModeNone) return;

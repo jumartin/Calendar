@@ -487,6 +487,10 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
  */
 - (void)monthPlannerViewDidScroll:(MGCMonthPlannerView*)view;
 
+/*!
+	@abstract   Tells the delegate that the month planner view scroll was finished
+ */
+- (void)monthPlannerViewDidEndScrolling:(MGCMonthPlannerView*)view;
 
 /*!
 	@abstract	Tells the delegate that a day cell was selected.
