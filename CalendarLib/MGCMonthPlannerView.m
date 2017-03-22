@@ -109,6 +109,7 @@ typedef enum
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:kDefaultDateFormat options:0 locale:[NSLocale currentLocale]]; //kDefaultDateFormat;
     _rowHeight = isiPad ? 140. : 60.;
     _dayCellHeaderHeight = 30;
+    _highlightsDayCellWhenSelected = YES;
     _headerHeight =  35;
     _itemHeight = 16;
     _reuseQueue = [MGCReusableObjectQueue new];
@@ -1380,7 +1381,10 @@ typedef enum
 {
     MGCMonthPlannerViewDayCell* cell = [self.eventsView dequeueReusableCellWithReuseIdentifier:DayCellIdentifier forIndexPath:indexPath];
     cell.headerHeight = self.dayCellHeaderHeight;
-    cell.selectedBackgroundView = nil;
+    
+    if (self.highlightsDayCellWhenSelected == NO) {
+        cell.selectedBackgroundView = nil;
+    }
     
     NSDate *date = [self dateForDayAtIndexPath:indexPath];
     

@@ -109,6 +109,12 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 @property (nonatomic) CGFloat dayCellHeaderHeight;
 
 /*!
+	@abstract	Returns whether day cells should highlight on selection.
+	@discussion The default value YES.
+ */
+@property (nonatomic) BOOL highlightsDayCellWhenSelected;
+
+/*!
 	@abstract	The distance between each months and between the months and the edge of the view.
  */
 @property (nonatomic) UIEdgeInsets monthInsets;
