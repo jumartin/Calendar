@@ -181,6 +181,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_dayHeaderHeight = 40.;
     _daySeparatorsColor = [UIColor lightGrayColor];
     _timeSeparatorsColor = [UIColor lightGrayColor];
+    _allDayEventsBackgroundColor = [UIColor lightGrayColor];
     _currentTimeColor = [UIColor redColor];
     _eventIndicatorDotColor = [UIColor blueColor];
 	_showsAllDayEvents = YES;
@@ -959,7 +960,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		_allDayEventsBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 		_allDayEventsBackgroundView.backgroundColor = [UIColor colorWithRed:.8 green:.8 blue:.83 alpha:1.];
 		_allDayEventsBackgroundView.clipsToBounds = YES;
-		_allDayEventsBackgroundView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+		_allDayEventsBackgroundView.layer.borderColor = self.allDayEventsBackgroundColor.CGColor;
 		_allDayEventsBackgroundView.layer.borderWidth = 1;
 	}
 	return _allDayEventsBackgroundView;

@@ -109,6 +109,12 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 @property (nonatomic) CGFloat dayCellHeaderHeight;
 
 /*!
+	@abstract	Returns whether day cells should highlight on selection.
+	@discussion The default value YES.
+ */
+@property (nonatomic) BOOL highlightsDayCellWhenSelected;
+
+/*!
 	@abstract	The distance between each months and between the months and the edge of the view.
  */
 @property (nonatomic) UIEdgeInsets monthInsets;
@@ -154,6 +160,12 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 @property (nonatomic, copy) NSString *dateFormat;
 
 /*!
+    @abstract String format for month name displayed of top of each month
+    @discussion The default value is nil
+ */
+@property (nonatomic, copy) NSString *formatTemplateForMonthHeaderView;
+
+/*!
 	@abstract	Returns the height of event cells.
 	@discussion The default value is 16.
  */
@@ -182,6 +194,18 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 	@discussion The default color is black.
  */
 @property (nonatomic, strong) UIColor *weekdaysLabelTextColor;
+
+/*!
+	@abstract	Border color for the header on the top of the view.
+	@discussion The default color is lightGray.
+ */
+@property (nonatomic, strong) UIColor *headerBorderColor;
+
+/*!
+	@abstract	Grid color for the calendar.
+	@discussion The default color is [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.].
+ */
+@property (nonatomic, strong) UIColor *calendarGridColor;
 
 /*!
 	@abstract	Font used for the weekday headers.

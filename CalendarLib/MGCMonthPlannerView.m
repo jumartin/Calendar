@@ -109,6 +109,7 @@ typedef enum
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:kDefaultDateFormat options:0 locale:[NSLocale currentLocale]]; //kDefaultDateFormat;
     _rowHeight = isiPad ? 140. : 60.;
     _dayCellHeaderHeight = 30;
+    _highlightsDayCellWhenSelected = YES;
     _headerHeight =  35;
     _itemHeight = 16;
     _reuseQueue = [MGCReusableObjectQueue new];
@@ -128,6 +129,8 @@ typedef enum
     _weekendDayBackgroundColor = [UIColor colorWithWhite:.97 alpha:.8];
     _weekdaysLabelTextColor    = [UIColor blackColor];
     _monthLabelTextColor       = [UIColor blackColor];
+    _headerBorderColor         = [UIColor lightGrayColor];
+    _calendarGridColor         = [UIColor colorWithRed:.6f green:.6f blue:.6f alpha:1.];
     _monthLabelFont            = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     
     _dayLabels = [NSMutableArray array];
@@ -596,6 +599,7 @@ typedef enum
             if (cell) {
                 NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
                 cell.showsDot = eventsCounts > 0;
+                [self.eventsView reloadItemsAtIndexPaths:@[path]];
             }
         }
     }
@@ -893,7 +897,7 @@ typedef enum
 {
     if (!_headerBorderLayer) {
         _headerBorderLayer = [CALayer layer];
-        _headerBorderLayer.backgroundColor = [UIColor lightGrayColor].CGColor;
+        _headerBorderLayer.backgroundColor = self.headerBorderColor.CGColor;
     }
     return _headerBorderLayer;
 }
@@ -908,6 +912,7 @@ typedef enum
         
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.calendar = self.calendar;
+    formatter.timeZone = self.calendar.timeZone;
     
     NSArray *days = self.weekDaysStringArray;
     if (!days) {
@@ -1378,6 +1383,10 @@ typedef enum
     MGCMonthPlannerViewDayCell* cell = [self.eventsView dequeueReusableCellWithReuseIdentifier:DayCellIdentifier forIndexPath:indexPath];
     cell.headerHeight = self.dayCellHeaderHeight;
     
+    if (self.highlightsDayCellWhenSelected == NO) {
+        cell.selectedBackgroundView = nil;
+    }
+    
     NSDate *date = [self dateForDayAtIndexPath:indexPath];
     
     NSAttributedString *attrStr = nil;
@@ -1422,8 +1431,9 @@ typedef enum
         dateFormatter = [NSDateFormatter new];
     }
     dateFormatter.calendar = self.calendar;
+    dateFormatter.timeZone = self.calendar.timeZone;
 
-    NSString *fmtTemplate = self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMMM" : @"MMMMYYYY";
+    NSString *fmtTemplate = self.formatTemplateForMonthHeaderView ?: self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMMM" : @"MMMMYYYY";
     dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:fmtTemplate options:0 locale:locale];
 
     NSDate *date = [self dateStartingMonthAtIndex:indexPath.section];
@@ -1437,7 +1447,7 @@ typedef enum
     UICollectionViewLayoutAttributes *attribs = [self.layout layoutAttributesForSupplementaryViewOfKind:MonthHeaderViewKind atIndexPath:indexPath];
     
     if (strRect.size.width > attribs.frame.size.width) {
-        fmtTemplate = self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMM" : @"MMMYY";
+        fmtTemplate = self.formatTemplateForMonthHeaderView ?: self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMMM" : @"MMMMYYYY";
         dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:fmtTemplate options:0 locale:locale];
         
         str = [[dateFormatter stringFromDate:date]uppercaseStringWithLocale:locale];
@@ -1464,6 +1474,7 @@ typedef enum
     NSUInteger numRows = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date].length;
     
     MGCMonthPlannerBackgroundView *view = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthBackgroundViewKind withReuseIdentifier:MonthBackgroundViewIdentifier forIndexPath:indexPath];
+    view.gridColor = self.calendarGridColor;
     view.numberOfColumns = 7;
     view.numberOfRows = numRows;
     view.firstColumn = self.gridStyle & MGCMonthPlannerGridStyleFill ? 0 : firstColumn;

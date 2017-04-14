@@ -151,6 +151,12 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 @property (nonatomic) UIColor *eventIndicatorDotColor;
 
 /*!
+	@abstract	Returns the color of the all-day events header background color.
+	@discussion The default value is light gray.
+ */
+@property (nonatomic) UIColor *allDayEventsBackgroundColor;
+
+/*!
 	@abstract	Determines whether the day planner view shows all-day events.
 	@discussion If the value of this property is YES, the view displays a bar at the top with all-day events.
 				The default value is YES.
