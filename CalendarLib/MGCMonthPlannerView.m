@@ -912,6 +912,7 @@ typedef enum
         
     NSDateFormatter *formatter = [NSDateFormatter new];
     formatter.calendar = self.calendar;
+    formatter.timeZone = self.calendar.timeZone;
     
     NSArray *days = self.weekDaysStringArray;
     if (!days) {
@@ -1430,6 +1431,7 @@ typedef enum
         dateFormatter = [NSDateFormatter new];
     }
     dateFormatter.calendar = self.calendar;
+    dateFormatter.timeZone = self.calendar.timeZone;
 
     NSString *fmtTemplate = self.formatTemplateForMonthHeaderView ?: self.monthHeaderStyle & MGCMonthHeaderStyleShort ? @"MMMM" : @"MMMMYYYY";
     dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:fmtTemplate options:0 locale:locale];
