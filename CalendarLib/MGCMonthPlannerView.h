@@ -250,7 +250,7 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 /*!
 	@abstract	Registers a class for use in creating new event views for the month planner view.
 	@param		viewClass	The class of the view that you want to use.
-	@param		identifier	The reuse identifier to associate with the specified class.
+	@param		reuseIdentifier	The reuse identifier to associate with the specified class.
                             This parameter must not be nil and must not be an empty string.
 	@discussion	Prior to calling the dequeueReusableCellWithIdentifier:forEventAtIndex:date: method, you must use this method to tell the month planner how to create a new event view.
  */
@@ -258,7 +258,7 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 
 /*!
 	@abstract	Returns a reusable event view object located by its identifier.
-	@param		identifier	A string identifying the view object to be reused. This parameter must not be nil.
+	@param		reuseIdentifier	A string identifying the view object to be reused. This parameter must not be nil.
 	@param		index		The index of the event.
 	@param		date		The date of the event.
 	@return		A valid MGCEventView object.
@@ -326,7 +326,7 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 
 /*!
 	@abstract	Returns the event view at the specified point in the month planner view.
-	@param		point		A point in the month planner view’s coordinate system.
+	@param		pt		A point in the month planner view’s coordinate system.
 	@param		date		If not nil, it will contain on return the date of the event located at point.
     @param		index		If not nil, it will contain on return the index of the event located at point.
 	@return		The event view at the specified point, or nil if no event was found at the specified point.
@@ -335,7 +335,7 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 
 /*!
 	@abstract	Returns the date at the specified point in the month planner view.
-	@param		point		A point in the month planner view’s coordinate system.
+	@param		pt		A point in the month planner view’s coordinate system.
 	@return		The date at the specified point, or nil if the date can't be determined.
 */
 - (NSDate*)dayAtPoint:(CGPoint)pt;
@@ -361,7 +361,7 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 
 /*!
 	@abstract	Reloads all events in given date range.
-	@param		range
+	@param		range Range in which events should be reloaded.
 	@discussion The view discards any currently displayed visible event views in the range and redisplays them.
  */
 - (void)reloadEventsInRange:(MGCDateRange*)range;
@@ -528,7 +528,6 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 	@param		view		The month planner view object notifying about the selection change.
 	@param		index		The index of the event.
 	@param		date		The day of the event.
-	@return		YES if the event should be selected or NO if it should not.
 	@discussion	The month planner view calls this method when the user successfully selects an event. 
                 It does not call this method when you programmatically set the selection.
  */
@@ -550,7 +549,6 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 	@param		view		The month planner view object notifying about the selection change.
 	@param		index		The index of the event.
 	@param		date		The day of the event.
-	@return		YES if the event should be selected or NO if it should not.
 	@discussion This does not get called when you programmatically deselect an event with the deselectEvent method
  */
 - (void)monthPlannerView:(MGCMonthPlannerView*)view didDeselectEventAtIndex:(NSUInteger)index date:(NSDate*)date;
