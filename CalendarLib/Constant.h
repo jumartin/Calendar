@@ -57,7 +57,5 @@
 
 #define isiPad (IDIOM == IPAD ? YES:NO)
 
-#define kHeaderHeight 100
-
 
 #endif

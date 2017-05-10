@@ -38,15 +38,15 @@
 
 
 typedef NS_ENUM(NSUInteger, MGCEventType) {
-    MGCAllDayEventType = 0,
-    MGCTimedEventType
+	MGCAllDayEventType = 0,
+	MGCTimedEventType
 };
 
 
 typedef NS_ENUM(NSUInteger, MGCDayPlannerScrollType) {
-    MGCDayPlannerScrollDateTime = 0,
-    MGCDayPlannerScrollDate = 1,
-    MGCDayPlannerScrollTime = 2
+	MGCDayPlannerScrollDateTime = 0,
+	MGCDayPlannerScrollDate = 1,
+	MGCDayPlannerScrollTime = 2
 };
 
 
@@ -64,67 +64,67 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
  * User can scroll infinitely through days or swipe through pages of several days.
  * Events are displayed in cells, which are subclasses of `MGCEventView` and can
  * contain any subviews according to the type of the event.
- *
+ * 
  * The view also displays a bar at the top with full-day events.
  */
 @interface MGCDayPlannerView : UIView
 
-/*!
+/*! 
 	@group Configuring a day planner view
- */
-
+*/
+	
 /*!
 	@abstract	Returns the calendar used for formating the day headers, and manipulating dates.
 	@discussion The default value is the logical calendar for the current user
- */
+*/
 @property (nonatomic) NSCalendar *calendar;
 
 /*!
 	@abstract	Returns the number of days the view shows at once, i.e the number of columns displayed.
 	@discussion The default value is 7.
-	@discussion If a date range is specified and the total number of scrollable days is less than the value of `numberOfVisibleDays`,
- then this number is used instead.
+	@discussion If a date range is specified and the total number of scrollable days is less than the value of `numberOfVisibleDays`, 
+				then this number is used instead.
 	@see		calendar
 	@see		dateRange
- */
+*/
 @property (nonatomic) NSUInteger numberOfVisibleDays;
 
 /*!
 	@abstract	Returns the size of a column (readonly).
 	@discussion The width is calculated by dividing the view width by the number of visible days.
- The height does not include the header height nor the height of the full-day events bar.
+				The height does not include the header height nor the height of the full-day events bar.
 	@see		numberOfVisibleDays
- */
+*/
 @property (nonatomic, readonly) CGSize dayColumnSize;
 
 /*!
 	@abstract	Returns the height of a one-hour slot.
 	@discussion The default value is 65.
- */
+*/
 @property (nonatomic) CGFloat hourSlotHeight;
-
+	
 /*!
 	@abstract	Returns the width of the left column showing hours.
 	@discussion The default value is 60.
- To hide the time column, you can set this value to 0.
- */
+				To hide the time column, you can set this value to 0.
+*/
 @property (nonatomic) CGFloat timeColumnWidth;
 
 /*!
- @abstract   Set the font of the left column showing hours.
- */
+    @abstract   Set the font of the left column showing hours.
+*/
 @property (nonatomic) UIFont *timeColumnFont;
 
 /*
- @abstract   Set the color of the left column showing hours.
- */
+    @abstract   Set the color of the left column showing hours.
+*/
 @property (nonatomic) UIColor *timeColumnLabelColor;
 
 /*!
 	@abstract	Returns the height of the top row showing days.
 	@discussion The default value is 40.
- To hide the day header, you can set this value to 0.
- */
+				To hide the day header, you can set this value to 0.
+*/
 @property (nonatomic) CGFloat dayHeaderHeight;
 
 /*!
@@ -136,22 +136,22 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 /*!
 	@abstract	Returns the color of the horizontal separator lines between time slots.
 	@discussion The default value is light gray.
- The color is also used for time labels.
- @see        dayPlannerView:attributedStringForTimeMark:time: delegate method
+                The color is also used for time labels. 
+    @see        dayPlannerView:attributedStringForTimeMark:time: delegate method
  */
 @property (nonatomic) UIColor *timeSeparatorsColor;
 
 /*!
 	@abstract	Returns the color of the current time line and label.
 	@discussion The default value is red.
- @see        dayPlannerView:attributedStringForTimeMark:time: delegate method
+    @see        dayPlannerView:attributedStringForTimeMark:time: delegate method
  */
 @property (nonatomic) UIColor *currentTimeColor;
 
 /*!
- @abstract   Whether you want to display the current time or not
- @discussion The default value is true.
- */
+    @abstract   Whether you want to display the current time or not
+    @discussion The default value is true.
+*/
 @property (nonatomic) BOOL showCurrentTime;
 
 /*!
@@ -163,19 +163,19 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 /*!
 	@abstract	Determines whether the day planner view shows all-day events.
 	@discussion If the value of this property is YES, the view displays a bar at the top with all-day events.
- The default value is YES.
+				The default value is YES.
 	@see		numberOfVisibleDays
  */
 @property (nonatomic) BOOL showsAllDayEvents;
 
 /*!
 	@abstract	The view that provides the background appearance.
-	@discussion The view (if any) in this property is positioned underneath all of the other content
- and sized automatically to fill the entire bounds of the day planner view.
- The background view does not scroll with the view’s other content.
- The day planner view maintains a strong reference to the background view object.
+	@discussion The view (if any) in this property is positioned underneath all of the other content 
+				and sized automatically to fill the entire bounds of the day planner view.
+				The background view does not scroll with the view’s other content.
+				The day planner view maintains a strong reference to the background view object.
 	@discussion	This property is nil by default, which displays the background color of the day planner view.
- */
+*/
 @property (nonatomic) UIView *backgroundView;
 
 /*!
@@ -188,21 +188,21 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 /*!
 	@abstract	Scrollable range of days. Default is nil, for 'infinite' scrolling.
 	@discussion	Upon assignement, `start` and `end` properties of `dateRange` are adjusted
- so that they fall on day boundary (starting at 00:00)
+				so that they fall on day boundary (starting at 00:00)
 	@discussion If the currently visible day is outside the new range, the calendar view scrolls to the range starting date.
  */
 @property (nonatomic, copy) MGCDateRange *dateRange;
 
 /*!
 	@abstract	Displayable range of hours. Default is {0, 24}.
- @discussion Range length must be >= 1
- 
+    @discussion Range length must be >= 1
+
  */
 @property (nonatomic) NSRange hourRange;
 
 /*!
 	@abstract	Determines whether zooming is enabled for this day planner view.
- If set to YES, the user can decrease or increase the height of the one-hour slot by pinching in and out on the view.
+				If set to YES, the user can decrease or increase the height of the one-hour slot by pinching in and out on the view.
 	@discussion The default value is YES.
 	@see		hourSlotHeight
  */
@@ -225,15 +225,15 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 /*!
 	@abstract	The object that acts as the delegate of the day planner view.
 	@discussion The delegate must adopt the `MGCDayPlannerViewDelegate` protocol.
- The day planner view view maintains a weak reference to the delegate object.
- The delegate object is responsible for managing selection behavior and interactions with events cells.
+				The day planner view view maintains a weak reference to the delegate object.
+				The delegate object is responsible for managing selection behavior and interactions with events cells.
  */
 @property (nonatomic, weak) id<MGCDayPlannerViewDelegate> delegate;
 
 /*!
 	@abstract	The object that provides the data for the day planner view
 	@discussion The data source must adopt the `MGCDayPlannerViewDataSource` protocol.
- The day planner view view maintains a weak reference to the data source object.
+				The day planner view view maintains a weak reference to the data source object.
  */
 @property (nonatomic, weak) id<MGCDayPlannerViewDataSource> dataSource;
 
@@ -245,11 +245,11 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 /*!
 	@abstract	Determines whether paging is enabled for this day planner view.
 	@discussion If the value of this property is YES and the number of visible days is equal or greater than 7
- (i.e. the view is showing at least a week), the day planner view stops on the current calendar starting day of
- the week when the user scrolls.
- If set to YES but the view is showing less than a week, it stops on multiples of the view’s bounds.
- If paging is enabled, the view also snaps to day boundaries.
- The default value is YES.
+				(i.e. the view is showing at least a week), the day planner view stops on the current calendar starting day of
+				the week when the user scrolls.
+				If set to YES but the view is showing less than a week, it stops on multiples of the view’s bounds.
+				If paging is enabled, the view also snaps to day boundaries.
+				The default value is YES.
 	@see		numberOfVisibleDays
  */
 @property(nonatomic, getter=isPagingEnabled) BOOL pagingEnabled;
@@ -257,8 +257,8 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 /*!
 	@abstract	Scrolls the view until a certain date is visible.
 	@param		date		The date to scroll into view. It will be the first visible date on the left of the view.
-	@param		options		Specify if scrolling through dates only (MGCDayPlannerScrollDate),
- time only (MGCDayPlannerScrollTime), or both (MGCDayPlannerScrollDateTime).
+	@param		options		Specify if scrolling through dates only (MGCDayPlannerScrollDate), 
+							time only (MGCDayPlannerScrollTime), or both (MGCDayPlannerScrollDateTime).
 	@param		animated	Specify YES to animate the scrolling behavior or NO to adjust the visible content immediately.
 	@warning	If `date` param is not in the scrollable range of dates, an exception is thrown.
 	@warning	If the view is already curently scrolling, this will have no effect.
@@ -267,8 +267,8 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 
 /*!
 	@abstract	Scrolls the view to the next "logical" date.
- If the view shows at least 7 days, it is the next start of a week,
- otherwise it is the first day not currently visible.
+				If the view shows at least 7 days, it is the next start of a week,
+				otherwise it is the first day not currently visible.
 	@param		animated	Specify YES to animate the scrolling behavior or NO to adjust the visible content immediately.
 	@param		date		If not nil, it will contain on return the date that was scrolled into view.
 	@warning	If the view is already curently scrolling, this will have no effect.
@@ -277,8 +277,8 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 
 /*!
 	@abstract	Scrolls the view to the previous "logical" date.
- If the view shows at least 7 days, it is the previous start of a week,
- otherwise it is the first day not currently visible.
+				If the view shows at least 7 days, it is the previous start of a week,
+				otherwise it is the first day not currently visible.
 	@param		animated	Specify YES to animate the scrolling behavior or NO to adjust the visible content immediately.
 	@param		date		If not nil, it will contain on return the date that was scrolled into view.
 	@warning	If the view is already curently scrolling, this will have no effect.
@@ -293,8 +293,8 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 /*!
 	@abstract	Registers a class for use in creating new event cells for the day planner view.
 	@param		viewClass	The class of the view that you want to use.
-	@param		identifier	The reuse identifier to associate with the specified class.
- This parameter must not be nil and must not be an empty string.
+	@param		identifier	The reuse identifier to associate with the specified class. 
+							This parameter must not be nil and must not be an empty string.
 	@discussion	Prior to calling the dequeueReusableViewWithIdentifier:forEventOfType:atIndex:date: method, you must use this method to tell the day planer view how to create a new event cell of the given type.
  */
 - (void)registerClass:(Class)viewClass forEventViewWithReuseIdentifier:(NSString*)identifier;
@@ -306,9 +306,9 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@param		index		The index of the event.
 	@param		date		The date of the event.
 	@return		A valid MGCEventView object.
-	@discussion	Call this method from your data source object when asked to provide a new event view for the day planner.
- This method dequeues an existing view if one is available or creates a new one based on the class you
- previously registered.
+	@discussion	Call this method from your data source object when asked to provide a new event view for the day planner. 
+				This method dequeues an existing view if one is available or creates a new one based on the class you 
+				previously registered.
 	@warning	You must register a class using the registerClass:forEventViewWithReuseIdentifier: method before calling this method.
  */
 - (MGCEventView*)dequeueReusableViewWithIdentifier:(NSString*)identifier forEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date;
@@ -340,7 +340,7 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 /*!
 	@abstract	Returns the number of timed events at the specified day.
 	@param		date	Day for which events are requested (time portion is ignored)
-	@discussion
+	@discussion	
  */
 - (NSInteger)numberOfTimedEventsAtDate:(NSDate*)date;
 
@@ -369,8 +369,8 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@param		rounded		If set to YES, the returned date is rounded to the nearest 15-minutes slot.
 	@return		The date at the specified point, or nil if the date can't be determined.
 	@discussion	If `point` lies in the timed-event part, then the returned date contains information about day and time.
- If `point` lies outside the timed-event part, like within the header or all-day events part,
- then the returned date contains only day/month/year information (time part is set to 00:00).
+				If `point` lies outside the timed-event part, like within the header or all-day events part, 
+				then the returned date contains only day/month/year information (time part is set to 00:00).
  */
 - (NSDate*)dateAtPoint:(CGPoint)point rounded:(BOOL)rounded;
 
@@ -409,8 +409,8 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 /*!
 	@abstract	Determines whether users can select events in the day planner view.
 	@discussion The default value is YES.
- For more control over the selection of items, you can provide a delegate object and implement the
- dayPlannerView:shouldSelectEventOfType:atIndex:date: methods of the MGCDayPlannerViewDelegate protocol.
+				For more control over the selection of items, you can provide a delegate object and implement the
+				dayPlannerView:shouldSelectEventOfType:atIndex:date: methods of the MGCDayPlannerViewDelegate protocol.
  */
 @property (nonatomic) BOOL allowsSelection;
 
@@ -424,8 +424,8 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@param		type		The type of the event.
 	@param		index		The index of the event.
 	@param		date		The date of the event.
-	@discussion If the allowsSelection property is NO, calling this method has no effect.
- If there is an existing selection with a different type, index or date, calling this method replaces the previous selection.
+	@discussion If the allowsSelection property is NO, calling this method has no effect. 
+				If there is an existing selection with a different type, index or date, calling this method replaces the previous selection.
 	@discussion	This method does not cause any selection-related delegate methods to be called.
  */
 -(void)selectEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date;
@@ -473,7 +473,7 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 
 /*!
  * An object that adopts the MGCDayPlannerViewDataSource protocol is responsible for providing the data and views
- * required by a day planner view.
+ * required by a day planner view. 
  */
 @protocol MGCDayPlannerViewDataSource<NSObject>
 
@@ -501,24 +501,24 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 @optional
 
 /*!
-	@abstract	Asks the data source if the specified event can be moved around. If the method returns YES, the
- event view can be dragged and dropped to a different date / time.
+	@abstract	Asks the data source if the specified event can be moved around. If the method returns YES, the 
+				event view can be dragged and dropped to a different date / time.
 	@discussion	This method is not called if day planner view's canMoveEvents property is set to NO.
- 
+
  */
 - (BOOL)dayPlannerView:(MGCDayPlannerView*)view shouldStartMovingEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date;
 
 /*!
-	@abstract	Asks the data source if the specified event can be moved to given date, or change its type.
- If the method returns NO, a forbidden sign is shown to indicate that the view cannot be moved
- to that date and, if dropped, the delegate method dayPlannerView:moveEventOfType:atIndex:date:toType:date:
- won't be called.
- */
+	@abstract	Asks the data source if the specified event can be moved to given date, or change its type. 
+				If the method returns NO, a forbidden sign is shown to indicate that the view cannot be moved 
+				to that date and, if dropped, the delegate method dayPlannerView:moveEventOfType:atIndex:date:toType:date:
+				won't be called.
+  */
 - (BOOL)dayPlannerView:(MGCDayPlannerView*)view canMoveEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date toType:(MGCEventType)targetType date:(NSDate*)targetDate;
 
 /*!
 	@abstract	Informs the data source that an event was dragged and dropped to a different date / time.
- Data source should update the event accordingly, and ask the day planner view to reload events.
+				Data source should update the event accordingly, and ask the day planner view to reload events.
  */
 - (void)dayPlannerView:(MGCDayPlannerView*)view moveEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date toType:(MGCEventType)targetType date:(NSDate*)targetDate;
 
@@ -530,14 +530,14 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 - (MGCEventView*)dayPlannerView:(MGCDayPlannerView*)view viewForNewEventOfType:(MGCEventType)type atDate:(NSDate*)date;
 
 /*!
-	@abstract	Asks the data source if an event can be created with given type and date.
+	@abstract	Asks the data source if an event can be created with given type and date. 
 	@discussion	This method is not called if day planner view's canCreateEvents property is set to NO.
  */
 - (BOOL)dayPlannerView:(MGCDayPlannerView*)view canCreateNewEventOfType:(MGCEventType)type atDate:(NSDate*)date;
 
 /*!
 	@abstract	Informs the data source that a new event was dragged and dropped at given date.
- Data source should update the event accordingly, and ask the day planner view to reload events.
+				Data source should update the event accordingly, and ask the day planner view to reload events.
  */
 - (void)dayPlannerView:(MGCDayPlannerView*)view createNewEventOfType:(MGCEventType)type atDate:(NSDate*)date;
 
@@ -561,18 +561,18 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@abstract   Asks the delegate for the attributed string of time marks appearing on the left of the day planner view.
 	@param		view		The day planner view requesting the information.
 	@param		mark        The mark type being drawn.
- @param		ti          The time for the mark.
- @return     The attributed string to draw for the mark.
+    @param		ti          The time for the mark.
+    @return     The attributed string to draw for the mark.
 	@discussion If nil is returned, the default mark style is used.
  */
 - (NSAttributedString*)dayPlannerView:(MGCDayPlannerView*)view attributedStringForTimeMark:(MGCDayPlannerTimeMark)mark time:(NSTimeInterval)ti;
 
 /*!
 	@abstract   Asks the delegate for the attributed string of the day header for given date.
- @param		view		The day planner view requesting the information.
+    @param		view		The day planner view requesting the information.
 	@param		date		The date for the header.
 	@return     The attributed string to draw.
- @discussion If nil is returned or the method is not implemented, a default string is drawn using dateFormat property.
+    @discussion If nil is returned or the method is not implemented, a default string is drawn using dateFormat property.
  */
 - (NSAttributedString*)dayPlannerView:(MGCDayPlannerView*)view attributedStringForDayHeaderAtDate:(NSDate*)date;
 
@@ -585,7 +585,7 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@param		view		The day planner view object in which the scrolling occured.
 	@param		scrollType	Indicates what was scrolled through (days, time or both).
 	@discussion The method is only called when the view is scrolled horizontally.
- It is called when the user drags or swipes the view and when the view is scrolled programmatically.
+				It is called when the user drags or swipes the view and when the view is scrolled programmatically.
 	@see		visibleDays
 	@see		firstVisibleTime
  */
@@ -596,7 +596,7 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@param		view		The day planner view object in which the scrolling occured.
 	@param		scrollType	Indicates what was scrolled through (days, time or both).
 	@discussion The method is only called when the view is scrolled horizontally.
- It is called after user interaction and when the view is scrolled programmatically.
+				It is called after user interaction and when the view is scrolled programmatically.
  */
 - (void)dayPlannerView:(MGCDayPlannerView*)view didEndScrolling:(MGCDayPlannerScrollType)scrollType;
 
@@ -631,8 +631,8 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@param		index		The index of the event.
 	@param		date		The starting day of the event.
 	@return		YES if the event should be selected or NO if it should not.
-	@discussion	The day planner view calls this method when the user tries to select an event. It does not call this method when
- you programmatically set the selection.
+	@discussion	The day planner view calls this method when the user tries to select an event. It does not call this method when 
+				you programmatically set the selection.
 	@discussion	If you do not implement this method, the default return value is YES.
  */
 - (BOOL)dayPlannerView:(MGCDayPlannerView*)view shouldSelectEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date;
@@ -645,7 +645,7 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@param		date		The starting day of the event.
 	@return		YES if the event should be selected or NO if it should not.
 	@discussion	The day planner view calls this method when the user successfully selects an event. It does not call this method when
- you programmatically set the selection.
+				you programmatically set the selection.
  */
 - (void)dayPlannerView:(MGCDayPlannerView*)view didSelectEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date;
 
@@ -657,7 +657,7 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 	@param		date		The starting day of the event.
 	@return		YES if the event should be selected or NO if it should not.
 	@discussion	The day planner view calls this method when the user successfully deselects an event. It does not call this method when
- you programmatically deselect the event.
+				you programmatically deselect the event.
  */
 - (void)dayPlannerView:(MGCDayPlannerView*)view didDeselectEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date;
 

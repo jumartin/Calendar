@@ -49,7 +49,7 @@ static const CGFloat kDotSize = 8;
         self.headerHeight = 20;
         self.backgroundColor = [UIColor whiteColor];
         
-        self.dayLabel = [[UILabel alloc]initWithFrame:CGRectZero];
+        self.dayLabel = [[UILabel alloc]initWithFrame:CGRectNull];
         self.dayLabel.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
         self.dayLabel.numberOfLines = 1;
         self.dayLabel.adjustsFontSizeToFitWidth = YES;

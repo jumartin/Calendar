@@ -30,7 +30,6 @@
 
 #import <UIKit/UIKit.h>
 #import "MGCDayPlannerView.h"
-@class MGCCalendarHeaderView;
 
 
 /*! 
@@ -40,10 +39,5 @@
 
 /*! Returns the day planner view managed by the controller object. */
 @property(nonatomic, retain) MGCDayPlannerView *dayPlannerView;
-
-/*! Returns the calendar header view managed by the controller object. */
-@property (nonatomic) MGCCalendarHeaderView *headerView;
-
-@property (nonatomic, assign) BOOL showsWeekHeaderView;
 
 @end

@@ -368,7 +368,7 @@ static const CGFloat kDefaultYearHeaderFontSizeiPhone = 20;	// deafult font size
         UICollectionViewFlowLayout *layout = [UICollectionViewFlowLayout new];
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         
-        _eventsView = [[YearEventsView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        _eventsView = [[YearEventsView alloc]initWithFrame:CGRectNull collectionViewLayout:layout];
         _eventsView.yearView = self;
         _eventsView.backgroundColor = [UIColor whiteColor];
         _eventsView.dataSource = self;

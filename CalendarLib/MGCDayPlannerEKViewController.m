@@ -398,20 +398,20 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
 
 - (void)dayPlannerView:(MGCDayPlannerView*)view moveEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date toType:(MGCEventType)targetType date:(NSDate*)targetDate
 {
-    EKEvent *ev = [self eventOfType:type atIndex:index date:date];
+	EKEvent *ev = [self eventOfType:type atIndex:index date:date];
+	
+	if (ev) {
+		NSDateComponents *duration = [self.calendar components:NSCalendarUnitMinute fromDate:ev.startDate toDate:ev.endDate options:0];
+		if (ev.allDay && targetType == MGCTimedEventType) {
+			duration.minute = 60;
+		}
+		NSDate *end = [self.calendar dateByAddingComponents:duration toDate:targetDate options:0];
+		
+		// allDay property has to be set before start and end dates !
+		ev.allDay = (targetType == MGCAllDayEventType);
+		ev.startDate = targetDate;
+		ev.endDate = end;
     
-    if (ev) {
-        NSDateComponents *duration = [self.calendar components:NSMinuteCalendarUnit fromDate:ev.startDate toDate:ev.endDate options:0];
-        if (ev.allDay && targetType == MGCTimedEventType) {
-            duration.minute = view.durationForNewTimedEvent / 60;
-        }
-        NSDate *end = [self.calendar dateByAddingComponents:duration toDate:targetDate options:0];
-        
-        // allDay property has to be set before start and end dates !
-        ev.allDay = (targetType == MGCAllDayEventType);
-        ev.startDate = targetDate;
-        ev.endDate = end;
-        
         [self.eventKitSupport saveEvent:ev completion:^(BOOL completion) {
             [self.dayPlannerView endInteraction];
         }];
@@ -435,13 +435,8 @@ static NSString* const EventCellReuseIdentifier = @"EventCellReuseIdentifier";
     
     EKEvent *ev = [EKEvent eventWithEventStore:self.eventStore];
     ev.startDate = date;
-    
     NSDateComponents *comps = [NSDateComponents new];
-    comps.day = ((NSInteger) view.durationForNewTimedEvent) / (60 * 60 * 24);
-    comps.hour = (((NSInteger) view.durationForNewTimedEvent) / (60 * 60)) - (comps.day * 24);
-    comps.minute = (((NSInteger) view.durationForNewTimedEvent) / 60) - (comps.day * 24 * 60) - (comps.hour * 60);
-    comps.second = ((NSInteger) round(view.durationForNewTimedEvent)) % 60;
-
+    comps.hour = 1;
     ev.endDate = [self.calendar dateByAddingComponents:comps toDate:date options:0];
     ev.allDay = (type == MGCAllDayEventType) ? YES : NO;
     
