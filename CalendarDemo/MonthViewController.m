@@ -19,6 +19,8 @@
 {
     [super viewDidLoad];
     //self.monthPlannerView.dateFormat = @"dd MMM\nYYYY";
+    
+    self.monthPlannerView.allowCustomDayBackgroundColor = YES;
 }
 
 #pragma mark - MGCMonthPlannerViewController
@@ -74,6 +76,23 @@
 
     return attrStr;
 }
+
+- (UIColor*)monthPlannerView:(MGCMonthPlannerView*)view colorForDayCellAtDate:(NSDate*)date
+{
+    NSDateComponents *component = [self.calendar components:NSCalendarUnitWeekday fromDate:date];
+    NSInteger weekday = [component weekday];
+    
+    if ([self.calendar isDateInWeekend:date]) {
+        return view.weekendDayBackgroundColor;
+    } else {
+        if (weekday % 2 == 0) {
+             return [UIColor grayColor];
+        } else {
+             return [UIColor whiteColor];
+        }
+    }
+}
+
 
 #pragma mark - CalendarViewControllerNavigation
 
