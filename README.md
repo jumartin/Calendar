@@ -6,6 +6,16 @@
 
 CalendarLib is a set of views and controllers for displaying and scheduling events on iOS.
 
+**Warning:**
+
+**As some people may have noticed, this project has not got any update recently, and a lot of issues / pull requests remain unanswered.
+I’m very sorry for that, but I don’t have any time at the moment to take care of this repo, being very busy with other projects.
+I may come back to it in the future, but meanwhile, please don’t expect any update soon.**
+
+**Thanks anyway to all the contributors!**
+
+
+
 ![Day Planner View](https://raw.githubusercontent.com/jumartin/Calendar/master/CalendarDocs/DayPlannerView.png "Day planner view")
 ![Day Planner View](https://raw.githubusercontent.com/jumartin/Calendar/master/CalendarDocs/DayPlannerView2.png)
 ![Month Planner View](https://raw.githubusercontent.com/jumartin/Calendar/master/CalendarDocs/MonthPlannerView.png "Month planner view")
