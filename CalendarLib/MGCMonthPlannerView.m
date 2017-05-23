@@ -774,6 +774,22 @@ typedef enum
     }
 }
 
+// public
+- (void)setDaySelected:(NSDate *)daySelected {
+    NSDate *dayToDeselect = [_daySelected copy];
+    _daySelected = daySelected;
+    
+    [self reloadItemForDate:dayToDeselect];
+    [self reloadItemForDate:daySelected];
+}
+
+- (void)reloadItemForDate:(NSDate *)date {
+    NSIndexPath *indexPath = [self indexPathForDate:date];
+    if (indexPath) {
+        [self.eventsView reloadItemsAtIndexPaths:@[indexPath]];
+    }
+}
+
 #pragma mark - Scrolling
 
 // public - deprecated
@@ -1397,12 +1413,21 @@ typedef enum
     }
     
     cell.dayLabel.attributedText = attrStr;
-    cell.backgroundColor = [self.calendar isDateInWeekend:date] ? self.weekendDayBackgroundColor : self.weekDayBackgroundColor;
+    
+    UIColor *dotColor = self.eventsDotColor;
+    if (self.selectedDayBackgroundColor && [self.calendar mgc_isDate:date sameDayAsDate:self.daySelected]) {
+        cell.selected = YES;
+        cell.backgroundColor = self.selectedDayBackgroundColor;
+        dotColor = self.eventsDaySelectedDotColor ? : dotColor;
+    } else {
+        cell.selected = NO;
+        cell.backgroundColor = [self.calendar isDateInWeekend:date] ? self.weekendDayBackgroundColor : self.weekDayBackgroundColor;
+    }
     
     if (self.style & MGCMonthPlannerStyleDots) {
         NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
         cell.showsDot = eventsCounts > 0;
-        cell.dotColor = self.eventsDotColor;
+        cell.dotColor = dotColor;
     }
     return cell;
 }
@@ -1617,6 +1642,7 @@ typedef enum
 {
     if ([self.delegate respondsToSelector:@selector(monthPlannerView:didSelectDayCellAtDate:)]) {
         NSDate *date = [self dateForDayAtIndexPath:indexPath];
+        self.daySelected = date;
         [self.delegate monthPlannerView:self didSelectDayCellAtDate:date];
     }
     
