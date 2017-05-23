@@ -1850,7 +1850,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]]) {
             accessoryTypes |= MGCDayColumnCellAccessoryMark;
             dayCell.markColor = self.tintColor;
-            color = [UIColor whiteColor];
+            
+            if(self.dayHeaderTextColor){
+                color = self.dayHeaderTextColor;
+            }else{
+                color = [UIColor whiteColor];
+            }
+            
             font = [UIFont boldSystemFontOfSize:14];
         }
         

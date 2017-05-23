@@ -123,6 +123,13 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 */
 @property (nonatomic) CGFloat dayHeaderHeight;
 
+
+/*
+	@abstract	Returns the color of text of the top row showing days.
+	@discussion The default value is white.
+ */
+@property (nonatomic) UIColor *dayHeaderTextColor;
+
 /*!
 	@abstract	Returns the color of the vertical separator lines between days.
 	@discussion The default value is light gray.
