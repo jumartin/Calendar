@@ -192,7 +192,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_canCreateEvents = YES;
 	_canMoveEvents = YES;
 	_allowsSelection = YES;
-    _eventCoveringType = TimedEventCoveringTypeClassic;
+    _eventCoveringType = MGCDayPlannerCoveringTypeClassic;
 	
 	_reuseQueue = [[MGCReusableObjectQueue alloc] init];
 	_loadingDays = [NSMutableOrderedSet orderedSetWithCapacity:14];
@@ -1566,7 +1566,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         [self.timedEventsView reloadData];
 		
         MGCTimedEventsViewLayoutInvalidationContext *context = [MGCTimedEventsViewLayoutInvalidationContext new];
-        context.invalidatedSections = [NSIndexSet indexSetWithIndex:section];
+        context.invalidatedSections = [NSMutableIndexSet indexSetWithIndex:section];
         [self.timedEventsView.collectionViewLayout invalidateLayoutWithContext:context];
 
 		[self refreshEventMarkForColumnAtDate:date];
@@ -1579,7 +1579,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     [self.dimmedTimeRangesCache removeAllObjects];
     
     MGCTimedEventsViewLayoutInvalidationContext *context = [MGCTimedEventsViewLayoutInvalidationContext new];
-    context.invalidatedSections = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfLoadedDays)];
+    context.invalidatedSections = [NSMutableIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.numberOfLoadedDays)];
     context.invalidateEventCells = NO;
     context.invalidateDimmingViews = YES;
     [self.timedEventsView.collectionViewLayout invalidateLayoutWithContext:context];
@@ -1932,6 +1932,9 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         [view addSubview:label];
         
         return view;
+    }
+    else {
+        return nil;
     }
 }
 

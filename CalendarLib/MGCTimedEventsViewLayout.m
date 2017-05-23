@@ -297,8 +297,6 @@ static NSString* const EventCellsKey = @"EventCellsKey";
 
 - (void)expandCellsToMaxWidthInCluster:(NSMutableArray<MGCEventCellLayoutAttributes *> *)cluster
 {
-    const NSUInteger padding = 2.f;
-    
     // Expand the attributes to maximum possible width
     NSMutableArray<NSMutableArray<MGCEventCellLayoutAttributes *> *> *columns = [NSMutableArray new];
     [columns addObject:[NSMutableArray new]];

@@ -348,14 +348,12 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 /*!
 	@abstract	Returns the number of timed events at the specified day.
 	@param		date	Day for which events are requested (time portion is ignored)
-	@discussion	
  */
 - (NSInteger)numberOfTimedEventsAtDate:(NSDate*)date;
 
 /*!
 	@abstract	Returns the number of all-day events at the specified date.
 	@param		date	Day for which events are requested (time portion is ignored)
-	@discussion
  */
 - (NSInteger)numberOfAllDayEventsAtDate:(NSDate*)date;
 
@@ -668,7 +666,6 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 	@param		type		The type of the event.
 	@param		index		The index of the event.
 	@param		date		The starting day of the event.
-	@return		YES if the event should be selected or NO if it should not.
 	@discussion	The day planner view calls this method when the user successfully selects an event. It does not call this method when
 				you programmatically set the selection.
  */
@@ -680,7 +677,6 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 	@param		type		The type of the event.
 	@param		index		The index of the event.
 	@param		date		The starting day of the event.
-	@return		YES if the event should be selected or NO if it should not.
 	@discussion	The day planner view calls this method when the user successfully deselects an event. It does not call this method when
 				you programmatically deselect the event.
  */

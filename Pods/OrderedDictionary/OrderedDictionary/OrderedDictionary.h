@@ -1,7 +1,7 @@
 //
 //  OrderedDictionary.h
 //
-//  Version 1.2
+//  Version 1.4
 //
 //  Created by Nick Lockwood on 21/09/2010.
 //  Copyright 2010 Charcoal Design
@@ -32,29 +32,43 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  * Ordered subclass of NSDictionary.
  * Supports all the same methods as NSDictionary, plus a few
  * new methods for operating on entities by index rather than key.
  */
-@interface OrderedDictionary : NSDictionary
+@interface OrderedDictionary<__covariant KeyType, __covariant ObjectType> : NSDictionary<KeyType, ObjectType>
 
-+ (instancetype)dictionaryWithContentsOfFile:(NSString *)path;
-+ (instancetype)dictionaryWithContentsOfURL:(NSURL *)url;
+/**
+ * These methods can be used to load an XML plist file. The file must have a  
+ * dictionary node as its root object, and all dictionaries in the file will be
+ * treated as ordered. Currently, only XML plist files are supported, not
+ * binary or ascii. Xcode will automatically convert XML plists included in the
+ * project to binary files in built apps, so  you will need to disable that
+ * functionality if you wish to load them with these functions. A good approach
+ * is to rename such files with a .xml extension instead of .plist. See the
+ * OrderedDictionary README file for more details.
+ */
++ (nullable instancetype)dictionaryWithContentsOfFile:(NSString *)path;
++ (nullable instancetype)dictionaryWithContentsOfURL:(NSURL *)url;
+- (nullable instancetype)initWithContentsOfFile:(NSString *)path;
+- (nullable instancetype)initWithContentsOfURL:(NSURL *)url;
 
 /** Returns the nth key in the dictionary. */
-- (id)keyAtIndex:(NSUInteger)index;
+- (KeyType)keyAtIndex:(NSUInteger)index;
 /** Returns the nth object in the dictionary. */
-- (id)objectAtIndex:(NSUInteger)index;
-- (id)objectAtIndexedSubscript:(NSUInteger)index;
+- (ObjectType)objectAtIndex:(NSUInteger)index;
+- (ObjectType)objectAtIndexedSubscript:(NSUInteger)index;
 /** Returns the index of the specified key, or NSNotFound if key is not found. */
-- (NSUInteger)indexOfKey:(id)key;
+- (NSUInteger)indexOfKey:(KeyType)key;
 /** Returns an enumerator for backwards traversal of the dictionary keys. */
-- (NSEnumerator *)reverseKeyEnumerator;
+- (NSEnumerator<KeyType> *)reverseKeyEnumerator;
 /** Returns an enumerator for backwards traversal of the dictionary objects. */
-- (NSEnumerator *)reverseObjectEnumerator;
+- (NSEnumerator<ObjectType> *)reverseObjectEnumerator;
 /** Enumerates keys ands objects with index using block. */
-- (void)enumerateKeysAndObjectsWithIndexUsingBlock:(void (^)(id key, id obj, NSUInteger idx, BOOL *stop))block;
+- (void)enumerateKeysAndObjectsWithIndexUsingBlock:(void (^)(KeyType key, ObjectType obj, NSUInteger idx, BOOL *stop))block;
 
 @end
 
@@ -67,27 +81,30 @@
  * is not a subclass of NSMutableDictionary, and cannot be used as one
  * without generating compiler warnings (unless you cast it).
  */
-@interface MutableOrderedDictionary : OrderedDictionary
+@interface MutableOrderedDictionary<KeyType, ObjectType> : OrderedDictionary<KeyType, ObjectType>
 
 + (instancetype)dictionaryWithCapacity:(NSUInteger)count;
 - (instancetype)initWithCapacity:(NSUInteger)count;
 
-- (void)addEntriesFromDictionary:(NSDictionary *)otherDictionary;
+- (void)addEntriesFromDictionary:(NSDictionary<KeyType, ObjectType> *)otherDictionary;
 - (void)removeAllObjects;
-- (void)removeObjectForKey:(id)key;
-- (void)removeObjectsForKeys:(NSArray *)keyArray;
-- (void)setDictionary:(NSDictionary *)otherDictionary;
-- (void)setObject:(id)object forKey:(id)key;
-- (void)setObject:(id)object forKeyedSubscript:(id <NSCopying>)key;
+- (void)removeObjectForKey:(KeyType)key;
+- (void)removeObjectsForKeys:(NSArray<KeyType> *)keyArray;
+- (void)setDictionary:(NSDictionary<KeyType, ObjectType> *)otherDictionary;
+- (void)setObject:(ObjectType)object forKey:(KeyType)key;
+- (void)setObject:(ObjectType)object forKeyedSubscript:(KeyType)key;
 
 /** Inserts an object at a specific index in the dictionary. */
-- (void)insertObject:(id)object forKey:(id)key atIndex:(NSUInteger)index;
+- (void)insertObject:(ObjectType)object forKey:(KeyType)key atIndex:(NSUInteger)index;
 /** Replace an object at a specific index in the dictionary. */
-- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)object;
-- (void)setObject:(id)object atIndexedSubscript:(NSUInteger)index;
+- (void)replaceObjectAtIndex:(NSUInteger)index withObject:(ObjectType)object;
+- (void)setObject:(ObjectType)object atIndexedSubscript:(NSUInteger)index;
 /** Swap the indexes of two key/value pairs in the dictionary. */
 - (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 /** Removes the nth object in the dictionary. */
 - (void)removeObjectAtIndex:(NSUInteger)index;
 
 @end
+
+NS_ASSUME_NONNULL_END
+
