@@ -1142,9 +1142,10 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	CGFloat x = section * self.dayColumnSize.width;
 	
 	if (type == MGCTimedEventType) {
-        CGFloat y =  [self offsetFromTime:self.durationForNewTimedEvent rounding:0];
- 		CGRect rect = CGRectMake(x, y, self.dayColumnSize.width, self.interactiveCellTimedEventHeight);
-		return [self convertRect:rect fromView:self.timedEventsView];
+        NSDateComponents *comp = [self.calendar components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:date];
+        CGFloat y =  [self offsetFromTime:(comp.hour*3600. + comp.minute*60.) rounding:0];
+        CGRect rect = CGRectMake(x, y, self.dayColumnSize.width, self.hourSlotHeight);
+        return [self convertRect:rect fromView:self.timedEventsView];
 	}
 	else if (type == MGCAllDayEventType) {
 		CGRect rect = CGRectMake(x, 0, self.dayColumnSize.width, self.allDayEventCellHeight);
