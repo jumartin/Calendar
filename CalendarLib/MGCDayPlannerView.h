@@ -169,6 +169,11 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 @property (nonatomic) BOOL showsAllDayEvents;
 
 /*!
+ @abstract   Set a view in place of the allDayEvents View that's present by default.
+ */
+@property (nonatomic) UIView *allDayEventsBackgroundView;
+
+/*!
 	@abstract	The view that provides the background appearance.
 	@discussion The view (if any) in this property is positioned underneath all of the other content 
 				and sized automatically to fill the entire bounds of the day planner view.
