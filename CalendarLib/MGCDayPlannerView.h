@@ -57,12 +57,6 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerTimeMark) {
 };
 
 
-typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
-    MGCDayPlannerCoveringTypeClassic = 0,
-    MGCDayPlannerCoveringTypeComplex = 1
-};
-
-
 /*!
  * You can use an instance of MGCDayPlannerView to display events as a schedule.
  *
@@ -117,6 +111,16 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 @property (nonatomic) CGFloat timeColumnWidth;
 
 /*!
+    @abstract   Set the font of the left column showing hours.
+*/
+@property (nonatomic) UIFont *timeColumnFont;
+
+/*
+    @abstract   Set the color of the left column showing hours.
+*/
+@property (nonatomic) UIColor *timeColumnLabelColor;
+
+/*!
 	@abstract	Returns the height of the top row showing days.
 	@discussion The default value is 40.
 				To hide the day header, you can set this value to 0.
@@ -145,6 +149,12 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 @property (nonatomic) UIColor *currentTimeColor;
 
 /*!
+    @abstract   Whether you want to display the current time or not
+    @discussion The default value is true.
+*/
+@property (nonatomic) BOOL showCurrentTime;
+
+/*!
 	@abstract	Returns the color of the dot in the header indicating that a day has events.
 	@discussion The default value is blue.
  */
@@ -157,6 +167,11 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 	@see		numberOfVisibleDays
  */
 @property (nonatomic) BOOL showsAllDayEvents;
+
+/*!
+    @abstract   Set a view in place of the allDayEvents View that's present by default.
+ */
+@property (nonatomic) UIView *allDayEventsBackgroundView;
 
 /*!
 	@abstract	The view that provides the background appearance.
@@ -191,11 +206,6 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 @property (nonatomic) NSRange hourRange;
 
 /*!
-	@abstract	Color of dimmed time ranges.
- */
-@property (nonatomic) UIColor *dimmingColor;
-
-/*!
 	@abstract	Determines whether zooming is enabled for this day planner view.
 				If set to YES, the user can decrease or increase the height of the one-hour slot by pinching in and out on the view.
 	@discussion The default value is YES.
@@ -218,12 +228,6 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 @property (nonatomic) BOOL canMoveEvents;
 
 /*!
-	@abstract   The duration of newly created timed events
-	@discussion The default duration is 1 hour.
- */
-@property (nonatomic) NSTimeInterval durationForNewTimedEvent;
-
-/*!
 	@abstract	The object that acts as the delegate of the day planner view.
 	@discussion The delegate must adopt the `MGCDayPlannerViewDelegate` protocol.
 				The day planner view view maintains a weak reference to the delegate object.
@@ -238,13 +242,6 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
  */
 @property (nonatomic, weak) id<MGCDayPlannerViewDataSource> dataSource;
 
-/*!
-    @abstract   How to handle multiple overlapping events at displaying.
-    @discussion `MGCDayPlannerCoveringTypeClassic` is recommended for 2-3 covering events.
-                `MGCDayPlannerCoveringTypeComplex` is recommended for more. The first one tries to maximize the event box sizes. The latter one maximizes the disjunct space by splitting days into columns as neccessary.
-    @discussion Default value is `MGCDayPlannerCoveringTypeClassic`.
- */
-@property (nonatomic) MGCDayPlannerCoveringType eventCoveringType;
 
 /*!
 	@group Navigating through a day planner view
@@ -476,12 +473,6 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
  */
 - (void)endInteraction;
 
-/*!
-	@abstract	Reloads all dimmed time ranges.
-    @discussion Delegate methods dayPlannerView:numberOfDimmedTimeRangesAtDate: and dayPlannerView:dimmedTimeRangeAtIndex:date: are called for every visible day.
- */
-- (void)reloadDimmedTimeRanges;
-
 @end
 
 
@@ -591,17 +582,6 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 - (NSAttributedString*)dayPlannerView:(MGCDayPlannerView*)view attributedStringForDayHeaderAtDate:(NSDate*)date;
 
 /*!
-	@abstract   Asks the delegate for the number of dimmed timed ranges at given date.
- */
-- (NSInteger)dayPlannerView:(MGCDayPlannerView*)view numberOfDimmedTimeRangesAtDate:(NSDate*)date;
-
-/*!
-	@abstract   Asks the delegate for the dimmed time range at given date and index.
- */
-- (MGCDateRange*)dayPlannerView:(MGCDayPlannerView*)view dimmedTimeRangeAtIndex:(NSUInteger)index date:(NSDate*)date;
-
-
-/*!
 	@group Responding to scrolling
  */
 
@@ -631,6 +611,13 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 	@param		date		The day about to be displayed.
  */
 - (void)dayPlannerView:(MGCDayPlannerView*)view willDisplayDate:(NSDate*)date;
+
+/*!
+	@abstract	Tells the delegate that the specified day is being displayed in the day planner view.
+	@param		view		The day planner view object notifying about the display change.
+	@param		date		The day about to be displayed.
+ */
+- (void)dayPlannerView:(MGCDayPlannerView*)view didDisplayDate:(NSDate*)date;
 
 /*!
 	@abstract	Tells the delegate that the specified day is not displayed anymore in the day planner view.

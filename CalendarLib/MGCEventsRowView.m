@@ -208,7 +208,7 @@ static const CGFloat kCellSpacing = 2.;		// space around cells
 		NSUInteger hiddenCount = [[daysWithMoreEvents objectForKey:@(day)]unsignedIntegerValue];
 		if (hiddenCount)
 		{
-			UILabel *label = [[UILabel alloc]initWithFrame:CGRectZero];
+			UILabel *label = [[UILabel alloc]initWithFrame:CGRectNull];
 			label.text = [NSString stringWithFormat:NSLocalizedString(@"%lu more...", nil), (unsigned long)hiddenCount];
 			label.textColor = [UIColor grayColor];
 			label.textAlignment = NSTextAlignmentRight;

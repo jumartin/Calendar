@@ -141,9 +141,9 @@ typedef enum : NSUInteger
     if (_dayViewController == nil) {
         _dayViewController = [[DayViewController alloc]initWithEventStore:self.eventStore];
         _dayViewController.calendar = self.calendar;
-        _dayViewController.showsWeekHeaderView = YES;
+        //_dayViewController.showsWeekHeaderView = YES;
         _dayViewController.delegate = self;
-        _dayViewController.dayPlannerView.eventCoveringType = MGCDayPlannerCoveringTypeComplex;
+        //_dayViewController.dayPlannerView.eventCoveringType = MGCDayPlannerCoveringTypeComplex;
     }
     return _dayViewController;
 }

@@ -272,7 +272,7 @@
 {
 	if (sender == self.pagingSwitch) {
 		self.dayPlannerView.pagingEnabled = sender.on;
-        [self.dayPlannerView reloadDimmedTimeRanges];
+        //[self.dayPlannerView reloadDimmedTimeRanges];
 	}
 	else if (sender == self.zoomingSwitch) {
 		self.dayPlannerView.zoomingEnabled = sender.on;
@@ -302,7 +302,7 @@
 	}
     else if (sender == self.dimmedTimeRangeSwitch) {
         self.weekViewController.showDimmedTimeRanges = sender.on;
-        [self.dayPlannerView reloadDimmedTimeRanges];
+        //[self.dayPlannerView reloadDimmedTimeRanges];
     }
 }
 

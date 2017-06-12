@@ -30,8 +30,6 @@
 
 #import "MGCDayPlannerViewController.h"
 #import "MGCDateRange.h"
-#import "MGCCalendarHeaderView.h"
-#import "Constant.h"
 
 @interface MGCDayPlannerViewController ()
 
@@ -64,39 +62,12 @@
 	MGCDayPlannerView *dayPlannerView = [[MGCDayPlannerView alloc]initWithFrame:CGRectZero];
 	dayPlannerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
 	self.dayPlannerView = dayPlannerView;
-    self.dayPlannerView.autoresizesSubviews = YES;
 }
 
-- (void)viewDidLayoutSubviews{
-    [super viewDidLayoutSubviews];
-    
-    if (!self.headerView && self.showsWeekHeaderView) {
-        self.dayPlannerView.numberOfVisibleDays = 1;
-        self.dayPlannerView.dayHeaderHeight = 90;
-        self.dayPlannerView.visibleDays.start = [NSDate date];
-        [self setupHeaderView];
-    }
-}
-
-- (void)setupHeaderView{
-    self.headerView = [[MGCCalendarHeaderView alloc] initWithFrame:CGRectMake(0, 0, self.dayPlannerView.frame.size.width, self.dayPlannerView.dayHeaderHeight) collectionViewLayout:[[UICollectionViewFlowLayout alloc] init] andDayPlannerView:self.dayPlannerView];
-    
-    self.headerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-
-    [self.view addSubview:self.headerView];
-}
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    
-    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
-        
-        if (self.headerView) {
-            //force to scroll to a correct position after rotation
-            [self.headerView didMoveToSuperview];
-        }
-        
-    }];
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,7 +75,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
 
 /*
 #pragma mark - Navigation
@@ -143,12 +113,6 @@
 
 - (void)dayPlannerView:(MGCDayPlannerView*)view didMoveEventToDate:(NSDate*)date type:(MGCEventType)type
 {
-}
-
-//when the user interacts with the bottom part move the header part
-- (void)dayPlannerView:(MGCDayPlannerView*)view didEndScrolling:(MGCDayPlannerScrollType)scrollType
-{
-    [self.headerView selectDate:view.visibleDays.start];
 }
 
 @end
