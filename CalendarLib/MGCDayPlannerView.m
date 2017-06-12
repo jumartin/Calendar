@@ -101,7 +101,6 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 // subviews
 @property (nonatomic, readonly) UICollectionView *timedEventsView;
 @property (nonatomic, readonly) UICollectionView *allDayEventsView;
-@property (nonatomic, readonly) UIView *allDayEventsBackgroundView;
 @property (nonatomic, readonly) UICollectionView *dayColumnsView;
 @property (nonatomic, readonly) UIScrollView *timeScrollView;
 @property (nonatomic, readonly) MGCTimeRowsView *timeRowsView;
@@ -160,7 +159,6 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 @synthesize dayColumnsView = _dayColumnsView;
 //@synthesize backgroundView = _backgroundView;
 @synthesize timeScrollView = _timeScrollView;
-@synthesize allDayEventsBackgroundView = _allDayEventsBackgroundView;
 @synthesize timedEventsViewLayout = _timedEventsViewLayout;
 @synthesize allDayEventsViewLayout = _allDayEventsViewLayout;
 @synthesize startDate = _startDate;
@@ -2239,6 +2237,11 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 - (void)scrollViewDidEndDecelerating:(UIScrollView*)scrollView
 {
 	//NSLog(@"scrollViewDidEndDecelerating");
+    
+    NSDate *date = [self dateAtPoint:self.center rounded:YES];
+    if (date && [self.delegate respondsToSelector:@selector(dayPlannerView:didDisplayDate:)]) {
+        [self.delegate dayPlannerView:self didDisplayDate:date];
+    }
 
 	[self scrollViewDidEndScrolling:scrollView];
 }
