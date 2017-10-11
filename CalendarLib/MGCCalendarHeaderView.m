@@ -131,7 +131,7 @@ static CGFloat kItemHeight = 60;
 
 - (NSArray*)weekDaysFromDate:(NSDate*)date
 {
-    NSDateComponents* components = [self.calendar components:(NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitWeekOfYear | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:date];
+    NSDateComponents* components = [self.calendar components:(NSCalendarUnitYearForWeekOfYear | NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitWeekOfYear | NSCalendarUnitWeekday | NSCalendarUnitHour | NSCalendarUnitMinute) fromDate:date];
     
     NSMutableArray* weekDaysDates = [NSMutableArray array];
     
