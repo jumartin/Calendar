@@ -94,7 +94,8 @@ static CGFloat kItemHeight = 60;
         //setup weeks dates
         [self setupWeekDates];
         
-        [self registerNib:[UINib nibWithNibName:@"MGCCalendarHeaderCell" bundle:nil] forCellWithReuseIdentifier:kCellIdentifier];
+        NSBundle *bundle = [NSBundle bundleForClass:self.classForCoder];
+        [self registerNib:[UINib nibWithNibName:@"MGCCalendarHeaderCell" bundle:bundle] forCellWithReuseIdentifier:kCellIdentifier];
         
         
     }
