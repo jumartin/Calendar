@@ -151,4 +151,7 @@
     [self.headerView selectDate:view.visibleDays.start];
 }
 
+- (void)dayPlannerView:(MGCDayPlannerView*)view didSelectEmptyEventForDate:(NSDate*)date {
+}
+
 @end

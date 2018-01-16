@@ -686,4 +686,6 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
  */
 - (void)dayPlannerView:(MGCDayPlannerView*)view didDeselectEventOfType:(MGCEventType)type atIndex:(NSUInteger)index date:(NSDate*)date;
 
+- (void)dayPlannerView:(MGCDayPlannerView*)view didSelectEmptyEventFor:(NSDate*)date;
+
 @end

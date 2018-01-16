@@ -1043,9 +1043,13 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		{
 			NSDate *date = [self dateFromDayOffset:path.section];
 			MGCEventType type = (view == self.timedEventsView) ? MGCTimedEventType : MGCAllDayEventType;
-			
 			[self selectEventWithDelegate:YES type:type atIndex:path.item date:date];
-		}
+        } else {
+            CGPoint ptSelf = [gesture locationInView:self];
+            CGFloat createEventSlotHeight = floor(self.durationForNewTimedEvent * self.hourSlotHeight / 60.0f / 60.0f);
+            NSDate *date = [self dateAtPoint:CGPointMake(ptSelf.x, ptSelf.y - createEventSlotHeight / 2) rounded:YES];
+            [self didSelectEmptyDate:date];
+        }
 	}
 }
 
@@ -1057,6 +1061,10 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 		return cell.eventView;
 	}
 	return nil;
+}
+
+- (void) didSelectEmptyDate:(NSDate *)date {
+    [self.delegate dayPlannerView:self didSelectEmptyEventFor:date];
 }
 
 // tellDelegate is used to distinguish between user selection (touch) where delegate is informed,
