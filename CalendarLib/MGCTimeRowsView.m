@@ -116,11 +116,29 @@
 	
 	int hour = (int)(time / 3600) % 24;
 	int minutes = ((int)time % 3600) / 60;
-
-	if (minutesOnly) {
-		return [NSString stringWithFormat:@":%02d", minutes];
-	}
-	return [NSString stringWithFormat:@"%02d:%02d", hour, minutes];
+    
+    //Gives us the current date
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *components = [gregorian components: NSCalendarUnitYear | NSCalendarUnitDay | NSCalendarUnitMonth fromDate:[NSDate date]];
+    
+    [components setHour:hour];
+    [components setMinute:minutes];
+    
+    NSDate *date = [gregorian dateFromComponents:components];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setLocale:[NSLocale currentLocale]];
+    [formatter setDateStyle:NSDateFormatterNoStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    
+    NSString *dateString = [formatter stringFromDate:date];
+    
+    return dateString;
+    
+//    if (minutesOnly) {
+//        return [NSString stringWithFormat:@":%02d", minutes];
+//    }
+//    return [NSString stringWithFormat:@"%02d:%02d", hour, minutes];
 }
 
 - (NSAttributedString*)attributedStringForTimeMark:(MGCDayPlannerTimeMark)mark time:(NSTimeInterval)ti
