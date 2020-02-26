@@ -105,7 +105,7 @@
 		CA15381A24065AE2000A14C7 /* MGCCalendarHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1537D024065AE1000A14C7 /* MGCCalendarHeaderCell.m */; };
 		CA15381B24065AE2000A14C7 /* OrderedDictionary.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1537D124065AE1000A14C7 /* OrderedDictionary.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA15381C24065AE2000A14C7 /* MGCCalendarHeaderCell.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1537D224065AE1000A14C7 /* MGCCalendarHeaderCell.h */; };
-		CA15381D24065AE2000A14C7 /* MGCEventView.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1537D324065AE2000A14C7 /* MGCEventView.h */; };
+		CA15381D24065AE2000A14C7 /* MGCEventView.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1537D324065AE2000A14C7 /* MGCEventView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA15381E24065AE2000A14C7 /* MGCEventsRowView.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1537D424065AE2000A14C7 /* MGCEventsRowView.h */; };
 		CA15381F24065AE2000A14C7 /* MGCMonthPlannerEKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1537D524065AE2000A14C7 /* MGCMonthPlannerEKViewController.m */; };
 		CA15382024065AE2000A14C7 /* MGCMonthMiniCalendarView.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1537D624065AE2000A14C7 /* MGCMonthMiniCalendarView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -748,6 +748,7 @@
 				CA1537D924065AE2000A14C7 /* MGCDayPlannerViewController.h in Headers */,
 				CA15380E24065AE2000A14C7 /* MGCMonthPlannerEKViewController.h in Headers */,
 				CA15381224065AE2000A14C7 /* MGCCalendarHeaderView.h in Headers */,
+				CA15381D24065AE2000A14C7 /* MGCEventView.h in Headers */,
 				CA15381E24065AE2000A14C7 /* MGCEventsRowView.h in Headers */,
 				CA1537E924065AE2000A14C7 /* MGCYearCalendarMonthCell.h in Headers */,
 				CA1537DA24065AE2000A14C7 /* MGCYearCalendarMonthHeaderView.h in Headers */,
@@ -755,7 +756,6 @@
 				CA15380624065AE2000A14C7 /* MGCEventKitSupport.h in Headers */,
 				CA15380424065AE2000A14C7 /* MGCEventCell.h in Headers */,
 				CA1537FC24065AE2000A14C7 /* MGCInteractiveEventView.h in Headers */,
-				CA15381D24065AE2000A14C7 /* MGCEventView.h in Headers */,
 				CA15380124065AE2000A14C7 /* MGCTimedEventsViewLayout.h in Headers */,
 				CA1537DC24065AE2000A14C7 /* MGCAllDayEventsViewLayout.h in Headers */,
 				CA1537E524065AE2000A14C7 /* MGCMonthPlannerHeaderView.h in Headers */,
