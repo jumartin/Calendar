@@ -20,9 +20,9 @@ xcuserdata
 ## Other
 *.xccheckout
 *.moved-aside
-*.xcuserstate
+##*.xcuserstate
 *.xcscmblueprint
-*.xcscheme
+##*.xcscheme
 
 ## Obj-C/Swift specific
 *.hmap
