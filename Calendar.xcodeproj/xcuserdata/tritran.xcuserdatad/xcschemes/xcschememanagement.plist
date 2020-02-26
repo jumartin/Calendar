@@ -6,6 +6,8 @@
 	<dict>
 		<key>CalendarDemo.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<false/>
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
@@ -13,6 +15,24 @@
 		<dict>
 			<key>orderHint</key>
 			<integer>6</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>72B5D8ED180D73E0004ADB86</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>72B5D908180D73E0004ADB86</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CA15378224065AA6000A14C7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
