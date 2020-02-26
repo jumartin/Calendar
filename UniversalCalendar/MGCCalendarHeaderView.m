@@ -94,8 +94,9 @@ static CGFloat kItemHeight = 60;
         //setup weeks dates
         [self setupWeekDates];
         
-        NSBundle *bundle = [NSBundle bundleForClass:[MGCCalendarHeaderCell class]];
-        [self registerNib:[UINib nibWithNibName:@"MGCCalendarHeaderCell" bundle:bundle] forCellWithReuseIdentifier:kCellIdentifier];
+//        NSBundle *bundle = [NSBundle bundleForClass:[MGCCalendarHeaderCell class]];
+//        [self registerNib:[UINib nibWithNibName:@"MGCCalendarHeaderCell" bundle:bundle] forCellWithReuseIdentifier:kCellIdentifier];
+        [self registerClass:[MGCCalendarHeaderCell class] forCellWithReuseIdentifier:kCellIdentifier];
         
     }
     return self;
@@ -190,6 +191,9 @@ static CGFloat kItemHeight = 60;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     
     MGCCalendarHeaderCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:kCellIdentifier forIndexPath:indexPath];
+    if (cell == nil) {
+        cell = [[MGCCalendarHeaderCell alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];
+    }
     
     switch (indexPath.section) {
         case PreviousWeekSection://left section

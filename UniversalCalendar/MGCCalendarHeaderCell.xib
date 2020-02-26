@@ -18,8 +18,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="30" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Y" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lrb-1s-6aa">
-                        <rect key="frame" x="4" y="0.0" width="23" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Y" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lrb-1s-6aa">
+                        <rect key="frame" x="4" y="0.0" width="22" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="Nsc-IM-sVC"/>
                         </constraints>
@@ -28,7 +28,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uts-rA-KEg">
-                        <rect key="frame" x="0.0" y="22" width="30" height="30"/>
+                        <rect key="frame" x="0.0" y="30" width="30" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="2hk-8g-QPg"/>
                             <constraint firstAttribute="height" constant="30" id="jgt-w3-wNF"/>
@@ -42,12 +42,11 @@
             <constraints>
                 <constraint firstItem="Uts-rA-KEg" firstAttribute="leading" secondItem="2qr-TV-RHQ" secondAttribute="leading" id="EX5-Pi-9Fs"/>
                 <constraint firstAttribute="trailing" secondItem="Uts-rA-KEg" secondAttribute="trailing" id="Ebv-Dc-i53"/>
-                <constraint firstItem="Uts-rA-KEg" firstAttribute="centerX" secondItem="2qr-TV-RHQ" secondAttribute="centerX" id="FrQ-kA-oUQ"/>
                 <constraint firstItem="lrb-1s-6aa" firstAttribute="top" secondItem="2qr-TV-RHQ" secondAttribute="top" id="GqD-hL-yCc"/>
                 <constraint firstItem="lrb-1s-6aa" firstAttribute="centerX" secondItem="Uts-rA-KEg" secondAttribute="centerX" id="JNG-0O-mmA"/>
-                <constraint firstItem="Uts-rA-KEg" firstAttribute="bottom" secondItem="2qr-TV-RHQ" secondAttribute="bottomMargin" id="KOd-sr-mTc"/>
+                <constraint firstItem="Uts-rA-KEg" firstAttribute="bottom" secondItem="2qr-TV-RHQ" secondAttribute="bottom" id="KOd-sr-mTc"/>
                 <constraint firstItem="lrb-1s-6aa" firstAttribute="leading" secondItem="2qr-TV-RHQ" secondAttribute="leading" constant="4" id="U1b-Ms-64Z"/>
-                <constraint firstItem="Uts-rA-KEg" firstAttribute="top" secondItem="lrb-1s-6aa" secondAttribute="bottom" constant="1" id="boY-bH-Z71"/>
+                <constraint firstItem="Uts-rA-KEg" firstAttribute="centerX" secondItem="2qr-TV-RHQ" secondAttribute="centerX" id="mYj-P1-raX"/>
             </constraints>
             <size key="customSize" width="31" height="50"/>
             <variation key="default">
@@ -56,10 +55,6 @@
                     <exclude reference="Ebv-Dc-i53"/>
                 </mask>
             </variation>
-            <connections>
-                <outlet property="dayNameLabel" destination="lrb-1s-6aa" id="oxP-YA-XLj"/>
-                <outlet property="dayNumberLabel" destination="Uts-rA-KEg" id="VeO-KR-ef8"/>
-            </connections>
             <point key="canvasLocation" x="698" y="217"/>
         </collectionViewCell>
     </objects>

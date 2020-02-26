@@ -59,7 +59,6 @@
 		CA1537EC24065AE2000A14C7 /* MGCMonthPlannerBackgroundView.h in Headers */ = {isa = PBXBuildFile; fileRef = CA15379E24065ADA000A14C7 /* MGCMonthPlannerBackgroundView.h */; };
 		CA1537ED24065AE2000A14C7 /* MGCDayPlannerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA15379F24065ADA000A14C7 /* MGCDayPlannerViewController.m */; };
 		CA1537EE24065AE2000A14C7 /* Constant.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1537A024065ADA000A14C7 /* Constant.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CA1537EF24065AE2000A14C7 /* MGCCalendarHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA1537A124065ADA000A14C7 /* MGCCalendarHeaderCell.xib */; };
 		CA1537F024065AE2000A14C7 /* MGCMonthPlannerViewDayCell.h in Headers */ = {isa = PBXBuildFile; fileRef = CA1537A224065ADA000A14C7 /* MGCMonthPlannerViewDayCell.h */; };
 		CA1537F124065AE2000A14C7 /* MGCTimeRowsView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1537A324065ADA000A14C7 /* MGCTimeRowsView.m */; };
 		CA1537F224065AE2000A14C7 /* MGCYearCalendarMonthCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CA1537A424065ADA000A14C7 /* MGCYearCalendarMonthCell.m */; };
@@ -898,7 +897,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA1537EF24065AE2000A14C7 /* MGCCalendarHeaderCell.xib in Resources */,
 				CA1537F624065AE2000A14C7 /* Localizable.strings in Resources */,
 				CA1537F324065AE2000A14C7 /* Localizable.strings in Resources */,
 			);

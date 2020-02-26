@@ -23,6 +23,28 @@
 
 @implementation MGCCalendarHeaderCell
 
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    self.dayNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [self addSubview:self.dayNameLabel];
+    self.dayNameLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [[self.dayNameLabel.heightAnchor constraintEqualToConstant:21] setActive:YES];
+    [[self.dayNameLabel.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:4] setActive:YES];
+    [[self.dayNameLabel.topAnchor constraintEqualToAnchor:self.topAnchor constant:0] setActive:YES];
+    [[self.dayNameLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:0] setActive:YES];
+    
+    self.dayNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [self addSubview:self.dayNumberLabel];
+    self.dayNumberLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    [[self.dayNumberLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:0] setActive:YES];
+    [[self.dayNumberLabel.widthAnchor constraintEqualToConstant:30] setActive:YES];
+    [[self.dayNumberLabel.heightAnchor constraintEqualToConstant:30] setActive:YES];
+    [[self.dayNumberLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0] setActive:YES];
+    [[self.dayNumberLabel.centerXAnchor constraintEqualToAnchor:self.dayNameLabel.centerXAnchor] setActive:YES];
+    
+    return self;
+}
+
 - (instancetype)initWithCoder:(NSCoder*)aDecoder
 {
     self = [super initWithCoder:aDecoder];

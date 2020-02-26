@@ -9,8 +9,8 @@
 
 @interface MGCCalendarHeaderCell : UICollectionViewCell
 
-@property (nonatomic, weak) IBOutlet UILabel *dayNumberLabel;
-@property (nonatomic, weak) IBOutlet UILabel *dayNameLabel;
+@property (nonatomic, strong)  UILabel *dayNumberLabel;
+@property (nonatomic, strong)  UILabel *dayNameLabel;
 @property (nonatomic, strong) NSDate *date;
 
 @end
