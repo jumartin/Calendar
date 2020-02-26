@@ -39,7 +39,7 @@
     [[self.dayNumberLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:0] setActive:YES];
     [[self.dayNumberLabel.widthAnchor constraintEqualToConstant:30] setActive:YES];
     [[self.dayNumberLabel.heightAnchor constraintEqualToConstant:30] setActive:YES];
-    [[self.dayNumberLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0] setActive:YES];
+    [[self.dayNumberLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:5] setActive:YES];
     [[self.dayNumberLabel.centerXAnchor constraintEqualToAnchor:self.dayNameLabel.centerXAnchor] setActive:YES];
     
     return self;
