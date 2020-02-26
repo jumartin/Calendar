@@ -8,6 +8,11 @@ PODS:
 DEPENDENCIES:
   - CalendarLib (from `.`)
 
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - OrderedDictionary
+    - OSCache
+
 EXTERNAL SOURCES:
   CalendarLib:
     :path: "."
@@ -19,4 +24,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: f0c33ba38eb3de386c34bcd88371a475e11b702a
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.7.5

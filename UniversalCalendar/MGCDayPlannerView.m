@@ -1915,8 +1915,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         
         return view;
     }
-    ///// test
-    else if ([kind isEqualToString:MoreEventsViewKind]) {
+    ///// test if ([kind isEqualToString:MoreEventsViewKind])
+    else  {
         UICollectionReusableView *view = [self.allDayEventsView dequeueReusableSupplementaryViewOfKind:MoreEventsViewKind withReuseIdentifier:MoreEventsViewReuseIdentifier forIndexPath:indexPath];
         
         view.autoresizesSubviews = YES;
@@ -1933,7 +1933,6 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         
         return view;
     }
-    return nil;
 }
 
 #pragma mark - MGCTimedEventsViewLayoutDelegate
