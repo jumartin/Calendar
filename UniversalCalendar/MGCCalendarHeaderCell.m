@@ -26,6 +26,7 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     self.dayNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [self.dayNameLabel setTextAlignment:NSTextAlignmentCenter];
     [self addSubview:self.dayNameLabel];
     self.dayNameLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [[self.dayNameLabel.heightAnchor constraintEqualToConstant:21] setActive:YES];
@@ -34,12 +35,13 @@
     [[self.dayNameLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:0] setActive:YES];
     
     self.dayNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [self.dayNumberLabel setTextAlignment:NSTextAlignmentCenter];
     [self addSubview:self.dayNumberLabel];
     self.dayNumberLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [[self.dayNumberLabel.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:0] setActive:YES];
     [[self.dayNumberLabel.widthAnchor constraintEqualToConstant:30] setActive:YES];
     [[self.dayNumberLabel.heightAnchor constraintEqualToConstant:30] setActive:YES];
-    [[self.dayNumberLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:5] setActive:YES];
+    [[self.dayNumberLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-5] setActive:YES];
     [[self.dayNumberLabel.centerXAnchor constraintEqualToAnchor:self.dayNameLabel.centerXAnchor] setActive:YES];
     
     return self;
