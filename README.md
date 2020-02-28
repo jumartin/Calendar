@@ -1,6 +1,7 @@
 # CalendarLib
 
 [![Version](https://img.shields.io/cocoapods/v/CalendarLib.svg?style=flat)](http://cocoapods.org/pods/CalendarLib)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/cocoapods/l/CalendarLib.svg?style=flat)](http://cocoapods.org/pods/CalendarLib)
 [![Platform](https://img.shields.io/cocoapods/p/CalendarLib.svg?style=flat)](http://cocoapods.org/pods/CalendarLib)
 
@@ -53,6 +54,16 @@ The best way is to use [CocoaPods](https://cocoapods.org/pods/CalendarLib). Add 
 
 ```ruby
 pod "CalendarLib"
+```
+
+### Carthage
+Add this to Cartfile
+
+```ruby
+github "haithngn/Calendar" "2.0.1"
+```
+```ruby
+$ carthage update
 ```
 
 ### The old way
