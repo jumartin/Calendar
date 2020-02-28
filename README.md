@@ -1,4 +1,4 @@
-# CalendarLib
+# CalendarLib inspired from [Calendar](https://github.com/jumartin/Calendar) (Julien Martin)
 
 [![Version](https://img.shields.io/cocoapods/v/CalendarLib.svg?style=flat)](http://cocoapods.org/pods/CalendarLib)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
@@ -88,6 +88,10 @@ See the demo project to get an idea of how to use the library and check the [doc
 ## License
 
 CalendarLib is available under the MIT license. See the LICENSE file.
+
+## Contribution
++ Author: [TriTranDev](https://github.com/TriTranDev)
++ Author: [Vỹ Nguyễn](https://github.com/VyNguyen0102)
 
 ## Change-log
 
