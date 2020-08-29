@@ -71,7 +71,7 @@
     [super viewDidLayoutSubviews];
     
     if (!self.headerView && self.showsWeekHeaderView) {
-        self.dayPlannerView.numberOfVisibleDays = 1;
+        self.dayPlannerView.numberOfVisibleDays = 2;
         self.dayPlannerView.dayHeaderHeight = 90;
         self.dayPlannerView.visibleDays.start = [NSDate date];
         [self setupHeaderView];
