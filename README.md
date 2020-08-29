@@ -17,11 +17,11 @@ I may come back to it in the future, but meanwhile, please don’t expect any up
 
 
 
-![Day Planner View](https://raw.githubusercontent.com/jumartin/Calendar/master/CalendarDocs/DayPlannerView.png "Day planner view")
-![Day Planner View](https://raw.githubusercontent.com/jumartin/Calendar/master/CalendarDocs/DayPlannerView2.png)
-![Month Planner View](https://raw.githubusercontent.com/jumartin/Calendar/master/CalendarDocs/MonthPlannerView.png "Month planner view")
-![Month Planner View](https://raw.githubusercontent.com/jumartin/Calendar/master/CalendarDocs/MonthPlannerView2.png)
-![Year Calendar View](https://raw.githubusercontent.com/jumartin/Calendar/master/CalendarDocs/YearView.png "Year calendar view")
+![Day Planner View](./CalendarDocs/DayPlannerView.png "Day planner view")
+![Month Planner View](./CalendarDocs/MonthPlannerView.png "Month planner view")
+![Month Planner View](./CalendarDocs/MonthPlannerView2.png)
+![Day Planner View](./CalendarDocs/DayPlannerView2.png)
+![Year Calendar View](./CalendarDocs/YearView.png "Year calendar view")
 
 ## Features
 
@@ -48,19 +48,11 @@ iPad / iPhone with iOS 8 or higher.
 
 ## Installation
 
-### CocoaPods
-    
-The best way is to use [CocoaPods](https://cocoapods.org/pods/CalendarLib). Add the following line to your Podfile : 
-
-```ruby
-pod "CalendarLib"
-```
-
 ### Carthage
 Add this to Cartfile
 
 ```ruby
-github "haithngn/Calendar" "2.0.1"
+github "haithngn/Calendar" "master"
 ```
 ```ruby
 $ carthage update
