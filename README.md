@@ -1,11 +1,11 @@
-# CalendarLib inspired from [Calendar](https://github.com/jumartin/Calendar) (Julien Martin)
+# Universal Calendar inspired from [Calendar](https://github.com/jumartin/Calendar) (Julien Martin)
 
 [![Version](https://img.shields.io/cocoapods/v/CalendarLib.svg?style=flat)](http://cocoapods.org/pods/CalendarLib)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 [![License](https://img.shields.io/cocoapods/l/CalendarLib.svg?style=flat)](http://cocoapods.org/pods/CalendarLib)
 [![Platform](https://img.shields.io/cocoapods/p/CalendarLib.svg?style=flat)](http://cocoapods.org/pods/CalendarLib)
 
-CalendarLib is a set of views and controllers for displaying and scheduling events on iOS.
+Universal Calendar is a set of views and controllers for displaying and scheduling events on iOS and OSX.
 
 **Warning:**
 
@@ -15,8 +15,13 @@ I may come back to it in the future, but meanwhile, please don’t expect any up
 
 **Thanks anyway to all the contributors!**
 
+#### OSX
+![OS X 2Days](./CalendarDocs/osx_2days.png "2Days planner view")
+![OS X Week](./CalendarDocs/osx_week.png "Weak planner view")
+![OS X Month](./CalendarDocs/osx_month.png "Month planner view")
+![OS X Year](./CalendarDocs/osx_year.png "Year planner view")
 
-
+#### iOS
 ![Day Planner View](./CalendarDocs/DayPlannerView.png "Day planner view")
 ![Month Planner View](./CalendarDocs/MonthPlannerView.png "Month planner view")
 ![Month Planner View](./CalendarDocs/MonthPlannerView2.png)
@@ -58,10 +63,6 @@ github "haithngn/Calendar" "master"
 $ carthage update
 ```
 
-### The old way
-
-If you don't want to use CocoaPods, you need to copy the content of the CalendarLib folder into your project, as well as the source of the two dependencies : [OSCache](https://github.com/nicklockwood/OSCache) and [OrderedDictionary](https://github.com/nicklockwood/OrderedDictionary).
-
 ## Getting started
 
 1.  If you want to use EventKit as a data source, create an instance of `MGCDayPlannerEKViewController` or `MGCMonthPlannerEKViewController`, or subclass them for your own needs.
@@ -75,8 +76,6 @@ If you don't want to use CocoaPods, you need to copy the content of the Calendar
 
 3.  If you want to use a custom event cell, subclass `MGCEventView` or `MGCStandardEventView` and register the class with the day / month planner view.
 	
-See the demo project to get an idea of how to use the library and check the [documentation](http://cocoadocs.org/docsets/CalendarLib/)
-
 ## License
 
 CalendarLib is available under the MIT license. See the LICENSE file.
