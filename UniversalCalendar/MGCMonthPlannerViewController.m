@@ -54,12 +54,7 @@
 
 - (void)loadView
 {
-	if (self.nibName)
-	{
-		[super loadView];
-		NSAssert(self.monthPlannerView != nil, @"NIB file did not set monthPlannerView property.");
-		return;
-	}
+	[super loadView];
 	
 	MGCMonthPlannerView *monthPlannerView = [[MGCMonthPlannerView alloc]initWithFrame:CGRectZero];
 	monthPlannerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;

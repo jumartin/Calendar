@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		19290194C082371F9D97B3DF /* WeekViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19290C2D82B4D6236BB822BA /* WeekViewController.swift */; };
+		1929092530FF5A55803D2505 /* MonthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19290FFD11D912E695FEDDCA /* MonthViewController.swift */; };
+		19290AB66D0A8FF66FBB260B /* DayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192904E8074D812872DD4926 /* DayViewController.swift */; };
 		270216F224FAC05400022A24 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B5D8F3180D73E0004ADB86 /* CoreGraphics.framework */; };
 		720041BA1879B2B600F3C497 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 720041B91879B2B600F3C497 /* Settings.bundle */; };
 		721DC18918219C4D00F9470C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721DC18818219C4D00F9470C /* MainViewController.m */; };
@@ -29,10 +32,7 @@
 		72B5D928180D7476004ADB86 /* main-iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72B5D927180D7476004ADB86 /* main-iPad.storyboard */; };
 		72E9B9161C919EF20070EDD3 /* settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 72E9B9151C919EF20070EDD3 /* settings.storyboard */; };
 		72E9B9191C91E3520070EDD3 /* MonthSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72E9B9181C91E3520070EDD3 /* MonthSettingsViewController.m */; };
-		72EF07FF1A3D9DF8005699CA /* WeekViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EF07FE1A3D9DF8005699CA /* WeekViewController.m */; };
-		72EF08151A3DB8C6005699CA /* MonthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EF080C1A3DB8C6005699CA /* MonthViewController.m */; };
 		72EF08181A3DB8C6005699CA /* YearViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 72EF080E1A3DB8C6005699CA /* YearViewController.m */; };
-		BC32A4601D30FED600AB19D7 /* DayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BC32A45F1D30FED600AB19D7 /* DayViewController.m */; };
 		CA15378724065AA6000A14C7 /* UniversalCalendar.h in Headers */ = {isa = PBXBuildFile; fileRef = CA15378524065AA6000A14C7 /* UniversalCalendar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA1537D924065AE2000A14C7 /* MGCDayPlannerViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CA15378B24065AD8000A14C7 /* MGCDayPlannerViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CA1537DA24065AE2000A14C7 /* MGCYearCalendarMonthHeaderView.h in Headers */ = {isa = PBXBuildFile; fileRef = CA15378C24065AD8000A14C7 /* MGCYearCalendarMonthHeaderView.h */; };
@@ -132,6 +132,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		192904E8074D812872DD4926 /* DayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayViewController.swift; sourceTree = "<group>"; };
+		19290C2D82B4D6236BB822BA /* WeekViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeekViewController.swift; sourceTree = "<group>"; };
+		19290C8C215F90F0DF0256D5 /* CalendarDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CalendarDemo-Bridging-Header.h"; sourceTree = "<group>"; };
+		19290FFD11D912E695FEDDCA /* MonthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthViewController.swift; sourceTree = "<group>"; };
 		27CD957524FB5D7A000C5A97 /* CalendarDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = CalendarDemo.entitlements; path = CalendarDemo/CalendarDemo.entitlements; sourceTree = "<group>"; };
 		720041B91879B2B600F3C497 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		721A12A11CB585CF00749F18 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
@@ -167,14 +171,8 @@
 		72E9B9151C919EF20070EDD3 /* settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = settings.storyboard; sourceTree = "<group>"; };
 		72E9B9171C91E3520070EDD3 /* MonthSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthSettingsViewController.h; sourceTree = "<group>"; };
 		72E9B9181C91E3520070EDD3 /* MonthSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthSettingsViewController.m; sourceTree = "<group>"; };
-		72EF07FD1A3D9DF8005699CA /* WeekViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WeekViewController.h; sourceTree = "<group>"; };
-		72EF07FE1A3D9DF8005699CA /* WeekViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WeekViewController.m; sourceTree = "<group>"; };
-		72EF080B1A3DB8C6005699CA /* MonthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MonthViewController.h; sourceTree = "<group>"; };
-		72EF080C1A3DB8C6005699CA /* MonthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MonthViewController.m; sourceTree = "<group>"; };
 		72EF080D1A3DB8C6005699CA /* YearViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YearViewController.h; sourceTree = "<group>"; };
 		72EF080E1A3DB8C6005699CA /* YearViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YearViewController.m; sourceTree = "<group>"; };
-		BC32A45E1D30FED500AB19D7 /* DayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DayViewController.h; sourceTree = "<group>"; };
-		BC32A45F1D30FED600AB19D7 /* DayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DayViewController.m; sourceTree = "<group>"; };
 		CA15378324065AA6000A14C7 /* UniversalCalendar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = UniversalCalendar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA15378524065AA6000A14C7 /* UniversalCalendar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UniversalCalendar.h; sourceTree = "<group>"; };
 		CA15378624065AA6000A14C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -340,14 +338,8 @@
 				72B5D927180D7476004ADB86 /* main-iPad.storyboard */,
 				72734BB61B32E93800B2BA49 /* main-iPhone.storyboard */,
 				72E9B9151C919EF20070EDD3 /* settings.storyboard */,
-				72EF080B1A3DB8C6005699CA /* MonthViewController.h */,
-				72EF080C1A3DB8C6005699CA /* MonthViewController.m */,
 				72EF080D1A3DB8C6005699CA /* YearViewController.h */,
 				72EF080E1A3DB8C6005699CA /* YearViewController.m */,
-				BC32A45E1D30FED500AB19D7 /* DayViewController.h */,
-				BC32A45F1D30FED600AB19D7 /* DayViewController.m */,
-				72EF07FD1A3D9DF8005699CA /* WeekViewController.h */,
-				72EF07FE1A3D9DF8005699CA /* WeekViewController.m */,
 				7258E8AF1A5A98DD007F88AF /* WeekSettingsViewController.h */,
 				7258E8B01A5A98DD007F88AF /* WeekSettingsViewController.m */,
 				72E9B9171C91E3520070EDD3 /* MonthSettingsViewController.h */,
@@ -355,6 +347,10 @@
 				72B5D903180D73E0004ADB86 /* Images.xcassets */,
 				72B5D8F8180D73E0004ADB86 /* Supporting Files */,
 				7275C49F1C46E87B0036C9A3 /* Launch Screen.storyboard */,
+				19290C2D82B4D6236BB822BA /* WeekViewController.swift */,
+				19290FFD11D912E695FEDDCA /* MonthViewController.swift */,
+				192904E8074D812872DD4926 /* DayViewController.swift */,
+				19290C8C215F90F0DF0256D5 /* CalendarDemo-Bridging-Header.h */,
 			);
 			name = Demo;
 			path = CalendarDemo;
@@ -605,6 +601,7 @@
 				TargetAttributes = {
 					72B5D8ED180D73E0004ADB86 = {
 						DevelopmentTeam = 48YJ4C47HX;
+						LastSwiftMigration = 1160;
 					};
 					CA15378224065AA6000A14C7 = {
 						CreatedOnToolsVersion = 10.3;
@@ -675,14 +672,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				72E9B9191C91E3520070EDD3 /* MonthSettingsViewController.m in Sources */,
-				72EF07FF1A3D9DF8005699CA /* WeekViewController.m in Sources */,
-				72EF08151A3DB8C6005699CA /* MonthViewController.m in Sources */,
 				72EF08181A3DB8C6005699CA /* YearViewController.m in Sources */,
 				72B5D902180D73E0004ADB86 /* AppDelegate.m in Sources */,
 				721DC18918219C4D00F9470C /* MainViewController.m in Sources */,
 				72B5D8FE180D73E0004ADB86 /* main.m in Sources */,
 				7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */,
-				BC32A4601D30FED600AB19D7 /* DayViewController.m in Sources */,
+				19290194C082371F9D97B3DF /* WeekViewController.swift in Sources */,
+				1929092530FF5A55803D2505 /* MonthViewController.swift in Sources */,
+				19290AB66D0A8FF66FBB260B /* DayViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -873,6 +870,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CalendarDemo/CalendarDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -883,12 +881,16 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/CalendarDemo/Calendar-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.haithngn.CalendarDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "CalendarDemo/CalendarDemo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -899,6 +901,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = CalendarDemo/CalendarDemo.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -909,12 +912,15 @@
 				HEADER_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/CalendarDemo/Calendar-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.haithngn.CalendarDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
 				SUPPORTS_MACCATALYST = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "CalendarDemo/CalendarDemo-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -923,6 +929,7 @@
 		72B5D91E180D73E0004ADB86 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -944,6 +951,7 @@
 		72B5D91F180D73E0004ADB86 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",

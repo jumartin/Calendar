@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "WeekViewController.h"
+#import "CalendarDemo-Swift.h"
 
 
 @protocol WeekSettingsViewControllerDelegate;

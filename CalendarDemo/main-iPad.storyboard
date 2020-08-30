@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="DbJ-31-h6o">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="DbJ-31-h6o">
+    <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Main View Controller-->
@@ -23,11 +25,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <containerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ham-TQ-m4h">
-                                <rect key="frame" x="0.0" y="69" width="768" height="914"/>
-                                <color key="backgroundColor" white="0.94793567518248179" alpha="1" colorSpace="calibratedWhite"/>
+                                <rect key="frame" x="0.0" y="50" width="768" height="927"/>
+                                <color key="backgroundColor" red="0.94793570041656494" green="0.94793570041656494" blue="0.94793570041656494" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </containerView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="OKo-QW-B69">
-                                <rect key="frame" x="218" y="25" width="333" height="29"/>
+                                <rect key="frame" x="217.5" y="5" width="333" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="333" id="oWq-Yh-o0K" userLabel="Width - (227) - Plain Segmented Control - Jour, Semaine, Mois"/>
                                 </constraints>
@@ -42,7 +44,7 @@
                                 </connections>
                             </segmentedControl>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4WS-PM-ty7">
-                                <rect key="frame" x="0.0" y="983" width="768" height="44"/>
+                                <rect key="frame" x="0.0" y="977" width="768" height="50"/>
                                 <items>
                                     <barButtonItem title="Today" id="LZX-Ej-dh3">
                                         <connections>
@@ -64,33 +66,33 @@
                                 </items>
                             </toolbar>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y8f-3G-XnQ">
-                                <rect key="frame" x="643" y="19" width="44" height="41"/>
+                                <rect key="frame" x="643" y="0.0" width="44" height="41"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="41" id="BK1-4p-EIu"/>
                                     <constraint firstAttribute="width" constant="44" id="wYj-vY-gDl"/>
                                 </constraints>
                                 <state key="normal" title="&lt;&lt;">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="previousPage:" destination="DbJ-31-h6o" eventType="touchUpInside" id="jGD-NL-6h3"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LH-Ns-UHv">
-                                <rect key="frame" x="702" y="19" width="44" height="41"/>
+                                <rect key="frame" x="702" y="0.0" width="44" height="41"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="41" id="D4K-fl-LXI"/>
                                     <constraint firstAttribute="width" constant="44" id="aVV-LP-3pn"/>
                                 </constraints>
                                 <state key="normal" title="&gt;&gt;">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
                                     <action selector="nextPage:" destination="DbJ-31-h6o" eventType="touchUpInside" id="xFp-Ni-Q7G"/>
                                 </connections>
                             </button>
                         </subviews>
-                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Dsh-1q-Owa" firstAttribute="centerY" secondItem="OKo-QW-B69" secondAttribute="centerY" id="0zs-m1-2SO"/>
                             <constraint firstAttribute="centerX" secondItem="OKo-QW-B69" secondAttribute="centerX" id="2jd-Ug-pgr"/>
@@ -131,7 +133,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCc-d4-pwg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-313" y="-1572"/>
+            <point key="canvasLocation" x="-244.53125" y="-921.09374999999989"/>
         </scene>
         <!--dayPlannerSettings-->
         <scene sceneID="7f4-C0-b4b">
@@ -141,7 +143,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nB7-f3-QJQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-467.5" y="-880"/>
+            <point key="canvasLocation" x="-365.234375" y="-515.625"/>
         </scene>
         <!--monthPlannerSettings-->
         <scene sceneID="o3h-TQ-JOR">
@@ -149,7 +151,61 @@
                 <viewControllerPlaceholder storyboardName="settings" referencedIdentifier="monthPlannerSettings" id="TUG-Yd-0AJ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ea0-Xb-A9h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-140" y="-880"/>
+            <point key="canvasLocation" x="-109.375" y="-515.625"/>
+        </scene>
+        <!--Day View Controller-->
+        <scene sceneID="6QW-NG-xa0">
+            <objects>
+                <viewController storyboardIdentifier="DayViewController" id="bEc-2K-aN0" customClass="DayViewController" customModule="CalendarDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="t0e-Qt-qaH"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ucs-OJ-aiX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hgn-gY-r0E">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oQs-9p-3K6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-65" y="-82"/>
+        </scene>
+        <!--Week View Controller-->
+        <scene sceneID="ye2-wn-1CK">
+            <objects>
+                <viewController storyboardIdentifier="WeekViewController" id="RIe-tA-jW6" customClass="WeekViewController" customModule="CalendarDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="v33-MS-n6T"/>
+                        <viewControllerLayoutGuide type="bottom" id="JUB-ra-crp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GsN-mO-5xO">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fFV-fm-bSl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="25" y="557"/>
+        </scene>
+        <!--Month View Controller-->
+        <scene sceneID="rkK-eD-Dsp">
+            <objects>
+                <viewController storyboardIdentifier="MonthViewController" id="PA1-KM-RrI" customClass="MonthViewController" customModule="CalendarDemo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xTO-a5-Skl"/>
+                        <viewControllerLayoutGuide type="bottom" id="gX2-rL-3dg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hgs-Ga-kKq">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jtr-HH-mij" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-701" y="25"/>
         </scene>
     </scenes>
 </document>

@@ -9,7 +9,7 @@
 #import "MGCDateRange.h"
 #import "NSCalendar+MGCAdditions.h"
 #import "MGCStandardEventView.h"
-
+#import "CalendarDemo-Swift.h"
 
 @interface CustomEventView : MGCStandardEventView
 @end
@@ -141,7 +141,7 @@
 	self.eventMovingSwitch.on = self.dayPlannerView.canMoveEvents;
 	self.eventSelectionSwitch.on = self.dayPlannerView.allowsSelection;
     
-    self.dimmedTimeRangeSwitch.on = self.weekViewController.showDimmedTimeRanges;
+//    self.dimmedTimeRangeSwitch.on = self.weekViewController.showDimmedTimeRanges;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -301,7 +301,7 @@
 		[self.dayPlannerView reloadAllEvents];
 	}
     else if (sender == self.dimmedTimeRangeSwitch) {
-        self.weekViewController.showDimmedTimeRanges = sender.on;
+//        self.weekViewController.showDimmedTimeRanges = sender.on;
         [self.dayPlannerView reloadDimmedTimeRanges];
     }
 }
