@@ -17,11 +17,9 @@ FOUNDATION_EXPORT const unsigned char UniversalCalendarVersionString[];
 // In this header, you should import all the public headers of your framework using statements like #import <UniversalCalendar/PublicHeader.h>
 
 #import <UniversalCalendar/MGCDateRange.h>
-#import <UniversalCalendar/MGCDayPlannerEKViewController.h>
 #import <UniversalCalendar/MGCDayPlannerView.h>
 #import <UniversalCalendar/MGCDayPlannerViewController.h>
 #import <UniversalCalendar/MGCMonthMiniCalendarView.h>
-#import <UniversalCalendar/MGCMonthPlannerEKViewController.h>
 #import <UniversalCalendar/MGCMonthPlannerView.h>
 #import <UniversalCalendar/MGCMonthPlannerViewController.h>
 #import <UniversalCalendar/MGCReusableObjectQueue.h>
