@@ -120,8 +120,9 @@ const CGFloat kMonthHeaderMargin = 3.;
             if (self.showEvents) {
                 NSIndexPath *path = [NSIndexPath indexPathForItem:day inSection:month];
                 UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:MonthRowViewKind withIndexPath:path];
-                CGFloat cellX = x;
-                attribs.frame = CGRectMake(cellX, y + self.dayHeaderHeight, self.collectionView.bounds.size.width, self.rowHeight - self.dayHeaderHeight);
+                CGFloat width = [self widthForColumnRange:NSMakeRange(col, 1)];
+                CGFloat cellX = x + col * width;
+                attribs.frame = CGRectMake(cellX, y + self.dayHeaderHeight, self.collectionView.bounds.size.width - (col * width), self.rowHeight - self.dayHeaderHeight);
                 attribs.zIndex = 1;
                 [rowsInfo setObject:attribs forKey:path];
             }
