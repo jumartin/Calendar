@@ -22,37 +22,38 @@ class MonthViewController: MGCMonthPlannerViewController, CalendarViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                self.monthPlannerView.register(MGCStandardEventView.self, forEventCellReuseIdentifier: "EventCellReuseIdentifier")
-                self.monthPlannerView.dataSource = self
-            }
-        }
+        self.monthPlannerView.register(MGCStandardEventView.self, forEventCellReuseIdentifier: "EventCellReuseIdentifier")
+        self.monthPlannerView.dataSource = self
+    }
+}
 
 
-        extension MonthViewController {
-            override func monthPlannerView(_ view: MGCMonthPlannerView!, numberOfEventsAt date: Date!) -> Int {
-                
-                if NSCalendar.current.isDateInToday(date) {
-                    return 1
-                } else {
-                    return 0
-                }
-            }
-            
-            override func monthPlannerView(_ view: MGCMonthPlannerView!, dateRangeForEventAt index: UInt, date: Date!) -> MGCDateRange! {
-                
-                return MGCDateRange.init(start: Date(), end: Date().addingTimeInterval(3600))
-            }
-            
-            override func monthPlannerView(_ view: MGCMonthPlannerView!, cellForEventAt index: UInt, date: Date!) -> MGCEventView! {
-                let cell = view.dequeueReusableCell(withIdentifier: "EventCellReuseIdentifier", forEventAt: index, date: date) as! MGCStandardEventView
-                
-                if true {
-                    cell.style = [MGCStandardEventViewStyle.plain , MGCStandardEventViewStyle.dot ]
-                } else {
-                    cell.style = [MGCStandardEventViewStyle.plain ]
-                }
-                cell.title = "eventItemModel.name"
-                cell.color = UIColor.red
-                return cell
-            }
+extension MonthViewController {
+    override func monthPlannerView(_ view: MGCMonthPlannerView!, numberOfEventsAt date: Date!) -> Int {
+        
+        //if NSCalendar.current.isDateInToday(date) {
+        return 1
+        //} else {
+        //  return 0
+        //}
+    }
+    
+    override func monthPlannerView(_ view: MGCMonthPlannerView!, dateRangeForEventAt index: UInt, date: Date!) -> MGCDateRange! {
+        
+        
+        return MGCDateRange.init(start: date, end: date.addingTimeInterval(3600))
+    }
+    
+    override func monthPlannerView(_ view: MGCMonthPlannerView!, cellForEventAt index: UInt, date: Date!) -> MGCEventView! {
+        let cell = view.dequeueReusableCell(withIdentifier: "EventCellReuseIdentifier", forEventAt: index, date: date) as! MGCStandardEventView
+        
+        if true {
+            cell.style = [MGCStandardEventViewStyle.plain , MGCStandardEventViewStyle.dot ]
+        } else {
+            cell.style = [MGCStandardEventViewStyle.plain ]
         }
+        cell.title = "eventItemModel.name \(date)"
+        cell.color = UIColor.red
+        return cell
+    }
+}

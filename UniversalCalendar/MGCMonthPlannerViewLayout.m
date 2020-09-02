@@ -96,7 +96,8 @@ const CGFloat kMonthHeaderMargin = 3.;
 	for (NSUInteger month = 0; month < numberOfMonths; month++)
 	{
         NSUInteger col = [self.delegate collectionView:self.collectionView layout:self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:month]];
-        NSUInteger numRows = 6; // Always show 6 rows
+        NSUInteger daysInMonth = [self.collectionView numberOfItemsInSection:month];
+        NSUInteger numRows = ceil((col + daysInMonth) / 7.);
 		NSUInteger day = 0;
 		
         CGFloat x = month * self.collectionView.bounds.size.width;
