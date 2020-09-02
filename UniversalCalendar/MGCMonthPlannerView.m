@@ -800,7 +800,7 @@ typedef enum
         xOffset += self.monthInsets.top + (weekNum - 1) * self.rowHeight;
     }
     
-    [self.eventsView setContentOffset:CGPointMake(0, xOffset) animated:animated];
+    [self.eventsView setContentOffset:CGPointMake(xOffset, 0 ) animated:animated];
 
     if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidScroll:)]) {
         [self.delegate monthPlannerViewDidScroll:self];
