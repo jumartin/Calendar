@@ -24,6 +24,6 @@ class MonthViewController: MGCMonthPlannerViewController, CalendarViewController
         super.viewDidLoad()
         
         self.monthPlannerView.dateFormat = "d"
-  
+        self.monthPlannerView.weekDayBackgroundColor = .white
     }
 }
