@@ -22,5 +22,8 @@ class MonthViewController: MGCMonthPlannerViewController, CalendarViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.monthPlannerView.dateFormat = "d"
+  
     }
 }

@@ -1391,13 +1391,15 @@ typedef enum
         NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
         para.alignment = NSTextAlignmentCenter;
         
-        UIColor *textColor = [self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]] ? [UIColor redColor] : [UIColor blackColor];
+        UIColor *textColor = [self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]] ? [UIColor whiteColor] : [UIColor blackColor];
         
         attrStr = [[NSAttributedString alloc]initWithString:str attributes:@{ NSParagraphStyleAttributeName: para, NSForegroundColorAttributeName: textColor }];
     }
     
     cell.dayLabel.attributedText = attrStr;
+    cell.dayLabel.backgroundColor = [self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]] ? [UIColor colorWithRed:249.0f/255.0f green:73.0f/255.0f blue:86.0f/255.0f alpha:1.0f] : [UIColor whiteColor];
     cell.backgroundColor = [self.calendar isDateInWeekend:date] ? self.weekendDayBackgroundColor : self.weekDayBackgroundColor;
+   
     
     if (self.style & MGCMonthPlannerStyleDots) {
         NSUInteger eventsCounts = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];

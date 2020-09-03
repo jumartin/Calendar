@@ -49,7 +49,8 @@ typedef NS_OPTIONS(NSUInteger, MGCMonthPlannerGridStyle) {
     MGCMonthPlannerGridStyleVerticalLines = 1 << 1,
     MGCMonthPlannerGridStyleHorizontalLines = 1 << 2,
     MGCMonthPlannerGridStyleBottomDayLabel = 1 << 3,
-    MGCMonthPlannerGridStyleDefault = (MGCMonthPlannerGridStyleHorizontalLines|MGCMonthPlannerGridStyleVerticalLines)
+    MGCMonthPlannerGridStyleVerticalAndHorizontal = 1 << 4,
+    MGCMonthPlannerGridStyleDefault = (MGCMonthPlannerGridStyleHorizontalLines|MGCMonthPlannerGridStyleVerticalLines|MGCMonthPlannerGridStyleFill)
 };
 
 typedef NS_ENUM(NSUInteger, MGCMonthPlannerStyle) {
