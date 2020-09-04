@@ -1837,21 +1837,33 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         if (dateFormatter == nil) {
             dateFormatter = [NSDateFormatter new];
         }
-        dateFormatter.dateFormat = self.dateFormat ?: @"d MMM\neeeee";
 
+        dateFormatter.dateFormat = self.dateFormat ?: @"EEE d\neeeee";
+        
         NSString *s = [dateFormatter stringFromDate:date];
         
         NSMutableParagraphStyle *para = [NSMutableParagraphStyle new];
         para.alignment = NSTextAlignmentCenter;
         
         UIFont *font = [UIFont systemFontOfSize:14];
-        UIColor *color = [self.calendar isDateInWeekend:date] ? [UIColor lightGrayColor] : [UIColor blackColor];
+        UIColor *color = [UIColor colorWithRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:1.0f];//[self.calendar isDateInWeekend:date] ? [UIColor lightGrayColor] : [UIColor blackColor];
+        NSDate *today = [NSDate date];
+        NSDate *tomorrow = [today addTimeInterval:60*60*24*1];
         
-        if ([self.calendar mgc_isDate:date sameDayAsDate:[NSDate date]]) {
+        if ([self.calendar mgc_isDate:date sameDayAsDate:today]) {//Today
             accessoryTypes |= MGCDayColumnCellAccessoryMark;
             dayCell.markColor = self.tintColor;
             color = [UIColor whiteColor];
             font = [UIFont boldSystemFontOfSize:14];
+            if (_numberOfVisibleDays == 2) {
+                NSString *todayString = @"Today, ";
+                s = [todayString stringByAppendingString:s];
+            }
+        } else if ([self.calendar mgc_isDate:date sameDayAsDate:tomorrow]) {//Tomorrow
+            if (_numberOfVisibleDays == 2) {
+                NSString *tomorrowString = @"Tomorrow, ";
+                s = [tomorrowString stringByAppendingString:s];
+            }
         }
         
         NSAttributedString *as = [[NSAttributedString alloc]initWithString:s attributes:@{ NSParagraphStyleAttributeName: para, NSFontAttributeName: font, NSForegroundColorAttributeName: color }];

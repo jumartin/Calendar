@@ -398,7 +398,7 @@ typedef enum
 		numMonths = MIN(numMonths, diff);  // cannot load more than the total number of scrollable months
 	}
     
-	return numMonths;
+    return 3;//numMonths;
 }
 
 // range of loaded months
@@ -963,7 +963,7 @@ typedef enum
     CGFloat rightPadding = 10.0f;
     for (int i = 0; i < 7; i++) {
         UILabel *label = [self.dayLabels objectAtIndex:i];
-        
+        [label setTextColor:[UIColor colorWithRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:1.0f]];
         label.frame = CGRectMake(xPos, 0, colWidth - rightPadding, self.headerHeight);
         if (!label.superview) {
             [self addSubview:label];
