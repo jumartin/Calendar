@@ -58,6 +58,9 @@
 	
 	MGCMonthPlannerView *monthPlannerView = [[MGCMonthPlannerView alloc]initWithFrame:CGRectZero];
 	monthPlannerView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
+    monthPlannerView.monthHeaderStyle = MGCMonthHeaderStyleHidden;
+    monthPlannerView.dateFormat = @"d";
+    monthPlannerView.weekendDayBackgroundColor = [UIColor whiteColor];
 	self.monthPlannerView = monthPlannerView;
 }
 
