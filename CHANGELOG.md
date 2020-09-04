@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v. 3.0
+- Drop EventKit/EventKitUI Dependencies.
+- Drop MonthPlannerEKViewController/DayPlannerEKViewController.
+- Support Carthage.
+- Support Mac Catalyst.
+- Deployment target is now iOS 11.0
+
 ## v. 2.0
 
 - Deployment target is now iOS 8.0

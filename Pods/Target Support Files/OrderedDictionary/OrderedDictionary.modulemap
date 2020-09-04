@@ -1,6 +1,0 @@
-framework module OrderedDictionary {
-  umbrella header "OrderedDictionary-umbrella.h"
-
-  export *
-  module * { export * }
-}

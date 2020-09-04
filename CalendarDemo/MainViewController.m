@@ -6,13 +6,11 @@
 //
 
 #import "MainViewController.h"
-#import "WeekViewController.h"
-#import "MonthViewController.h"
 #import "YearViewController.h"
-#import "DayViewController.h"
 #import "NSCalendar+MGCAdditions.h"
 #import "WeekSettingsViewController.h"
 #import "MonthSettingsViewController.h"
+#import "CalendarDemo-Swift.h"
 
 
 typedef enum : NSUInteger
@@ -24,7 +22,7 @@ typedef enum : NSUInteger
 } CalendarViewType;
 
 
-@interface MainViewController ()<YearViewControllerDelegate, WeekViewControllerDelegate, DayViewControllerDelegate>
+@interface MainViewController ()<YearViewControllerDelegate>
 
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic) EKCalendarChooser *calendarChooser;
@@ -91,7 +89,7 @@ typedef enum : NSUInteger
     
     if (self.firstTimeAppears) {
         NSDate *date = [self.calendar mgc_startOfWeekForDate:[NSDate date]];
-        [self.calendarViewController moveToDate:date animated:NO];
+//        [self.calendarViewController moveToDate:date animated:NO];
         self.firstTimeAppears = NO;
     }
 }
@@ -136,35 +134,31 @@ typedef enum : NSUInteger
 
 #pragma mark - Private
 
-- (DayViewController*)dayViewController
-{
+- (DayViewController*)dayViewController {
     if (_dayViewController == nil) {
-        _dayViewController = [[DayViewController alloc]initWithEventStore:self.eventStore];
-        _dayViewController.calendar = self.calendar;
-        _dayViewController.showsWeekHeaderView = YES;
-        _dayViewController.delegate = self;
-        _dayViewController.dayPlannerView.eventCoveringType = MGCDayPlannerCoveringTypeComplex;
+        UIStoryboard *main = [UIStoryboard storyboardWithName:@"main-iPad" bundle:nil];
+        _dayViewController = [main instantiateViewControllerWithIdentifier:@"DayViewController"];
     }
+    
     return _dayViewController;
 }
 
-- (WeekViewController*)weekViewController
-{
+- (WeekViewController*)weekViewController {
     if (_weekViewController == nil) {
-        _weekViewController = [[WeekViewController alloc]initWithEventStore:self.eventStore];
-        _weekViewController.calendar = self.calendar;
-        _weekViewController.delegate = self;
+        UIStoryboard *main = [UIStoryboard storyboardWithName:@"main-iPad" bundle:nil];
+        _weekViewController = [main instantiateViewControllerWithIdentifier:@"WeekViewController"];
     }
+    
     return _weekViewController;
 }
 
 - (MonthViewController*)monthViewController
 {
     if (_monthViewController == nil) {
-        _monthViewController = [[MonthViewController alloc]initWithEventStore:self.eventStore];
-        _monthViewController.calendar = self.calendar;
-        _monthViewController.delegate = self;
+        UIStoryboard *main = [UIStoryboard storyboardWithName:@"main-iPad" bundle:nil];
+        _monthViewController = [main instantiateViewControllerWithIdentifier:@"MonthViewController"];
     }
+    
     return _monthViewController;
 }
 
@@ -204,7 +198,7 @@ typedef enum : NSUInteger
          [self.calendarViewController removeFromParentViewController];
          [newController didMoveToParentViewController:self];
          self.calendarViewController = newController;
-         [newController moveToDate:date animated:NO];
+//         [newController moveToDate:date animated:NO];
          newController.view.hidden = NO;
      }];
 }
