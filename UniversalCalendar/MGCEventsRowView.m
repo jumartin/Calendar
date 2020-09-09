@@ -99,7 +99,9 @@ static const CGFloat kCellSpacing = 2.;		// space around cells
 	for (NSUInteger day = self.daysRange.location; day < NSMaxRange(self.daysRange); day++)
 	{
 		NSUInteger eventsCount = [self numberOfEventsForDayAtIndex:day];
-		
+		NSLog(@"my range is %@", NSStringFromRange(self.daysRange));
+        NSString *log = [NSString stringWithFormat:@"day %lu event count %lu", day ,eventsCount];
+        printf("%s \n", [log UTF8String]);
 		for (int item = 0; item < eventsCount; item++)
 		{
 			NSIndexPath *path = [NSIndexPath indexPathForItem:item inSection:day];

@@ -96,7 +96,6 @@ const CGFloat kMonthHeaderMargin = 3.;
 	for (NSUInteger month = 0; month < numberOfMonths; month++)
 	{
         NSUInteger col = [self.delegate collectionView:self.collectionView layout:self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:month]];
-		NSUInteger daysInMonth = [self.collectionView numberOfItemsInSection:month];
         NSUInteger numRows = 6; // Always show 6 rows
 		NSUInteger day = 0;
 		
@@ -117,14 +116,12 @@ const CGFloat kMonthHeaderMargin = 3.;
         CGFloat y = 0;
 		for (NSUInteger row = 0; row < numRows; row++)
 		{
-//			NSRange colRange = NSMakeRange(col, MIN(7 - col, daysInMonth - day));
 			
             if (self.showEvents) {
                 NSIndexPath *path = [NSIndexPath indexPathForItem:day inSection:month];
                 UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:MonthRowViewKind withIndexPath:path];
-                CGFloat width = [self widthForColumnRange:NSMakeRange(col, 1)];
-                CGFloat cellX = x + (col * width);
-                attribs.frame = CGRectMake(cellX, y + self.dayHeaderHeight, width, self.rowHeight - self.dayHeaderHeight);
+                CGFloat cellX = x;
+                attribs.frame = CGRectMake(cellX, y + self.dayHeaderHeight, self.collectionView.bounds.size.width, self.rowHeight - self.dayHeaderHeight);
                 attribs.zIndex = 1;
                 [rowsInfo setObject:attribs forKey:path];
             }

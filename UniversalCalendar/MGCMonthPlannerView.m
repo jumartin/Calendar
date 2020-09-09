@@ -1505,6 +1505,12 @@ typedef enum
     NSDate *date = [self.calendar dateByAddingComponents:comps toDate:view.referenceDate options:0];
     
     NSUInteger count = [self.dataSource monthPlannerView:self numberOfEventsAtDate:date];
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"YYYY-MM-dd"];
+    NSLog(@"Todays date is %@",[formatter stringFromDate:date]);
+    
+    NSLog(@"numberOfEventsForDayAtIndex %lu day is %lu", day, count);
     return count;
 }
 
