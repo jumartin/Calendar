@@ -107,7 +107,7 @@ typedef enum
     _dateFormatter = [NSDateFormatter new];
     _dateFormatter.calendar = _calendar;
     _dateFormatter.dateFormat = [NSDateFormatter dateFormatFromTemplate:kDefaultDateFormat options:0 locale:[NSLocale currentLocale]]; //kDefaultDateFormat;
-    _rowHeight = isiPad ? 140. : 60.;
+    //_rowHeight = self.eventsView.frame.size.height / 6; // isiPad ? 140. : 60.;
     _dayCellHeaderHeight = 30;
     _headerHeight =  35;
     _itemHeight = 16;
@@ -115,7 +115,7 @@ typedef enum
     _eventRows = [MutableOrderedDictionary dictionaryWithCapacity:kRowCacheSize];
     _dragEventIndex = -1;
     _monthHeaderStyle = MGCMonthHeaderStyleDefault;
-    _monthInsets = UIEdgeInsetsMake(20, 0, 20, 0);
+    _monthInsets = UIEdgeInsetsMake(0, 0, 0, 0);
     _gridStyle = MGCMonthPlannerGridStyleDefault;
     _style = MGCMonthPlannerStyleEvents;
     _eventsDotColor = [UIColor lightGrayColor];
@@ -264,7 +264,7 @@ typedef enum
 {
     if (rowHeight != _rowHeight) {
         _rowHeight = rowHeight;
-        self.layout.rowHeight = rowHeight;
+        //self.layout.rowHeight = rowHeight;
         [self.eventsView reloadData];
     }
 }
@@ -398,7 +398,7 @@ typedef enum
 		numMonths = MIN(numMonths, diff);  // cannot load more than the total number of scrollable months
 	}
     
-    return 3;//numMonths;
+    return numMonths;
 }
 
 // range of loaded months
@@ -488,7 +488,7 @@ typedef enum
 }
 
 // returns the offset from startDate to given month
-- (CGFloat)yOffsetForMonth:(NSDate*)date
+- (CGFloat)xOffsetForMonth:(NSDate*)date
 {
     NSDate *startOfMonth = [self.calendar mgc_startOfMonthForDate:date];
     
@@ -499,7 +499,7 @@ typedef enum
     
     NSDate *month = [startOfMonth earlierDate:self.startDate];
     for (int i = 0; i < monthsDiff; i++) {
-        offset += [self heightForMonthAtDate:month];
+        offset += self.eventsView.frame.size.width;
         month = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:month options:0];
     }
     
@@ -510,14 +510,14 @@ typedef enum
 }
 
 // returns start date for the month at given offset
-- (NSDate*)monthFromOffset:(CGFloat)yOffset
+- (NSDate*)monthFromOffset:(CGFloat)xOffset
 {
     NSDate *month = self.startDate;
-    CGFloat y = yOffset > 0 ? [self heightForMonthAtDate:month] : 0;
+    CGFloat x = xOffset > 0 ? self.eventsView.frame.size.width : 0;
     
-    while (y < fabs(yOffset)) {
-        month = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:(yOffset > 0 ? 1 : -1) toDate:month options:0];
-        y += [self heightForMonthAtDate:month];
+    while (x < fabs(xOffset)) {
+        month = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:(xOffset > 0 ? 1 : -1) toDate:month options:0];
+        x += self.eventsView.frame.size.width;
     };
     
     return month;
@@ -790,17 +790,17 @@ typedef enum
     if (self.dateRange && ![self.dateRange containsDate:date])
         [NSException raise:@"Invalid parameter" format:@"date %@ is not in range %@ for this month planner view", date, self.dateRange];
 
-    CGFloat yOffset = [self yOffsetForMonth:date];
+    CGFloat xOffset = [self xOffsetForMonth:date];
     
     if (position == MGCMonthPlannerScrollAlignmentHeaderBottom) {
-        yOffset += self.monthInsets.top;
+        xOffset += self.monthInsets.top;
     }
     else if (position == MGCMonthPlannerScrollAlignmentWeekRow) {
         NSUInteger weekNum = [self.calendar mgc_indexOfWeekInMonthForDate:date];
-        yOffset += self.monthInsets.top + (weekNum - 1) * self.rowHeight;
+        xOffset += self.monthInsets.top + (weekNum - 1) * self.rowHeight;
     }
     
-    [self.eventsView setContentOffset:CGPointMake(0, yOffset) animated:animated];
+    [self.eventsView setContentOffset:CGPointMake(0, xOffset) animated:animated];
 
     if ([self.delegate respondsToSelector:@selector(monthPlannerViewDidScroll:)]) {
         [self.delegate monthPlannerViewDidScroll:self];
@@ -811,10 +811,10 @@ typedef enum
 // returns the distance in months between old and new start date
 - (NSInteger)adjustStartDateForCenteredMonth:(NSDate*)date
 {
-    CGFloat contentHeight = self.eventsView.contentSize.height;
-    CGFloat boundsHeight = CGRectGetHeight(self.eventsView.bounds);
+    CGFloat contentWidth = self.eventsView.contentSize.width;
+    CGFloat boundsWidth = CGRectGetHeight(self.eventsView.bounds);
     
-    NSUInteger offset = floorf((contentHeight - boundsHeight) / self.monthMaximumHeight) / 2;
+    NSUInteger offset = floorf((contentWidth - boundsWidth) / self.eventsView.bounds.size.width) / 2;
     
     NSDate *start = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:-offset toDate:date options:0];
     if ([start compare:self.dateRange.start] == NSOrderedAscending) {
@@ -833,22 +833,22 @@ typedef enum
 // returns YES if the collection view was reloaded
 - (BOOL)recenterIfNeeded
 {
-    CGFloat yOffset = self.eventsView.contentOffset.y;
-    CGFloat contentHeight = self.eventsView.contentSize.height;
+    CGFloat xOffset = self.eventsView.contentOffset.x;
+    CGFloat contentWidth = self.eventsView.contentSize.width;
 
-    if (yOffset < self.monthMaximumHeight || CGRectGetMaxY(self.eventsView.bounds) + self.monthMaximumHeight > contentHeight) {
+    if (xOffset < contentWidth || self.eventsView.contentSize.width * ( self.numberOfLoadedMonths - 1 ) < xOffset) {
         
         NSDate *oldStart = [self.startDate copy];
         
-        NSDate *centerMonth = [self monthFromOffset:yOffset];
+        NSDate *centerMonth = [self monthFromOffset:xOffset];
         NSInteger monthOffset = [self adjustStartDateForCenteredMonth:centerMonth];
     
         if (monthOffset != 0) {
-            CGFloat y = [self yOffsetForMonth:oldStart];
+            CGFloat x = [self xOffsetForMonth:oldStart];
             [self.eventsView reloadData];
         
             CGPoint offset = self.eventsView.contentOffset;
-            offset.y = y + yOffset;
+            offset.x = x + xOffset;
             self.eventsView.contentOffset = offset;
             
             //NSLog(@"recentered - startdate offset by %d months", monthOffset);
@@ -864,7 +864,8 @@ typedef enum
 {
     if (!_eventsView) {
         MGCMonthPlannerViewLayout *layout = [MGCMonthPlannerViewLayout new];
-        layout.rowHeight = self.rowHeight;
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        //layout.rowHeight = self.frame.size.height / 6;
         layout.dayHeaderHeight = self.dayCellHeaderHeight;
         layout.monthInsets = self.monthInsets;
         layout.alignMonthHeaders = !(self.gridStyle & MGCMonthPlannerGridStyleFill);
@@ -875,8 +876,9 @@ typedef enum
         _eventsView.backgroundColor = self.calendarBackgroundColor;
         _eventsView.dataSource = self;
         _eventsView.delegate = self;
-        _eventsView.showsVerticalScrollIndicator = NO;
+        _eventsView.showsHorizontalScrollIndicator = NO;
         _eventsView.scrollsToTop = NO;
+        _eventsView.pagingEnabled = true;
         
         [_eventsView registerClass:MGCMonthPlannerViewDayCell.class forCellWithReuseIdentifier:DayCellIdentifier];
         [_eventsView registerClass:MGCMonthPlannerBackgroundView.class forSupplementaryViewOfKind:MonthBackgroundViewKind withReuseIdentifier:MonthBackgroundViewIdentifier];
@@ -973,6 +975,7 @@ typedef enum
     }
  
     self.eventsView.frame = CGRectMake(0, self.headerHeight, self.bounds.size.width, self.bounds.size.height - self.headerHeight);
+    _rowHeight = self.eventsView.frame.size.height / 6;
     if (!self.eventsView.superview) {
         [self addSubview:self.eventsView];
     }
@@ -1459,11 +1462,9 @@ typedef enum
 
 - (MGCMonthPlannerBackgroundView*)backgroundViewForMonthAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSDate *date = [self dateStartingMonthAtIndex:indexPath.section];
-    
     NSUInteger firstColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section]];
     NSUInteger lastColumn = [self columnForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:indexPath.section + 1]] ?: 7;
-    NSUInteger numRows = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:date].length;
+    NSUInteger numRows = 6;
     
     MGCMonthPlannerBackgroundView *view = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthBackgroundViewKind withReuseIdentifier:MonthBackgroundViewIdentifier forIndexPath:indexPath];
     view.numberOfColumns = 7;
@@ -1473,7 +1474,7 @@ typedef enum
     view.drawVerticalLines = self.gridStyle & MGCMonthPlannerGridStyleVerticalLines;
     view.drawHorizontalLines = self.gridStyle & MGCMonthPlannerGridStyleHorizontalLines;
     view.drawBottomDayLabelLines = self.gridStyle & MGCMonthPlannerGridStyleBottomDayLabel;
-    view.dayCellHeaderHeight = self.dayCellHeaderHeight;
+    view.dayCellHeaderHeight = 0;
 
     [view setNeedsDisplay];
     

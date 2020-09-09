@@ -40,11 +40,11 @@ static NSString* const MonthHeaderViewKind = @"MonthHeaderViewKind";
 @protocol MGCMonthPlannerViewLayoutDelegate;
 
 
-@interface MGCMonthPlannerViewLayout : UICollectionViewLayout
+@interface MGCMonthPlannerViewLayout : UICollectionViewFlowLayout
 
 @property (nonatomic, weak) id<MGCMonthPlannerViewLayoutDelegate> delegate;
 @property (nonatomic) UIEdgeInsets monthInsets;
-@property (nonatomic) CGFloat rowHeight;
+//@property (class, nonatomic) CGFloat rowHeight;
 @property (nonatomic) CGFloat dayHeaderHeight;
 @property (nonatomic) BOOL alignMonthHeaders;
 @property (nonatomic) BOOL showEvents;
