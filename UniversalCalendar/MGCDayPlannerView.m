@@ -42,6 +42,7 @@
 #import "MGCTimeRowsView.h"
 #import "MGCAlignedGeometry.h"
 #import "OSCache.h"
+#import "NSAttributedString+MGCAdditions.h"
 
 
 // used to restrict scrolling to one direction / axis
@@ -178,8 +179,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_hourSlotHeight = 65.;
 	_hourRange = NSMakeRange(0, 24);
 	_timeColumnWidth = 60.;
-	_dayHeaderHeight = 40.;
-    _daySeparatorsColor = [UIColor lightGrayColor];
+	_dayHeaderHeight = 112.;
+    _daySeparatorsColor = [UIColor colorWithRed:227.0f/255.0f green:227.0f/255.0f blue:227.0f/255.0f alpha:1.0f];//[UIColor lightGrayColor];
     _timeSeparatorsColor = [UIColor lightGrayColor];
     _currentTimeColor = [UIColor redColor];
     _eventIndicatorDotColor = [UIColor blueColor];
@@ -1838,7 +1839,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
             dateFormatter = [NSDateFormatter new];
         }
 
-        dateFormatter.dateFormat = self.dateFormat ?: @"EEE d\neeeee";
+        dateFormatter.dateFormat = self.dateFormat ?: @"EEE d";
         
         NSString *s = [dateFormatter stringFromDate:date];
         
@@ -1846,28 +1847,56 @@ static const CGFloat kMaxHourSlotHeight = 150.;
         para.alignment = NSTextAlignmentCenter;
         
         UIFont *font = [UIFont systemFontOfSize:14];
-        UIColor *color = [UIColor colorWithRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:1.0f];//[self.calendar isDateInWeekend:date] ? [UIColor lightGrayColor] : [UIColor blackColor];
+        UIColor *color = [UIColor colorWithRed:51.0f/255.0f green:51.0f/255.0f blue:51.0f/255.0f alpha:1.0f];
         NSDate *today = [NSDate date];
         NSDate *tomorrow = [today addTimeInterval:60*60*24*1];
+        
+        //Attribute Circle string
+        NSArray * arr = [s componentsSeparatedByString:@" "];
+        UIColor *colorCircle = [UIColor colorWithRed:249.0f/255.0f green:73.0f/255.0f blue:86.0f/255.0f alpha:1.0f];// select needed color
+        NSString *stringCircle = arr[1] ;// the string of day number
+        NSString *weekDayString = arr[0];
         
         if ([self.calendar mgc_isDate:date sameDayAsDate:today]) {//Today
             accessoryTypes |= MGCDayColumnCellAccessoryMark;
             dayCell.markColor = self.tintColor;
-            color = [UIColor whiteColor];
-            font = [UIFont boldSystemFontOfSize:14];
+            s = weekDayString;
             if (_numberOfVisibleDays == 2) {
                 NSString *todayString = @"Today, ";
-                s = [todayString stringByAppendingString:s];
+                s = [todayString stringByAppendingString:weekDayString];
             }
+            
+            NSMutableAttributedString *mutableAttString = [[NSMutableAttributedString alloc]initWithString:s attributes:@{ NSParagraphStyleAttributeName: para, NSFontAttributeName: font, NSForegroundColorAttributeName: color }];
+            
+            MGCCircleMark *circleMark = [[MGCCircleMark alloc] init];
+            [circleMark setMargin:5.0];
+            [circleMark setYOffset:-6.0];
+            [circleMark setColor:colorCircle];
+            
+            NSAttributedString *circleAttrStr = [[NSAttributedString alloc] initWithString:stringCircle attributes:@{ NSParagraphStyleAttributeName: para, NSFontAttributeName: font, NSForegroundColorAttributeName: [UIColor whiteColor] }];
+            UIImage *image = [circleAttrStr imageWithCircleMark:circleMark];
+            
+            NSTextAttachment *attachment = [NSTextAttachment new];
+            attachment.image = image;
+            attachment.bounds = CGRectMake(circleMark.margin, circleMark.yOffset, attachment.image.size.width, attachment.image.size.height);
+            NSAttributedString *imgStr = [NSAttributedString attributedStringWithAttachment:attachment];
+            
+            [mutableAttString appendAttributedString:imgStr];
+            
+            dayCell.dayLabel.attributedText = mutableAttString;
+            
         } else if ([self.calendar mgc_isDate:date sameDayAsDate:tomorrow]) {//Tomorrow
             if (_numberOfVisibleDays == 2) {
                 NSString *tomorrowString = @"Tomorrow, ";
                 s = [tomorrowString stringByAppendingString:s];
             }
+            NSAttributedString *as = [[NSAttributedString alloc] initWithString:s attributes:@{ NSParagraphStyleAttributeName: para, NSFontAttributeName: font, NSForegroundColorAttributeName: color }];
+            dayCell.dayLabel.attributedText = as;
+        } else {
+            NSAttributedString *as = [[NSAttributedString alloc] initWithString:s attributes:@{ NSParagraphStyleAttributeName: para, NSFontAttributeName: font, NSForegroundColorAttributeName: color }];
+            dayCell.dayLabel.attributedText = as;
         }
-        
-        NSAttributedString *as = [[NSAttributedString alloc]initWithString:s attributes:@{ NSParagraphStyleAttributeName: para, NSFontAttributeName: font, NSForegroundColorAttributeName: color }];
-        dayCell.dayLabel.attributedText = as;
+
     }
     
     if ([self.loadingDays containsObject:date]) {
