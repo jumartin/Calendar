@@ -103,15 +103,15 @@ static const CGFloat dotSize = 4;
 {
 	[super layoutSubviews];
 	
-	static CGFloat kSpace = 2;
+	//static CGFloat kSpace = 2;
 
 	[CATransaction begin];
 	[CATransaction setDisableActions:YES];
 
 	if (self.headerHeight != 0) {
 		CGSize headerSize = CGSizeMake(self.contentView.bounds.size.width, self.headerHeight);
-		CGSize labelSize = CGSizeMake(headerSize.width - 2*kSpace, headerSize.height - (2 * dotSize + 2 * kSpace));
-		self.dayLabel.frame = (CGRect) { 2, 0, labelSize };
+        CGSize labelSize = CGSizeMake(self.contentView.bounds.size.width, 34); //CGSizeMake(headerSize.width - 2*kSpace, headerSize.height - (2 * dotSize + 2 * kSpace));
+		self.dayLabel.frame = (CGRect) { 2, 4, labelSize };
 		
 		self.dotLayer.position = CGPointMake(self.contentView.center.x, headerSize.height - 1.2 * dotSize);
 		self.dotLayer.fillColor = self.dotColor.CGColor;
@@ -119,7 +119,7 @@ static const CGFloat dotSize = 4;
 		
 		if (self.accessoryTypes & MGCDayColumnCellAccessoryMark) {
 			self.dayLabel.layer.cornerRadius = 6;
-			self.dayLabel.layer.backgroundColor = self.markColor.CGColor;
+			self.dayLabel.layer.backgroundColor = [UIColor clearColor].CGColor;//self.markColor.CGColor;
 		}
 		else  {
 			self.dayLabel.layer.cornerRadius = 0;
