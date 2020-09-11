@@ -30,6 +30,27 @@
 
 #import "MGCMonthPlannerBackgroundView.h"
 
+typedef NS_ENUM(NSUInteger, Weekday) {
+    Monday = 0,
+    Tuesday = 1,
+    Wednesday = 2,
+    Thursday = 3,
+    Friday = 4,
+    Saturday = 5,
+    Sunday = 6
+};
+
+@interface NSDate (Cal)
+
+- (NSDate*) startOfMonth;
+- (NSDate*) previousMonth;
+- (NSDate*) nextMonth;
+- (NSDate*) endOfMonth;
+- (Weekday)weekday;
+- (NSArray <NSDate*> *)getPrevious:(NSInteger)days;
+- (NSArray <NSDate*> *)getNext:(NSInteger)days;
+
+@end
 
 @implementation MGCMonthPlannerBackgroundView
 
@@ -100,6 +121,141 @@
     }
     
 	CGContextStrokePath(c);
+}
+
+- (void)layoutOutRangeDays:(NSDate *)date {
+    NSLog(@"Layout missing days %@", date);
+    NSLog(@"\n urrent month's start %@\nCurrent month's end %@ \n", [date startOfMonth], [date endOfMonth]);
+
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
+    NSInteger current = [components month];
+
+    NSLog(@"Previous month %@ \n Next Month %@", [date previousMonth], [date nextMonth]);
+    NSLog(@"Previous month's start %@ Previous month's end %@", [[date previousMonth] startOfMonth], [[date previousMonth] endOfMonth]);
+    NSLog(@"Next month's start %@ Next month's end %@", [[date nextMonth] startOfMonth], [[date nextMonth] endOfMonth]);
+
+
+    //TODO: Thanh draw head of out ramge days.
+    for (int i = 0; i <= [[date startOfMonth] weekday]; ++i) {
+        //TODO: Need to calulate the rect i * cell_width + x_gap, col * cell_height + y_gap
+        UILabel * first = [[UILabel alloc] initWithFrame:CGRectMake(i * 160 + 130, 0, 100, 32)];
+        first.textColor = [UIColor redColor];
+        first.text = @"Hai";
+        [self addSubview:first];
+    }
+
+    //TODO: Thanh draw tail of out range days base on the next days of the current month's end date [[date nextMonth] endOfMonth].
+}
+
+@end
+
+@implementation NSDate (Cal)
+
+- (NSDate*) startOfMonth {
+    NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+
+    NSDateComponents* components = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit fromDate:self];
+
+    return [calendar dateFromComponents:components];
+}
+
+- (NSDate*) endOfMonth {
+    NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+
+    NSDateComponents* components = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit fromDate:self];
+
+    NSRange dayRange = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:self];
+
+    [components setDay:dayRange.length];
+    [components setHour:23];
+    [components setMinute:59];
+    [components setSecond:59];
+
+    return [calendar dateFromComponents:components];
+}
+
+- (NSDate*) nextMonth {
+    NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+
+    NSDateComponents* components = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:self];
+
+    NSInteger dayInMonth = [components day];
+
+    // Update the components, initially setting the day in month to 0
+    NSInteger newMonth = ([components month] + 1);
+    [components setDay:1];
+    [components setMonth:newMonth];
+
+    // Determine the valid day range for that month
+    NSDate* workingDate = [calendar dateFromComponents:components];
+    NSRange dayRange = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:workingDate];
+
+    // Set the day clamping to the maximum number of days in that month
+    [components setDay:MIN(dayInMonth, dayRange.length)];
+
+    return [calendar dateFromComponents:components];
+}
+
+- (NSDate*) previousMonth {
+    NSCalendar* calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+
+    NSDateComponents* components = [calendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit fromDate:self];
+
+    NSInteger dayInMonth = [components day];
+
+    // Update the components, initially setting the day in month to 0
+    NSInteger newMonth = ([components month] - 1);
+    [components setDay:1];
+    [components setMonth:newMonth];
+
+    // Determine the valid day range for that month
+    NSDate* workingDate = [calendar dateFromComponents:components];
+    NSRange dayRange = [calendar rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:workingDate];
+
+    // Set the day clamping to the maximum number of days in that month
+    [components setDay:MIN(dayInMonth, dayRange.length)];
+
+    return [calendar dateFromComponents:components];
+}
+
+- (Weekday)weekday {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"EEEE"];
+    NSString *dayName = [[dateFormatter stringFromDate:self] uppercaseString];
+
+    Weekday day = Monday;
+
+    if ([dayName isEqualToString:@"TUESDAY"]) {
+        day = Tuesday;
+    } else if ([dayName isEqualToString:@"WEDNESDAY"]) {
+        day = Wednesday;
+    } else if ([dayName isEqualToString:@"THURSDAY"]) {
+        day = Thursday;
+    } else if ([dayName isEqualToString:@"FRIDAY"]) {
+        day = Friday;
+    } else if ([dayName isEqualToString:@"SATURDAY"]) {
+        day = Saturday;
+    } else if ([dayName isEqualToString:@"SUNDAY"]) {
+        day = Sunday;
+    }
+
+    return day;
+}
+
+- (NSArray <NSDate *> *)getPrevious:(NSInteger)days {
+    return [self getDaysArround:days];
+}
+
+- (NSArray <NSDate *> *)getNext:(NSInteger)days {
+    return [self getDaysArround:-days];
+}
+
+- (NSArray <NSDate *> *)getDaysArround:(NSInteger)days {
+    NSMutableArray <NSDate *> * result = [NSMutableArray new];
+
+    //TODO: Thanh - Generate list days before or after self.
+
+    return result;
 }
 
 @end
