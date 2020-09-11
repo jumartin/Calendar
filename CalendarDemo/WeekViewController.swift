@@ -12,8 +12,9 @@ import UniversalCalendar
 class WeekViewController: MGCDayPlannerViewController, CalendarViewControllerNavigation {
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.dayPlannerView.register(MGCStandardEventView.self, forEventViewWithReuseIdentifier: "EventCellReuseIdentifier")
         self.dayPlannerView.numberOfVisibleDays = 7
+        self.dayPlannerView.showsAllDayEvents = true
     }
 
     private(set) var centerDate: Date! = Date()
@@ -26,6 +27,43 @@ class WeekViewController: MGCDayPlannerViewController, CalendarViewControllerNav
 
     func moveToPreviousPage(animated: Bool) {
     }
+}
+
+extension WeekViewController {
+    override func dayPlannerView(_ view: MGCDayPlannerView!, numberOfEventsOf type: MGCEventType, at date: Date!) -> Int {
+        switch type {
+        case .allDayEventType:
+            return Int.random(in: 0...19)
+        case .timedEventType:
+            return 1
+        }
+    }
+    
+    override func dayPlannerView(_ view: MGCDayPlannerView!, viewForEventOf type: MGCEventType, at index: UInt, date: Date!) -> MGCEventView! {
+        
+        let cell = view.dequeueReusableView(withIdentifier: "EventCellReuseIdentifier", forEventOf: type, at: index, date: date) as! MGCStandardEventView
+        cell.title = "event \(index)"
+        switch type {
+        case .allDayEventType:
+            cell.style = [.dot]
+        case .timedEventType:
+            cell.style = [.border]
+        }
+        
+        return cell
+    }
+    
+    override func dayPlannerView(_ view: MGCDayPlannerView!, dateRangeForEventOf type: MGCEventType, at index: UInt, date: Date!) -> MGCDateRange! {
+        switch type {
+        case .allDayEventType:
+            return MGCDateRange.init(start: date, end: date.addingTimeInterval(86400))
+        case .timedEventType:
+            return MGCDateRange.init(start: date.addingTimeInterval(3600), end: date.addingTimeInterval(13600))
+        }
+         
+    }
+    
+    
 }
 
 extension WeekViewController {
@@ -72,9 +110,6 @@ extension WeekViewController {
 }
 
 extension WeekViewController {
-    open  override func dayPlannerView(_ view: MGCDayPlannerView!, numberOfEventsOf type: MGCEventType, at date: Date!) -> Int {
-        return 0
-    }
 
 //    open  override func dayPlannerView(_ view: MGCDayPlannerView!, viewForEventOf type: MGCEventType, at index: UInt, date: Date!) -> MGCEventView! {
 //        fatalError("dayPlannerView(_:viewForEventOf:at:date:) has not been implemented")

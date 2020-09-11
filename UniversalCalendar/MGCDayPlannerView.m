@@ -179,7 +179,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_hourSlotHeight = 65.;
 	_hourRange = NSMakeRange(0, 24);
 	_timeColumnWidth = 60.;
-	_dayHeaderHeight = 112.;
+	_dayHeaderHeight = 40.;
     _daySeparatorsColor = [UIColor colorWithRed:227.0f/255.0f green:227.0f/255.0f blue:227.0f/255.0f alpha:1.0f];//[UIColor lightGrayColor];
     _timeSeparatorsColor = [UIColor lightGrayColor];
     _currentTimeColor = [UIColor redColor];
@@ -188,6 +188,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     _eventsViewInnerMargin = 15.;
 	_allDayEventCellHeight = 20;
     _dimmingColor = [UIColor colorWithWhite:.9 alpha:.5];
+    _timeViewColor = [UIColor colorWithRed: .98 green:.98 blue:.98 alpha:1.];
 	_pagingEnabled = YES;
 	_zoomingEnabled = YES;
 	_canCreateEvents = YES;
@@ -958,10 +959,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
 	if (!_allDayEventsBackgroundView) {
 		_allDayEventsBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
-		_allDayEventsBackgroundView.backgroundColor = [UIColor colorWithRed:.8 green:.8 blue:.83 alpha:1.];
-		_allDayEventsBackgroundView.clipsToBounds = YES;
-		_allDayEventsBackgroundView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-		_allDayEventsBackgroundView.layer.borderWidth = 1;
+        _allDayEventsBackgroundView.backgroundColor = _timeViewColor;
 	}
 	return _allDayEventsBackgroundView;
 }
@@ -1637,8 +1635,8 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
     CGFloat allDayEventsViewHeight = 2;
 	if (self.showsAllDayEvents) {
-		allDayEventsViewHeight = fmaxf(self.allDayEventCellHeight + 4, self.allDayEventsView.contentSize.height);
-		allDayEventsViewHeight = fminf(allDayEventsViewHeight, self.allDayEventCellHeight * 2.5 + 6);
+        allDayEventsViewHeight = fmaxf((self.allDayEventCellHeight + 2) * 4, self.allDayEventsView.contentSize.height);
+		allDayEventsViewHeight = fminf(allDayEventsViewHeight, (self.allDayEventCellHeight + 2) * 8);
 	}
 	CGFloat timedEventViewTop = self.dayHeaderHeight + allDayEventsViewHeight;
 	CGFloat timedEventsViewWidth = self.bounds.size.width - self.timeColumnWidth;

@@ -196,6 +196,10 @@ typedef NS_ENUM(NSUInteger, MGCDayPlannerCoveringType) {
 @property (nonatomic) UIColor *dimmingColor;
 
 /*!
+   @abstract    Color of dimmed time ranges.
+*/
+@property (nonatomic) UIColor *timeViewColor;
+/*!
 	@abstract	Determines whether zooming is enabled for this day planner view.
 				If set to YES, the user can decrease or increase the height of the one-hour slot by pinching in and out on the view.
 	@discussion The default value is YES.

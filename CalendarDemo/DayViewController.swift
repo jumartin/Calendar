@@ -12,8 +12,9 @@ import UniversalCalendar
 class DayViewController: MGCDayPlannerViewController , CalendarViewControllerNavigation {
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.dayPlannerView.register(MGCStandardEventView.self, forEventViewWithReuseIdentifier: "EventCellReuseIdentifier")
         self.dayPlannerView.numberOfVisibleDays = 2
+        self.dayPlannerView.showsAllDayEvents = true
     }
 
     private(set) var centerDate: Date! = Date()
@@ -26,6 +27,40 @@ class DayViewController: MGCDayPlannerViewController , CalendarViewControllerNav
 
     func moveToPreviousPage(animated: Bool) {
     }
+}
+
+extension DayViewController {
+    override func dayPlannerView(_ view: MGCDayPlannerView!, numberOfEventsOf type: MGCEventType, at date: Date!) -> Int {
+        return 1
+    }
+    
+    override func dayPlannerView(_ view: MGCDayPlannerView!, viewForEventOf type: MGCEventType, at index: UInt, date: Date!) -> MGCEventView! {
+        
+        let cell = view.dequeueReusableView(withIdentifier: "EventCellReuseIdentifier", forEventOf: type, at: index, date: date) as! MGCStandardEventView
+        cell.title = "event \(date)"
+        switch type {
+        case .allDayEventType:
+            cell.style = [.dot]
+        case .timedEventType:
+            cell.style = [.border]
+        }
+        
+        return cell
+    }
+    
+    override func dayPlannerView(_ view: MGCDayPlannerView!, dateRangeForEventOf type: MGCEventType, at index: UInt, date: Date!) -> MGCDateRange! {
+        switch type {
+        case .allDayEventType:
+            let end = date?.addingTimeInterval(86300)
+            //let end = [self.calendar mgc_nextStartOfDayForDate:end];
+            return MGCDateRange.init(start: date, end: end)
+        case .timedEventType:
+            return MGCDateRange.init(start: date.addingTimeInterval(3600), end: date.addingTimeInterval(13600))
+        }
+         
+    }
+    
+    
 }
 
 extension DayViewController {
@@ -69,18 +104,4 @@ extension DayViewController {
 
     open  override func dayPlannerView(_ view: MGCDayPlannerView!, didDeselectEventOf type: MGCEventType, at index: UInt, date: Date!) {
     }
-}
-
-extension DayViewController {
-    open  override func dayPlannerView(_ view: MGCDayPlannerView!, numberOfEventsOf type: MGCEventType, at date: Date!) -> Int {
-        return 0
-    }
-
-//    open  override func dayPlannerView(_ view: MGCDayPlannerView!, viewForEventOf type: MGCEventType, at index: UInt, date: Date!) -> MGCEventView! {
-//        fatalError("dayPlannerView(_:viewForEventOf:at:date:) has not been implemented")
-//    }
-//
-//    open  override func dayPlannerView(_ view: MGCDayPlannerView!, dateRangeForEventOf type: MGCEventType, at index: UInt, date: Date!) -> MGCDateRange! {
-//        fatalError("dayPlannerView(_:dateRangeForEventOf:at:date:) has not been implemented")
-//    }
 }
