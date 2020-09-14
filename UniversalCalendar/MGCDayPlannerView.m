@@ -204,7 +204,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
     
     _durationForNewTimedEvent = 60 * 60;
     
-	self.backgroundColor = [UIColor whiteColor];
+	self.backgroundColor = _timeViewColor;
 	self.autoresizesSubviews = NO;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
@@ -853,7 +853,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
     if (!_timedEventsView) {
 		_timedEventsView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:self.timedEventsViewLayout];
-		_timedEventsView.backgroundColor = [UIColor clearColor];
+        _timedEventsView.backgroundColor = [UIColor whiteColor];
 		_timedEventsView.dataSource = self;
 		_timedEventsView.delegate = self;
 		_timedEventsView.showsVerticalScrollIndicator = NO;

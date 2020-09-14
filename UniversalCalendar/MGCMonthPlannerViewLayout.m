@@ -117,7 +117,8 @@ const CGFloat kMonthHeaderMargin = 3.;
         CGFloat y = 0;
 		for (NSUInteger row = 0; row < numRows; row++)
 		{
-			
+			NSRange colRange = NSMakeRange(col, MIN(7 - col, daysInMonth - day));
+            
             if (self.showEvents) {
                 NSIndexPath *path = [NSIndexPath indexPathForItem:day inSection:month];
                 UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForSupplementaryViewOfKind:MonthRowViewKind withIndexPath:path];
@@ -128,7 +129,7 @@ const CGFloat kMonthHeaderMargin = 3.;
                 [rowsInfo setObject:attribs forKey:path];
             }
 
-			for (; col < 7; col++, day++)
+			for (; col < NSMaxRange(colRange); col++, day++)
 			{
 				NSIndexPath *path = [NSIndexPath indexPathForItem:day inSection:month];
 				UICollectionViewLayoutAttributes *attribs = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:path];
