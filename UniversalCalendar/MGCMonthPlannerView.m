@@ -236,7 +236,7 @@ typedef enum
         
         [self.eventsView reloadData];
         
-        [self scrollToDate:firstDate animated:NO];
+        [self scrollToDate:firstDate alignment:MGCMonthPlannerScrollAlignmentHeaderTop animated:NO];
     }
 }
 
@@ -358,47 +358,10 @@ typedef enum
     return date;
 }
 
-// minimum height of a month
-- (CGFloat)monthMinimumHeight
-{
-    NSUInteger numWeeks = [self.calendar minimumRangeOfUnit:NSCalendarUnitWeekOfMonth].length;
-    return numWeeks * self.rowHeight + self.monthInsets.top + self.monthInsets.bottom;
-}
-
-// maximum height of a month
-- (CGFloat)monthMaximumHeight
-{
-    NSUInteger numWeeks = [self.calendar maximumRangeOfUnit:NSCalendarUnitWeekOfMonth].length;
-    return numWeeks * self.rowHeight + self.monthInsets.top + self.monthInsets.bottom;
-}
-
-// height for month containing date
-- (CGFloat)heightForMonthAtDate:(NSDate*)date
-{
-    NSDate *monthStart = [self.calendar mgc_startOfMonthForDate:date];
-    NSUInteger numWeeks = [self.calendar rangeOfUnit:NSCalendarUnitWeekOfMonth inUnit:NSCalendarUnitMonth forDate:monthStart].length;
-    return numWeeks * self.rowHeight + self.monthInsets.top + self.monthInsets.bottom;
-}
-
 // number of months loaded at once in the collection view
 - (NSUInteger)numberOfLoadedMonths
 {
-    // default number of loaded month
-    // this can eventually be tweaked for performance or smoother scrolling
-    NSUInteger numMonths = 9;
-    
-    // it cannot be less than the number of months displayable on one screen plus one on each size to accomodate paging
-    CGFloat minContentHeight = CGRectGetHeight(self.eventsView.bounds) + 2 * self.monthMaximumHeight;
-    NSUInteger minLoadedMonths = ceilf(minContentHeight / self.monthMinimumHeight);
-    
-    numMonths = MAX(numMonths, minLoadedMonths);
-    
-    if (self.dateRange) {
-		NSInteger diff = [self.dateRange components:NSCalendarUnitMonth forCalendar:self.calendar].month;
-		numMonths = MIN(numMonths, diff);  // cannot load more than the total number of scrollable months
-	}
-    
-    return numMonths;
+    return 9;
 }
 
 // range of loaded months
@@ -776,12 +739,6 @@ typedef enum
 
 #pragma mark - Scrolling
 
-// public - deprecated
--(void)scrollToDate:(NSDate*)date animated:(BOOL)animated
-{
-    [self scrollToDate:date alignment:MGCMonthPlannerScrollAlignmentHeaderTop animated:animated];
-}
-
 // public
 - (void)scrollToDate:(NSDate*)date alignment:(MGCMonthPlannerScrollAlignment)position animated:(BOOL)animated {
     NSAssert(date, @"scrollToDate:date: was passed nil date");
@@ -812,7 +769,7 @@ typedef enum
 - (NSInteger)adjustStartDateForCenteredMonth:(NSDate*)date
 {
     CGFloat contentWidth = self.eventsView.contentSize.width;
-    CGFloat boundsWidth = CGRectGetHeight(self.eventsView.bounds);
+    CGFloat boundsWidth = self.eventsView.bounds.size.width;
     
     NSUInteger offset = floorf((contentWidth - boundsWidth) / self.eventsView.bounds.size.width) / 2;
     
@@ -1649,40 +1606,40 @@ typedef enum
     
     const CGFloat kFlickVelocity = .5;
     
-    CGFloat yOffsetMin = self.pagingMode == MGCMonthPlannerPagingModeHeaderTop ? 0 : self.monthInsets.top;
-    CGFloat yOffsetMax = 0;
+    CGFloat xOffsetMin = self.pagingMode == MGCMonthPlannerPagingModeHeaderTop ? 0 : self.monthInsets.top;
+    CGFloat xOffsetMax = 0;
     
     NSDate *monthStart = [self.startDate copy];
     for (int i = 0; i < self.numberOfLoadedMonths; i++) {
-        CGFloat offset = yOffsetMin + [self heightForMonthAtDate:monthStart];
-        if (offset > scrollView.contentOffset.y) {
-            yOffsetMax = offset;
+        CGFloat offset = xOffsetMin + self.bounds.size.width;
+        if (offset > scrollView.contentOffset.x) {
+            xOffsetMax = offset;
             break;
         }
-        yOffsetMin = offset;
+        xOffsetMin = offset;
         
         monthStart = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:monthStart options:0];
     }
     
     // we need to had a few checks to avoid flickering when swiping fast on a small distance
     // see http://stackoverflow.com/a/14291208/740949
-    CGFloat deltaY = targetContentOffset->y - scrollView.contentOffset.y;
-    BOOL mightFlicker = (velocity.y > 0.0 && deltaY > 0.0) || (velocity.y < 0.0 && deltaY < 0.0);
+    CGFloat deltaY = targetContentOffset->x - scrollView.contentOffset.x;
+    BOOL mightFlicker = (velocity.x > 0.0 && deltaY > 0.0) || (velocity.x < 0.0 && deltaY < 0.0);
     
-    if (fabs(velocity.y) < kFlickVelocity && !mightFlicker) {
+    if (fabs(velocity.x) < kFlickVelocity && !mightFlicker) {
         // stick to nearest section
-        if (scrollView.contentOffset.y - yOffsetMin < yOffsetMax - scrollView.contentOffset.y) {
-            targetContentOffset->y = yOffsetMin;
+        if (scrollView.contentOffset.x - xOffsetMin < xOffsetMax - scrollView.contentOffset.x) {
+            targetContentOffset->x = xOffsetMin;
         } else {
-            targetContentOffset->y = yOffsetMax;
+            targetContentOffset->x = xOffsetMax;
         }
     }
     else {
         // scroll to next page
-        if (velocity.y > 0) {
-            targetContentOffset->y = yOffsetMax;
+        if (velocity.x > 0) {
+            targetContentOffset->x = xOffsetMax;
         } else {
-            targetContentOffset->y = yOffsetMin;
+            targetContentOffset->x = xOffsetMin;
         }
     }
 }

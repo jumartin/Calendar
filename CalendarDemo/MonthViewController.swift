@@ -9,7 +9,7 @@ class MonthViewController: MGCMonthPlannerViewController, CalendarViewController
     var centerDate: Date!
     
     func move(to date: Date!, animated: Bool) {
-        monthPlannerView.scroll(to: date, animated: animated)
+        monthPlannerView.scroll(to: date, alignment: .headerTop, animated: animated)
     }
     
     func moveToNextPage(animated: Bool) {

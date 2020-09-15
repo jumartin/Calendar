@@ -282,10 +282,6 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
  */
 @property (nonatomic) MGCMonthPlannerPagingMode pagingMode;
 
-
-// deprecated: use scrollToDate:position:animated: instead
-- (void)scrollToDate:(NSDate*)date animated:(BOOL)animated;
-
 /*!
 	@abstract	Scrolls the view to make a given date visible.
 	@param		date		The date to scroll into view.
