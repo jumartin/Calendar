@@ -793,7 +793,7 @@ typedef enum
     CGFloat xOffset = self.eventsView.contentOffset.x;
     CGFloat contentWidth = self.eventsView.contentSize.width;
 
-    if (xOffset < contentWidth || self.eventsView.contentSize.width * ( self.numberOfLoadedMonths - 1 ) < xOffset) {
+    if (xOffset < self.eventsView.bounds.size.width || CGRectGetMaxX(self.eventsView.bounds) + self.eventsView.bounds.size.width > contentWidth) {
         
         NSDate *oldStart = [self.startDate copy];
         
