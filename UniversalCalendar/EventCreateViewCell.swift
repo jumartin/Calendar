@@ -7,21 +7,20 @@
 //
 
 import Foundation
-import UniversalCalendar
 
-class EventCreateViewCell: MGCEventView {
+public class EventCreateViewCell: MGCEventView {
     
-    var onCreateEventBySummary: ((String, Date) -> ())? = nil
+    public var onCreateEventBySummary: ((String, Date) -> ())? = nil
     private let timeLabelHeight: CGFloat = 18
     private let labelMargin: CGFloat = 4
-    let timeLabel: UILabel = {
+    public let timeLabel: UILabel = {
         let timeLabel = UILabel.init()
         timeLabel.textColor = UIColor.white
         timeLabel.font = UIFont.systemFont(ofSize: 15)
         return timeLabel
     }()
     
-    let summaryTextView: UITextView = {
+    public let summaryTextView: UITextView = {
         let summaryTextView = UITextView.init()
         summaryTextView.backgroundColor = UIColor.clear
         summaryTextView.textColor = UIColor.white
@@ -31,9 +30,9 @@ class EventCreateViewCell: MGCEventView {
         summaryTextView.enablesReturnKeyAutomatically = true
         return summaryTextView
     }()
-    var eventDate: Date = Date()
+    public var eventDate: Date = Date()
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(timeLabel)
         summaryTextView.delegate = self
@@ -52,18 +51,18 @@ class EventCreateViewCell: MGCEventView {
         self.superview?.layer.shadowRadius = 10
     }
     
-    func configure(date: Date) {
+    public func configure(date: Date) {
         eventDate = date
         let format = DateFormatter.init()
         format.dateFormat = "h:mm a"
         timeLabel.text = format.string(from: date)
     }
-    override func didMoveToSuperview() {
+    public override func didMoveToSuperview() {
         super.didMoveToSuperview()
         self.setShadow()
         self.summaryTextView.becomeFirstResponder()
     }
-    override var frame: CGRect {
+    public override var frame: CGRect {
         didSet {
             print(frame)
             timeLabel.frame = CGRect.init(origin: CGPoint.init(x: labelMargin, y: labelMargin), size: CGSize.init(width: frame.width - 10, height: timeLabelHeight))
@@ -73,7 +72,7 @@ class EventCreateViewCell: MGCEventView {
 }
 
 extension EventCreateViewCell: UITextViewDelegate {
-    func textViewDidChange(_ textView: UITextView) {
+    public func textViewDidChange(_ textView: UITextView) {
         summaryTextView.frame.size = textView.contentSize
         if let superview = self.superview, !superview.isKind(of: UICollectionView.self) {
             let newHeight = textView.contentSize.height + timeLabelHeight + labelMargin
@@ -90,7 +89,7 @@ extension EventCreateViewCell: UITextViewDelegate {
             }
         }
     }
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
             onCreateEventBySummary?(textView.text, eventDate)

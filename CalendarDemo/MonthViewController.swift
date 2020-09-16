@@ -24,6 +24,7 @@ class MonthViewController: MGCMonthPlannerViewController, CalendarViewController
         super.viewDidLoad()
         self.monthPlannerView.register(MGCStandardEventView.self, forEventCellReuseIdentifier: "EventCellReuseIdentifier")
         self.monthPlannerView.dataSource = self
+        
     }
 }
 

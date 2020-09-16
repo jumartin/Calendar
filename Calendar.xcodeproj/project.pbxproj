@@ -11,7 +11,7 @@
 		1929092530FF5A55803D2505 /* MonthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19290FFD11D912E695FEDDCA /* MonthViewController.swift */; };
 		19290AB66D0A8FF66FBB260B /* DayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192904E8074D812872DD4926 /* DayViewController.swift */; };
 		270216F224FAC05400022A24 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B5D8F3180D73E0004ADB86 /* CoreGraphics.framework */; };
-		67421C032510B6F000EBED50 /* EventCreateViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67421C022510B6F000EBED50 /* EventCreateViewCell.swift */; };
+		67E976B22511EA6E00F15A19 /* EventCreateViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67421C022510B6F000EBED50 /* EventCreateViewCell.swift */; };
 		720041BA1879B2B600F3C497 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 720041B91879B2B600F3C497 /* Settings.bundle */; };
 		721DC18918219C4D00F9470C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721DC18818219C4D00F9470C /* MainViewController.m */; };
 		7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7258E8B01A5A98DD007F88AF /* WeekSettingsViewController.m */; };
@@ -274,14 +274,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		67421C012510B6B500EBED50 /* CustomViews */ = {
-			isa = PBXGroup;
-			children = (
-				67421C022510B6F000EBED50 /* EventCreateViewCell.swift */,
-			);
-			name = CustomViews;
-			sourceTree = "<group>";
-		};
 		72B5D8E5180D73E0004ADB86 = {
 			isa = PBXGroup;
 			children = (
@@ -321,7 +313,6 @@
 		72B5D8F7180D73E0004ADB86 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				67421C012510B6B500EBED50 /* CustomViews */,
 				72B5D900180D73E0004ADB86 /* AppDelegate.h */,
 				72B5D901180D73E0004ADB86 /* AppDelegate.m */,
 				721DC18718219C4D00F9470C /* MainViewController.h */,
@@ -453,6 +444,7 @@
 				CA15379324065AD9000A14C7 /* OSCache.m */,
 				CA15378524065AA6000A14C7 /* UniversalCalendar.h */,
 				CA15378624065AA6000A14C7 /* Info.plist */,
+				67421C022510B6F000EBED50 /* EventCreateViewCell.swift */,
 			);
 			path = UniversalCalendar;
 			sourceTree = "<group>";
@@ -665,7 +657,6 @@
 				19290194C082371F9D97B3DF /* WeekViewController.swift in Sources */,
 				1929092530FF5A55803D2505 /* MonthViewController.swift in Sources */,
 				19290AB66D0A8FF66FBB260B /* DayViewController.swift in Sources */,
-				67421C032510B6F000EBED50 /* EventCreateViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,6 +699,7 @@
 				CA15380024065AE2000A14C7 /* MGCMonthPlannerBackgroundView.m in Sources */,
 				CA1537E224065AE2000A14C7 /* MGCYearCalendarMonthHeaderView.m in Sources */,
 				CA1537F824065AE2000A14C7 /* MGCInteractiveEventView.m in Sources */,
+				67E976B22511EA6E00F15A19 /* EventCreateViewCell.swift in Sources */,
 				CA1537FA24065AE2000A14C7 /* MGCMonthPlannerViewLayout.m in Sources */,
 				CA1537F124065AE2000A14C7 /* MGCTimeRowsView.m in Sources */,
 				CA15381424065AE2000A14C7 /* OrderedDictionary.m in Sources */,
@@ -1003,7 +995,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UniversalCalendar/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1013,6 +1005,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1052,7 +1045,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = UniversalCalendar/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1062,6 +1055,7 @@
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
