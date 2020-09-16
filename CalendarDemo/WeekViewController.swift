@@ -67,6 +67,15 @@ extension WeekViewController {
 }
 
 extension WeekViewController {
+    override func dayPlannerView(_ view: MGCDayPlannerView!, viewForNewEventOf type: MGCEventType, at date: Date!) -> MGCEventView! {
+        let eventView = EventCreateViewCell.init()
+        eventView.configure(date: date)
+        eventView.onCreateEventBySummary = { summary, date in
+            view.endInteraction()
+        }
+        return eventView
+    }
+    
 //    open  override func dayPlannerView(_ view: MGCDayPlannerView!, attributedStringFor mark: MGCDayPlannerTimeMark, time ti: TimeInterval) -> NSAttributedString! {
 //        fatalError("dayPlannerView(_:attributedStringFor:time:) has not been implemented")
 //    }

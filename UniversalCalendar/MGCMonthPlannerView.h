@@ -161,6 +161,12 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 @property (nonatomic) CGFloat itemHeight;
 
 /*!
+    @abstract    Returns the height of new event cells.
+    @discussion The default value is 56.
+ */
+@property (nonatomic) CGFloat newEventItemHeight;
+
+/*!
 	@abstract	Background color for the whole calendar.
 	@discussion The default color is white.
  */

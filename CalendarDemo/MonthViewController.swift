@@ -27,6 +27,16 @@ class MonthViewController: MGCMonthPlannerViewController, CalendarViewController
     }
 }
 
+extension MonthViewController {
+    override func monthPlannerView(_ view: MGCMonthPlannerView!, cellForNewEventAt date: Date!) -> MGCEventView! {
+        let eventView = EventCreateViewCell.init()
+        eventView.configure(date: date)
+        eventView.onCreateEventBySummary = { summary, date in
+            view.endInteraction()
+        }
+        return eventView
+    }
+}
 
 extension MonthViewController {
     override func monthPlannerView(_ view: MGCMonthPlannerView!, numberOfEventsAt date: Date!) -> Int {

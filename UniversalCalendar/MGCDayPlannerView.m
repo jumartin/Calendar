@@ -139,6 +139,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 @property (nonatomic, copy) NSDate *interactiveCellDate;		// current date of interactice cell
 @property (nonatomic) CGFloat interactiveCellTimedEventHeight;	// height of the dragged event
 @property (nonatomic) BOOL isInteractiveCellForNewEvent;		// is the interactive cell for new event or existing one
+@property (nonatomic) CGFloat newEventItemHeight;    // height of the dragged event default 56
 
 @property (nonatomic) MGCEventType movingEventType;				// origin type of the event being moved
 @property (nonatomic) NSUInteger movingEventIndex;				// origin index of the event being moved
@@ -187,6 +188,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	_showsAllDayEvents = YES;
     _eventsViewInnerMargin = 15.;
 	_allDayEventCellHeight = 20;
+    _newEventItemHeight = 56;
     _dimmingColor = [UIColor colorWithWhite:.9 alpha:.5];
     _timeViewColor = [UIColor colorWithRed: .98 green:.98 blue:.98 alpha:1.];
 	_pagingEnabled = YES;
@@ -1142,11 +1144,11 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 	
 	if (type == MGCTimedEventType) {
         CGFloat y =  [self offsetFromTime:self.durationForNewTimedEvent rounding:0];
- 		CGRect rect = CGRectMake(x, y, self.dayColumnSize.width, self.interactiveCellTimedEventHeight);
+ 		CGRect rect = CGRectMake(x, y, self.dayColumnSize.width, self.newEventItemHeight);
 		return [self convertRect:rect fromView:self.timedEventsView];
 	}
 	else if (type == MGCAllDayEventType) {
-		CGRect rect = CGRectMake(x, 0, self.dayColumnSize.width, self.allDayEventCellHeight);
+		CGRect rect = CGRectMake(x, 0, self.dayColumnSize.width, self.newEventItemHeight);
 		return [self convertRect:rect fromView:self.allDayEventsView];
 	}
 	

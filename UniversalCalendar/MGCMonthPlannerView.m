@@ -111,6 +111,7 @@ typedef enum
     _dayCellHeaderHeight = 30;
     _headerHeight =  35;
     _itemHeight = 16;
+    _newEventItemHeight = 56;
     _reuseQueue = [MGCReusableObjectQueue new];
     _eventRows = [MutableOrderedDictionary dictionaryWithCapacity:kRowCacheSize];
     _dragEventIndex = -1;
@@ -660,6 +661,14 @@ typedef enum
     return nil;
 }
 
+- (MGCMonthPlannerViewDayCell*)viewDayCellAtPoint:(CGPoint)pt
+{
+    NSDate *date = [self dayAtPoint:pt];
+    NSIndexPath *path = [self indexPathForDate:date];
+    MGCMonthPlannerViewDayCell *dayCell = (MGCMonthPlannerViewDayCell*)[self.eventsView cellForItemAtIndexPath:path];
+    return dayCell;
+}
+
 - (NSDate*)dayAtPoint:(CGPoint)pt
 {
     pt = [self.eventsView convertPoint:pt fromView:self];
@@ -1098,7 +1107,7 @@ typedef enum
 	// just in case previous operation did not end properly...
 	[self endInteraction];
 	
-	NSDate *date = nil;
+	NSDate *date = [self dayAtPoint:pt];
 	NSUInteger index;
 	MGCEventView *eventCell = [self eventCellAtPoint:pt date:&date index:&index];
 	
@@ -1154,9 +1163,10 @@ typedef enum
             cell.title = NSLocalizedString(@"New Event", nil);
             self.interactiveCell = cell;
         }
-        self.interactiveCell.frame = CGRectMake(0, 0, [self.layout columnWidth:0], self.itemHeight);
-        self.interactiveCelltouchPoint = CGPointMake([self.layout columnWidth:0]/2., self.itemHeight/2.);
-        self.interactiveCell.center = [self convertPoint:pt toView:self.eventsView];
+        self.interactiveCell.frame = CGRectMake(0, 0, [self.layout columnWidth:0], self.newEventItemHeight);
+        self.interactiveCelltouchPoint = CGPointMake([self.layout columnWidth:0]/2., self.newEventItemHeight/2.);
+        MGCMonthPlannerViewDayCell *dayCell = [self viewDayCellAtPoint:pt];
+        self.interactiveCell.center = dayCell.center;
 	}
 	
 	// show the interactive cell
@@ -1257,7 +1267,7 @@ typedef enum
         }
     }
     
-    [self endInteraction];
+    //[self endInteraction];
     
     //[self setUserInteractionEnabled:YES];
 }

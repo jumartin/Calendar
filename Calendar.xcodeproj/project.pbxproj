@@ -11,6 +11,7 @@
 		1929092530FF5A55803D2505 /* MonthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19290FFD11D912E695FEDDCA /* MonthViewController.swift */; };
 		19290AB66D0A8FF66FBB260B /* DayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 192904E8074D812872DD4926 /* DayViewController.swift */; };
 		270216F224FAC05400022A24 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 72B5D8F3180D73E0004ADB86 /* CoreGraphics.framework */; };
+		67421C032510B6F000EBED50 /* EventCreateViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67421C022510B6F000EBED50 /* EventCreateViewCell.swift */; };
 		720041BA1879B2B600F3C497 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 720041B91879B2B600F3C497 /* Settings.bundle */; };
 		721DC18918219C4D00F9470C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 721DC18818219C4D00F9470C /* MainViewController.m */; };
 		7258E8B11A5A98DD007F88AF /* WeekSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7258E8B01A5A98DD007F88AF /* WeekSettingsViewController.m */; };
@@ -129,6 +130,7 @@
 		19290C8C215F90F0DF0256D5 /* CalendarDemo-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CalendarDemo-Bridging-Header.h"; sourceTree = "<group>"; };
 		19290FFD11D912E695FEDDCA /* MonthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonthViewController.swift; sourceTree = "<group>"; };
 		27CD957524FB5D7A000C5A97 /* CalendarDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = CalendarDemo.entitlements; path = CalendarDemo/CalendarDemo.entitlements; sourceTree = "<group>"; };
+		67421C022510B6F000EBED50 /* EventCreateViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventCreateViewCell.swift; sourceTree = "<group>"; };
 		720041B91879B2B600F3C497 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		721A12A11CB585CF00749F18 /* CHANGELOG.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		721DC18718219C4D00F9470C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -272,6 +274,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		67421C012510B6B500EBED50 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				67421C022510B6F000EBED50 /* EventCreateViewCell.swift */,
+			);
+			name = CustomViews;
+			sourceTree = "<group>";
+		};
 		72B5D8E5180D73E0004ADB86 = {
 			isa = PBXGroup;
 			children = (
@@ -311,6 +321,7 @@
 		72B5D8F7180D73E0004ADB86 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				67421C012510B6B500EBED50 /* CustomViews */,
 				72B5D900180D73E0004ADB86 /* AppDelegate.h */,
 				72B5D901180D73E0004ADB86 /* AppDelegate.m */,
 				721DC18718219C4D00F9470C /* MainViewController.h */,
@@ -654,6 +665,7 @@
 				19290194C082371F9D97B3DF /* WeekViewController.swift in Sources */,
 				1929092530FF5A55803D2505 /* MonthViewController.swift in Sources */,
 				19290AB66D0A8FF66FBB260B /* DayViewController.swift in Sources */,
+				67421C032510B6F000EBED50 /* EventCreateViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
