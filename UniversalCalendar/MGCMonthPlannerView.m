@@ -237,7 +237,7 @@ typedef enum
         
         [self.eventsView reloadData];
         
-        [self scrollToDate:firstDate alignment:MGCMonthPlannerScrollAlignmentHeaderTop animated:NO];
+        [self scrollToDate:firstDate animated:NO];
     }
 }
 
@@ -749,7 +749,7 @@ typedef enum
 #pragma mark - Scrolling
 
 // public
-- (void)scrollToDate:(NSDate*)date alignment:(MGCMonthPlannerScrollAlignment)position animated:(BOOL)animated {
+- (void)scrollToDate:(NSDate*)date animated:(BOOL)animated {
     NSAssert(date, @"scrollToDate:date: was passed nil date");
     
     // check if date in range
@@ -757,14 +757,6 @@ typedef enum
         [NSException raise:@"Invalid parameter" format:@"date %@ is not in range %@ for this month planner view", date, self.dateRange];
 
     CGFloat xOffset = [self xOffsetForMonth:date];
-    
-    if (position == MGCMonthPlannerScrollAlignmentHeaderBottom) {
-        xOffset += self.monthInsets.top;
-    }
-    else if (position == MGCMonthPlannerScrollAlignmentWeekRow) {
-        NSUInteger weekNum = [self.calendar mgc_indexOfWeekInMonthForDate:date];
-        xOffset += self.monthInsets.top + (weekNum - 1) * self.rowHeight;
-    }
     
     [self.eventsView setContentOffset:CGPointMake(xOffset, 0 ) animated:animated];
 

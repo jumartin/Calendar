@@ -297,7 +297,7 @@ typedef NS_ENUM(NSUInteger, MGCMonthPlannerScrollAlignment) {
 	@param		animated	Specify YES to animate the scrolling behavior or NO to adjust the visible content immediately.
 	@warning	If `date` param is not in the scrollable range of dates, an exception is thrown.
  */
-- (void)scrollToDate:(NSDate*)date alignment:(MGCMonthPlannerScrollAlignment)alignment animated:(BOOL)animated;
+- (void)scrollToDate:(NSDate*)date animated:(BOOL)animated;
 
 
 

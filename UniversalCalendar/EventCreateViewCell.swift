@@ -32,6 +32,14 @@ public class EventCreateViewCell: MGCEventView {
     }()
     public var eventDate: Date = Date()
     
+    public var container: UIView {
+        if let superview = self.superview, !superview.isKind(of: UICollectionView.self) {
+            return superview
+        } else {
+            return self
+        }
+    }
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         self.addSubview(timeLabel)
@@ -45,10 +53,11 @@ public class EventCreateViewCell: MGCEventView {
     }
     
     private func setShadow() {
-        self.superview?.layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
-        self.superview?.layer.shadowOpacity = 1
-        self.superview?.layer.shadowOffset = .zero
-        self.superview?.layer.shadowRadius = 10
+        container.layer.shadowColor = UIColor.black.withAlphaComponent(0.3).cgColor
+        container.layer.shadowOpacity = 1
+        container.layer.shadowOffset = .zero
+        container.layer.shadowRadius = 10
+        container.clipsToBounds = false
     }
     
     public func configure(date: Date) {
@@ -74,19 +83,11 @@ public class EventCreateViewCell: MGCEventView {
 extension EventCreateViewCell: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         summaryTextView.frame.size = textView.contentSize
-        if let superview = self.superview, !superview.isKind(of: UICollectionView.self) {
-            let newHeight = textView.contentSize.height + timeLabelHeight + labelMargin
-            if newHeight != superview.frame.size.height {
-                superview.frame.size = CGSize.init(width: superview.frame.size.width, height: newHeight)
-                summaryTextView.setContentOffset(CGPoint.zero, animated: false)
-            }
-        } else {
-            // For month
-            let newHeight = textView.contentSize.height + timeLabelHeight + labelMargin
-            if newHeight != self.frame.size.height {
-                self.frame.size = CGSize.init(width: self.frame.size.width, height: textView.contentSize.height + timeLabelHeight + labelMargin)
-                summaryTextView.setContentOffset(CGPoint.zero, animated: false)
-            }
+        // For month
+        let newHeight = textView.contentSize.height + timeLabelHeight + labelMargin
+        if newHeight != container.frame.size.height {
+            container.frame.size = CGSize.init(width: container.frame.size.width, height: textView.contentSize.height + timeLabelHeight + labelMargin)
+            summaryTextView.setContentOffset(CGPoint.zero, animated: false)
         }
     }
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
