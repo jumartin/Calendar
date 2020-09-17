@@ -53,7 +53,8 @@
 		_insetsHeight = 45;
 		_timeColumnWidth = 40;
 		_font = [UIFont boldSystemFontOfSize:12];
-		_timeColor = [UIColor lightGrayColor];
+        _timeColor = [UIColor lightGrayColor];
+        _timeTextColor = [UIColor colorWithRed: 0.40 green: 0.40 blue: 0.40 alpha: 1.00];
 		_currentTimeColor = [UIColor redColor];
 		_rounding = 15;
 		_hourRange = NSMakeRange(0, 24);
@@ -126,7 +127,7 @@
     if (hour == 12) {
         return @"Noon";
     } else {
-        return [NSString stringWithFormat:@"%d %@", hour, am ? @"am" : @"pm"];
+        return [NSString stringWithFormat:@"%d %@", hour % 12, am ? @"am" : @"pm"];
     }
 }
 
@@ -147,7 +148,7 @@
         NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
         style.alignment = NSTextAlignmentRight;
         
-        UIColor *foregroundColor = (mark == MGCDayPlannerTimeMarkCurrent ? self.currentTimeColor : self.timeColor);
+        UIColor *foregroundColor = (mark == MGCDayPlannerTimeMarkCurrent ? self.currentTimeColor : self.timeTextColor);
         attrStr = [[NSAttributedString alloc]initWithString:str attributes:@{ NSFontAttributeName: self.font, NSForegroundColorAttributeName: foregroundColor, NSParagraphStyleAttributeName: style }];
     }
     return attrStr;
@@ -161,7 +162,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-	const CGFloat kSpacing = 5.;
+	const CGFloat kSpacing = 10.;
 	const CGFloat dash[2]= {2, 3};
     
 	CGContextRef context = UIGraphicsGetCurrentContext();
