@@ -1445,7 +1445,6 @@ typedef enum
 	if ([kind isEqualToString:MonthBackgroundViewKind])
 	{
         MGCMonthPlannerBackgroundView * view = [self backgroundViewForMonthAtIndexPath:indexPath];
-        [view layoutOutRangeDays: [NSDate date]];
         return view;
 	}
     else if ([kind isEqualToString:MonthHeaderViewKind]) {
