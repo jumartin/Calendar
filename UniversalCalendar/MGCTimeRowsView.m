@@ -120,7 +120,14 @@
 	if (minutesOnly) {
 		return [NSString stringWithFormat:@":%02d", minutes];
 	}
-	return [NSString stringWithFormat:@"%02d:%02d", hour, minutes];
+    
+    BOOL am = hour / 12 == 0;
+    
+    if (hour == 12) {
+        return @"Noon";
+    } else {
+        return [NSString stringWithFormat:@"%d %@", hour, am ? @"am" : @"pm"];
+    }
 }
 
 - (NSAttributedString*)attributedStringForTimeMark:(MGCDayPlannerTimeMark)mark time:(NSTimeInterval)ti

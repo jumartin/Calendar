@@ -1034,6 +1034,7 @@ static const CGFloat kMaxHourSlotHeight = 150.;
 {
 	if (gesture.state == UIGestureRecognizerStateEnded)
 	{
+        [self endInteraction];
 		[self deselectEventWithDelegate:YES]; // deselect previous
 		
 		UICollectionView *view = (UICollectionView*)gesture.view;
