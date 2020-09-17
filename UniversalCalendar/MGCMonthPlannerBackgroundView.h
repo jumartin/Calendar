@@ -46,6 +46,5 @@
 
 @property (nonatomic) UIColor *gridColor;
 
-- (void)layoutOutRangeDays:(NSDate *)date;
 
 @end

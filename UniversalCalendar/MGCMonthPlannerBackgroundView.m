@@ -123,30 +123,6 @@ typedef NS_ENUM(NSUInteger, Weekday) {
 	CGContextStrokePath(c);
 }
 
-- (void)layoutOutRangeDays:(NSDate *)date {
-    NSLog(@"Layout missing days %@", date);
-    NSLog(@"\n urrent month's start %@\nCurrent month's end %@ \n", [date startOfMonth], [date endOfMonth]);
-
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:date];
-    NSInteger current = [components month];
-
-    NSLog(@"Previous month %@ \n Next Month %@", [date previousMonth], [date nextMonth]);
-    NSLog(@"Previous month's start %@ Previous month's end %@", [[date previousMonth] startOfMonth], [[date previousMonth] endOfMonth]);
-    NSLog(@"Next month's start %@ Next month's end %@", [[date nextMonth] startOfMonth], [[date nextMonth] endOfMonth]);
-
-
-    //TODO: Thanh draw head of out ramge days.
-    for (int i = 0; i <= [[date startOfMonth] weekday]; ++i) {
-        //TODO: Need to calulate the rect i * cell_width + x_gap, col * cell_height + y_gap
-        UILabel * first = [[UILabel alloc] initWithFrame:CGRectMake(i * 160 + 130, 0, 100, 32)];
-        first.textColor = [UIColor redColor];
-        first.text = @"Hai";
-        [self addSubview:first];
-    }
-
-    //TODO: Thanh draw tail of out range days base on the next days of the current month's end date [[date nextMonth] endOfMonth].
-}
-
 @end
 
 @implementation NSDate (Cal)

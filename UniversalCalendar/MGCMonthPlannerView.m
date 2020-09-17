@@ -322,6 +322,7 @@ typedef enum
 - (NSDate*)startDate
 {
     if (_startDate == nil) {
+        let monthDay = [self.calendar mgc_mgc_startOfWeekForDate]
         _startDate = [self.calendar mgc_startOfMonthForDate:[NSDate date]];
         
         if (self.dateRange && ![self.dateRange containsDate:_startDate]) {
@@ -1346,7 +1347,7 @@ typedef enum
 
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return [self numberOfDaysForMonthAtIndex:section];
+    return 42; //[self numberOfDaysForMonthAtIndex:section];
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
@@ -1459,7 +1460,6 @@ typedef enum
 	if ([kind isEqualToString:MonthBackgroundViewKind])
 	{
         MGCMonthPlannerBackgroundView * view = [self backgroundViewForMonthAtIndexPath:indexPath];
-        [view layoutOutRangeDays: [NSDate date]];
         return view;
 	}
     else if ([kind isEqualToString:MonthHeaderViewKind]) {
