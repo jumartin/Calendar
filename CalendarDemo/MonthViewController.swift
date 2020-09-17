@@ -43,7 +43,7 @@ extension MonthViewController {
     override func monthPlannerView(_ view: MGCMonthPlannerView!, numberOfEventsAt date: Date!) -> Int {
         
         //if NSCalendar.current.isDateInToday(date) {
-        return 1
+        return 2
         //} else {
         //  return 0
         //}
