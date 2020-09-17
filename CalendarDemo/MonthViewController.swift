@@ -57,14 +57,24 @@ extension MonthViewController {
     
     override func monthPlannerView(_ view: MGCMonthPlannerView!, cellForEventAt index: UInt, date: Date!) -> MGCEventView! {
         let cell = view.dequeueReusableCell(withIdentifier: "EventCellReuseIdentifier", forEventAt: index, date: date) as! MGCStandardEventView
-        
-        if true {
-            cell.style = [MGCStandardEventViewStyle.plain , MGCStandardEventViewStyle.dot ]
-        } else {
-            cell.style = [MGCStandardEventViewStyle.plain ]
-        }
-        cell.title = "eventItemModel.name \(date)"
+        cell.style = [MGCStandardEventViewStyle.plain , MGCStandardEventViewStyle.dot ]
+        cell.title = "\(date!.toDateDayMonthYearString)"
         cell.color = UIColor.red
         return cell
     }
+}
+
+extension Date {
+    
+    var toDateDayMonthYearString: String {
+        let tz = NSTimeZone.default
+        let seconds = tz.secondsFromGMT(for: self)
+        let localDate = NSDate.init(timeInterval: TimeInterval(seconds), since: self)
+
+        let fomater = DateFormatter()
+        fomater.dateFormat = "EE, dd/MM/yy"
+        return fomater.string(from: localDate as Date)
+    }
+    
+    
 }
