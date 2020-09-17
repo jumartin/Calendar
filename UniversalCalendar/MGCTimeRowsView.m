@@ -109,7 +109,7 @@
 }
 
 // time is the interval since the start of the day
-- (NSString*)stringForTime:(NSTimeInterval)time rounded:(BOOL)rounded minutesOnly:(BOOL)minutesOnly
+- (NSString*)stringForTime:(NSTimeInterval)time mark:(MGCDayPlannerTimeMark)mark rounded:(BOOL)rounded minutesOnly:(BOOL)minutesOnly
 {
 	if (rounded) {
 		time = roundf(time / (self.rounding * 60)) * (self.rounding * 60);
@@ -121,6 +121,10 @@
 	if (minutesOnly) {
 		return [NSString stringWithFormat:@":%02d", minutes];
 	}
+    
+    if (mark == MGCDayPlannerTimeMarkCurrent) {
+        return [NSString stringWithFormat:@"%02d:%02d", hour, minutes];;
+    }
     
     BOOL am = hour / 12 == 0;
     
@@ -143,7 +147,7 @@
         BOOL rounded = (mark != MGCDayPlannerTimeMarkCurrent);
         BOOL minutesOnly = (mark == MGCDayPlannerTimeMarkFloating);
     
-        NSString *str = [self stringForTime:ti rounded:rounded minutesOnly:minutesOnly];
+        NSString *str = [self stringForTime:ti mark:mark rounded:rounded minutesOnly:minutesOnly];
     
         NSMutableParagraphStyle *style = [NSMutableParagraphStyle new];
         style.alignment = NSTextAlignmentRight;
