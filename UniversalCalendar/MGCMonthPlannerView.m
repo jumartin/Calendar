@@ -843,6 +843,10 @@ typedef enum
         [_eventsView registerClass:MGCMonthPlannerWeekView.class forSupplementaryViewOfKind:MonthRowViewKind withReuseIdentifier:MonthRowViewIdentifier];
         [_eventsView registerClass:MGCMonthPlannerHeaderView.class forSupplementaryViewOfKind:MonthHeaderViewKind withReuseIdentifier:MonthHeaderViewIdentifier];
         
+        UITapGestureRecognizer *tap = [UITapGestureRecognizer new];
+        [tap addTarget:self action:@selector(handleTap:)];
+        [_eventsView addGestureRecognizer:tap];
+        
         UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(handleLongPress:)];
         [_eventsView addGestureRecognizer:longPressGesture];
     }
@@ -1039,6 +1043,16 @@ typedef enum
     rowView.eventsView = eventsView;
     
     return rowView;
+}
+
+#pragma mark - Selection
+
+- (void)handleTap:(UITapGestureRecognizer*)gesture
+{
+    if (gesture.state == UIGestureRecognizerStateEnded)
+    {
+        [self endInteraction];
+    }
 }
 
 #pragma mark - Drag and drop
