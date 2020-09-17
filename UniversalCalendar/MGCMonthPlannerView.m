@@ -42,6 +42,43 @@
 #import "Constant.h"
 #import <UniversalCalendar/UniversalCalendar-Swift.h>
 
+
+@implementation NSDate(Utils)
+
+-(NSDate *) toLocalTime {
+  NSTimeZone *tz = [NSTimeZone defaultTimeZone];
+  NSInteger seconds = [tz secondsFromGMTForDate: self];
+  return [NSDate dateWithTimeInterval: seconds sinceDate: self];
+}
+
+-(NSDate *) toGlobalTime {
+  NSTimeZone *tz = [NSTimeZone defaultTimeZone];
+  NSInteger seconds = -[tz secondsFromGMTForDate: self];
+  return [NSDate dateWithTimeInterval: seconds sinceDate: self];
+}
+
+-(NSString *) toLocalDayMonthYearString {
+    NSDateFormatter* df = [[NSDateFormatter alloc]init];
+    [df setDateFormat:@"EE,dd/MM/yy"];
+    return [df stringFromDate: self];
+}
+
+-(NSDate *) nextMonths:(NSInteger) number {
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents *monthComp = [NSDateComponents new];
+    [monthComp setMonth:number];
+    return [calendar dateByAddingComponents:monthComp toDate: self options:0];
+}
+    
+-(NSDate *) nextDays:(NSInteger) number {
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents *monthComp = [NSDateComponents new];
+    [monthComp setDay:number];
+    return [calendar dateByAddingComponents:monthComp toDate: self options:0];
+}
+
+@end
+
 // reuse identifiers for collection view cells and supplementary views
 static NSString* const DayCellIdentifier = @"DayCellIdentifier";
 static NSString* const MonthRowViewIdentifier = @"MonthRowViewIdentifier";
@@ -319,11 +356,19 @@ typedef enum
 
 #pragma mark - Private properties
 
+- (NSDate*)startDateOfMontInSection: (NSDate*) date {
+    NSDate* startOfMonthForDate = [self.calendar mgc_startOfMonthForDate: date];
+    NSDate* startOfWeekForDate  = [self.calendar mgc_startOfWeekForDate: startOfMonthForDate];
+    return startOfWeekForDate;
+}
+
 - (NSDate*)startDate
 {
     if (_startDate == nil) {
-        let monthDay = [self.calendar mgc_mgc_startOfWeekForDate]
-        _startDate = [self.calendar mgc_startOfMonthForDate:[NSDate date]];
+        NSDate* currentDate = [NSDate date];
+        NSDate* startOfMonthForDate = [self.calendar mgc_startOfMonthForDate: currentDate];
+        
+        _startDate = startOfMonthForDate;
         
         if (self.dateRange && ![self.dateRange containsDate:_startDate]) {
             _startDate = self.dateRange.start;
@@ -334,6 +379,7 @@ typedef enum
 
 - (void)setStartDate:(NSDate*)startDate
 {
+    NSLog(@"\n\n\n-----------\n\n\nsetStartDate: %@", startDate);
     startDate = [self.calendar mgc_startOfMonthForDate:startDate];
     
     NSAssert([startDate compare:self.dateRange.start] !=  NSOrderedAscending, @"start date not in the scrollable date range");
@@ -378,13 +424,19 @@ typedef enum
 
 #pragma mark - Utilities
 
+
+
+
 // indexPath is in the form (day, month)
 - (NSDate*)dateForDayAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSDateComponents *comp = [NSDateComponents new];
-    comp.month = indexPath.section;
-    comp.day = indexPath.item;
-    return [self.calendar dateByAddingComponents:comp toDate:self.startDate options:0];
+    // add month
+    NSDate* monthDate = [self.startDate nextMonths:indexPath.section];
+    // get start Date Of Mont In page
+    NSDate*  startDateOfMontInSection = [self startDateOfMontInSection: monthDate];
+    // add date
+    NSDate* date = [startDateOfMontInSection nextDays:indexPath.item];
+    return date;
 }
 
 // index path for given date - can be nil if date is not in the loaded range
@@ -425,24 +477,20 @@ typedef enum
 // first day of month at index
 - (NSDate*)dateStartingMonthAtIndex:(NSUInteger)month
 {
+    NSLog(@"dateStartingMonthAtIndex: %lu", month);
     return [self dateForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:month]];
+    //NSDate * dateStartingMonth = [self dateForDayAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:month]];
+    //return [self startDateOfMontInSection:dateStartingMonth];
 }
 
 - (NSUInteger)numberOfDaysForMonthAtIndex:(NSUInteger)month
 {
-	NSDate *date = [self dateStartingMonthAtIndex:month];
-	NSRange range = [self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitMonth forDate:date];
-	return range.length;
+    return 42;
 }
 
 - (NSUInteger)columnForDayAtIndexPath:(NSIndexPath*)indexPath
 {
-	NSDate *date = [self dateForDayAtIndexPath:indexPath];
-	
-	NSUInteger weekday = [self.calendar components:NSCalendarUnitWeekday fromDate:date].weekday;
-	// zero-based, 0 is the first day of week of current calendar
-	weekday = (weekday + 7 - self.calendar.firstWeekday) % 7;
-	return weekday;
+    return 0;
 }
 
 - (MGCDateRange*)dateRangeForEventsRowView:(MGCEventsRowView*)rowView
@@ -1654,3 +1702,5 @@ typedef enum
 }
 
 @end
+
+
