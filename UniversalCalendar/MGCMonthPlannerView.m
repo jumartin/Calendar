@@ -711,16 +711,17 @@ typedef enum
 
 - (MGCMonthPlannerViewDayCell*)viewDayCellAtPoint:(CGPoint)pt
 {
-    NSDate *date = [self dayAtPoint:pt];
-    NSIndexPath *path = [self indexPathForDate:date];
+    CGPoint point = [self.eventsView convertPoint:pt fromView:self];
+    NSIndexPath *path = [self.eventsView indexPathForItemAtPoint:point];
+    NSLog(@"viewDayCellAtPoint path: %@", path);
     MGCMonthPlannerViewDayCell *dayCell = (MGCMonthPlannerViewDayCell*)[self.eventsView cellForItemAtIndexPath:path];
     return dayCell;
 }
 
 - (NSDate*)dayAtPoint:(CGPoint)pt
 {
-    pt = [self.eventsView convertPoint:pt fromView:self];
-    NSIndexPath *path = [self.eventsView indexPathForItemAtPoint:pt];
+    CGPoint point = [self.eventsView convertPoint:pt fromView:self];
+    NSIndexPath *path = [self.eventsView indexPathForItemAtPoint:point];
     if (path) {
         return [self dateForDayAtIndexPath:path];
     }
@@ -1190,6 +1191,9 @@ typedef enum
 	[self endInteraction];
 	
 	NSDate *date = [self dayAtPoint:pt];
+    
+    NSLog(@"didStartLongPressAtPoint: %@", [date toLocalDayMonthYearString]);
+    
 	NSUInteger index;
 	MGCEventView *eventCell = [self eventCellAtPoint:pt date:&date index:&index];
 	
@@ -1241,13 +1245,14 @@ typedef enum
             NSAssert(self.interactiveCell, @"monthPlannerView:cellForNewEventAtDate: can't return nil");
 		}
         else {
-            MGCStandardEventView *cell= [[MGCStandardEventView alloc]initWithFrame:CGRectZero];
+            MGCStandardEventView *cell= [[MGCStandardEventView alloc] initWithFrame:CGRectZero];
             cell.title = NSLocalizedString(@"New Event", nil);
             self.interactiveCell = cell;
         }
         self.interactiveCell.frame = CGRectMake(0, 0, [self.layout columnWidth:0], self.newEventItemHeight);
         self.interactiveCelltouchPoint = CGPointMake([self.layout columnWidth:0]/2., self.newEventItemHeight/2.);
         MGCMonthPlannerViewDayCell *dayCell = [self viewDayCellAtPoint:pt];
+        NSLog(@"interactiveCell: x:%f y:%f", self.interactiveCell.frame.origin.x, self.interactiveCell.frame.origin.y);
         self.interactiveCell.center = dayCell.center;
 	}
 	
@@ -1322,6 +1327,8 @@ typedef enum
     self.dragTimer = nil;
     
     NSDate *day = [self dayAtPoint:pt];
+    NSLog(@"didEndLongPressAtPoint: point:{%f:%f} - %@", pt.x, pt.y, [day toLocalDayMonthYearString]);
+    
     if (day)
     {
         if (!self.isInteractiveCellForNewEvent) // existing event
@@ -1356,10 +1363,13 @@ typedef enum
 
 - (void)handleLongPress:(UILongPressGestureRecognizer*)gesture
 {
-    if (self.style != MGCMonthPlannerStyleEvents)
+    if (self.style != MGCMonthPlannerStyleEvents) {
+        NSLog(@"handleLongPress MGCMonthPlannerStyleEvents");
         return;
+    }
     
-    CGPoint pt = [gesture locationInView:self];
+    CGPoint pt = [gesture locationInView: self];
+    NSLog(@"handleLongPress %f:%f", pt.x, pt.y);
     
     // long press on a cell or an empty space
     if (gesture.state == UIGestureRecognizerStateBegan)

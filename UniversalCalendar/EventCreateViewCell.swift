@@ -16,7 +16,7 @@ public class EventCreateViewCell: MGCEventView {
     public let timeLabel: UILabel = {
         let timeLabel = UILabel.init()
         timeLabel.textColor = UIColor.white
-        timeLabel.font = UIFont.systemFont(ofSize: 15)
+        timeLabel.font = UIFont.systemFont(ofSize: 12)
         return timeLabel
     }()
     
@@ -63,7 +63,7 @@ public class EventCreateViewCell: MGCEventView {
     public func configure(date: Date) {
         eventDate = date
         let format = DateFormatter.init()
-        format.dateFormat = "h:mm a"
+        format.dateFormat = "h:mm a  EE,dd/MM/yy"
         timeLabel.text = format.string(from: date)
     }
     public override func didMoveToSuperview() {
