@@ -69,8 +69,8 @@ extension WeekViewController {
 extension WeekViewController {
     override func dayPlannerView(_ view: MGCDayPlannerView!, viewForNewEventOf type: MGCEventType, at date: Date!) -> MGCEventView! {
         let eventView = EventCreateViewCell.init()
-        eventView.configure(date: date)
-        eventView.onCreateEventBySummary = { summary, date in
+        eventView.configure(date: date, type: type)
+        eventView.onCreateEventBySummary = { summary, date, type in
             view.endInteraction()
         }
         return eventView

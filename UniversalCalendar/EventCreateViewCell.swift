@@ -10,7 +10,7 @@ import Foundation
 
 public class EventCreateViewCell: MGCEventView {
     
-    public var onCreateEventBySummary: ((String, Date) -> ())? = nil
+    public var onCreateEventBySummary: ((String, Date, MGCEventType) -> ())? = nil
     private let timeLabelHeight: CGFloat = 18
     private let labelMargin: CGFloat = 4
     public let timeLabel: UILabel = {
@@ -31,6 +31,7 @@ public class EventCreateViewCell: MGCEventView {
         return summaryTextView
     }()
     public var eventDate: Date = Date()
+    public var type: MGCEventType = .timedEventType
     
     public var container: UIView {
         if let superview = self.superview, !superview.isKind(of: UICollectionView.self) {
@@ -60,11 +61,17 @@ public class EventCreateViewCell: MGCEventView {
         container.clipsToBounds = false
     }
     
-    public func configure(date: Date) {
-        eventDate = date
-        let format = DateFormatter.init()
-        format.dateFormat = "h:mm a  EE,dd/MM/yy"
-        timeLabel.text = format.string(from: date)
+    public func configure(date: Date, type: MGCEventType = .timedEventType) {
+        self.eventDate = date
+        self.type = type
+        switch type {
+        case .allDayEventType:
+            timeLabel.isHidden = true
+        default:
+            let format = DateFormatter.init()
+            format.dateFormat = "h:mm a  EE,dd/MM/yy"
+            timeLabel.text = format.string(from: date)
+        }
     }
     public override func didMoveToSuperview() {
         super.didMoveToSuperview()
@@ -74,8 +81,13 @@ public class EventCreateViewCell: MGCEventView {
     public override var frame: CGRect {
         didSet {
             print(frame)
-            timeLabel.frame = CGRect.init(origin: CGPoint.init(x: labelMargin, y: labelMargin), size: CGSize.init(width: frame.width - 10, height: timeLabelHeight))
-            summaryTextView.frame = CGRect.init(origin: CGPoint.init(x: 0, y: timeLabelHeight + labelMargin), size: CGSize.init(width: frame.width - 0, height: frame.height - timeLabelHeight - labelMargin))
+            switch self.type {
+            case .allDayEventType:
+                summaryTextView.frame = frame
+            default:
+                timeLabel.frame = CGRect.init(origin: CGPoint.init(x: labelMargin, y: labelMargin), size: CGSize.init(width: frame.width - 10, height: timeLabelHeight))
+                summaryTextView.frame = CGRect.init(origin: CGPoint.init(x: 0, y: timeLabelHeight + labelMargin), size: CGSize.init(width: frame.width - 0, height: frame.height - timeLabelHeight - labelMargin))
+            }
         }
     }
 }
@@ -84,16 +96,19 @@ extension EventCreateViewCell: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         summaryTextView.frame.size = textView.contentSize
         // For month
-        let newHeight = textView.contentSize.height + timeLabelHeight + labelMargin
+        var newHeight = textView.contentSize.height
+        if self.type == .timedEventType {
+            newHeight = newHeight + timeLabelHeight + labelMargin
+        }
         if newHeight != container.frame.size.height {
-            container.frame.size = CGSize.init(width: container.frame.size.width, height: textView.contentSize.height + timeLabelHeight + labelMargin)
+            container.frame.size = CGSize.init(width: container.frame.size.width, height: newHeight)
             summaryTextView.setContentOffset(CGPoint.zero, animated: false)
         }
     }
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
-            onCreateEventBySummary?(textView.text, eventDate)
+            onCreateEventBySummary?(textView.text, eventDate, type)
             return false
         }
         return true
