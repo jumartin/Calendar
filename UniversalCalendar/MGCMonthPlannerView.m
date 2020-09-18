@@ -45,6 +45,21 @@
 
 @implementation NSDate(Utils)
 
+-(BOOL) isLaterThanOrEqualTo:(NSDate*)date {
+    return !([self compare:date] == NSOrderedAscending);
+}
+
+-(BOOL) isEarlierThanOrEqualTo:(NSDate*)date {
+    return !([self compare:date] == NSOrderedDescending);
+}
+-(BOOL) isLaterThan:(NSDate*)date {
+    return ([self compare:date] == NSOrderedDescending);
+
+}
+-(BOOL) isEarlierThan:(NSDate*)date {
+    return ([self compare:date] == NSOrderedAscending);
+}
+
 -(NSDate *) toLocalTime {
   NSTimeZone *tz = [NSTimeZone defaultTimeZone];
   NSInteger seconds = [tz secondsFromGMTForDate: self];
@@ -75,6 +90,20 @@
     NSDateComponents *monthComp = [NSDateComponents new];
     [monthComp setDay:number];
     return [calendar dateByAddingComponents:monthComp toDate: self options:0];
+}
+
+-(NSInteger) monthsSinceDate:(NSDate *) date {
+    if ([date isEarlierThan:self] == TRUE) {
+        return [[[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:date toDate:self options:0] month];
+    }
+    return [[[NSCalendar currentCalendar] components:NSCalendarUnitMonth fromDate:self toDate:date options:0] month];
+}
+
+-(NSInteger) daysSinceDate:(NSDate *) date {
+    if ([date isEarlierThan:self] == TRUE) {
+        return [[[NSCalendar currentCalendar] components:NSCalendarUnitDay fromDate:date toDate:self options:0] day];
+    }
+    return [[[NSCalendar currentCalendar] components:NSCalendarUnitDay fromDate:self toDate:date options:0] day];
 }
 
 @end
@@ -285,16 +314,20 @@ typedef enum
     
     MGCDateRange *range = nil;
     
-    NSArray *visible = [[self.eventsView indexPathsForVisibleItems]sortedArrayUsingSelector:@selector(compare:)];
+    NSArray *visible = [[self.eventsView indexPathsForVisibleItems] sortedArrayUsingSelector:@selector(compare:)];
     if (visible.count) {
         NSDate *first = [self dateForDayAtIndexPath:[visible firstObject]];
         NSDate *last = [self dateForDayAtIndexPath:[visible lastObject]];
-        
+        NSLog(@"visibleDays first: %@", [first toLocalDayMonthYearString]);
+        NSLog(@"visibleDays last: %@", [last toLocalDayMonthYearString]);
         // end date of the range is excluded, so set it to next day
         last = [self.calendar dateByAddingUnit:NSCalendarUnitDay value:1 toDate:last options:0];
         
         range = [MGCDateRange dateRangeWithStart:first end:last];
     }
+    
+    NSLog(@"visibleDays range: %@ - %@", [range.start toLocalDayMonthYearString], [range.end toLocalDayMonthYearString]);
+    
     return range;
 }
 
@@ -367,9 +400,7 @@ typedef enum
     if (_startDate == nil) {
         NSDate* currentDate = [NSDate date];
         NSDate* startOfMonthForDate = [self.calendar mgc_startOfMonthForDate: currentDate];
-        
         _startDate = startOfMonthForDate;
-        
         if (self.dateRange && ![self.dateRange containsDate:_startDate]) {
             _startDate = self.dateRange.start;
         }
@@ -439,13 +470,23 @@ typedef enum
 }
 
 // index path for given date - can be nil if date is not in the loaded range
-- (NSIndexPath*)indexPathForDate:(NSDate*)date
-{
+- (NSIndexPath*)indexPathForDate:(NSDate*)date {
     NSIndexPath *indexPath = nil;
-    if ([[self loadedDateRange] containsDate:date]) {
-        NSDateComponents *comps = [self.calendar components:NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self.startDate toDate:date options:0];
-        indexPath = [NSIndexPath indexPathForItem:comps.day inSection:comps.month];
-    }
+    NSLog(@"\n\n");
+    
+    NSDate * centerDate = [self monthFromOffset:self.eventsView.contentOffset.x];
+    NSLog(@"\n\n\nindexPathForDate centerDate: %@", [centerDate toLocalDayMonthYearString]);
+    
+    NSDate *firstDayOfPage = [self startDateOfMontInSection:centerDate];
+    NSLog(@"indexPathForDate firstDayOfPage: %@", [firstDayOfPage toLocalDayMonthYearString]);
+    
+    //if ([[self loadedDateRange] containsDate:date]) {
+        NSInteger section = [self.startDate monthsSinceDate: centerDate];
+        NSInteger item = [date daysSinceDate:firstDayOfPage];
+        indexPath = [NSIndexPath indexPathForItem:item inSection:section];
+        NSLog(@"indexPathForDate indexPath: %lu, %lu, %@, %@", section, item, [firstDayOfPage toLocalDayMonthYearString], [date toLocalDayMonthYearString]);
+    //}
+
     return indexPath;
 }
 
@@ -465,7 +506,6 @@ typedef enum
         if (path) {
             [paths addObject:path];
         }
-        
         comps.day++;
         date = [self.calendar dateByAddingComponents:comps toDate:range.start options:0];
     }
@@ -527,11 +567,19 @@ typedef enum
     NSDate *month = self.startDate;
     CGFloat x = xOffset > 0 ? self.eventsView.frame.size.width : 0;
     
-    while (x < fabs(xOffset)) {
+    if (self.eventsView.contentOffset.x <= self.eventsView.bounds.size.width) {
+        return month;
+    }
+    
+    while (x <= fabs(xOffset)) {
         month = [self.calendar dateByAddingUnit:NSCalendarUnitMonth value:(xOffset > 0 ? 1 : -1) toDate:month options:0];
+        NSLog(@"monthFromOffset **** month add: %d", (xOffset > 0 ? 1 : -1));
         x += self.eventsView.frame.size.width;
     };
-    
+    NSLog(@"monthFromOffset month: x %f", x);
+    NSLog(@"monthFromOffset month: %f:%f | %@", self.eventsView.contentOffset.x, self.eventsView.bounds.size.width, [month toLocalDayMonthYearString]);
+    NSLog(@"monthFromOffset month: %f", self.eventsView.contentOffset.x/self.eventsView.bounds.size.width);
+    NSLog(@"monthFromOffset month: %li", (long)[month monthsSinceDate:self.startDate]);
     return month;
 }
 
@@ -690,19 +738,22 @@ typedef enum
 	return nil;
 }
 
-- (MGCEventView*)eventCellAtPoint:(CGPoint)pt date:(NSDate**)date index:(NSUInteger*)index
-{
-    for (MGCEventsRowView *rowView in [self visibleEventRows])
-    {
+- (MGCEventView*)eventCellAtPoint:(CGPoint)pt date:(NSDate**)date index:(NSUInteger*)index {
+    
+    NSLog(@"eventCellAtPoint: {%f:%f}", pt.x, pt.y);
+    
+    for (MGCEventsRowView *rowView in [self visibleEventRows]) {
+        
         CGPoint ptInRow = [rowView convertPoint:pt fromView:self];
         NSIndexPath *path = [rowView indexPathForCellAtPoint:ptInRow];
-        if (path)
-        {
+        if (path) {
             NSDateComponents *comps = [NSDateComponents new];
             comps.day = path.section;
             *date = [self.calendar dateByAddingComponents:comps toDate:rowView.referenceDate options:0];
             *index = path.item;
-            return [rowView cellAtIndexPath:path];
+            MGCEventView* cell = [rowView cellAtIndexPath:path];
+            NSLog(@"eventCellAtPoint rowView: {%f:%f} %ld %ld", ptInRow.x, ptInRow.y, (long)path.item, (long)path.section);
+            return cell;
         }
     }
     
@@ -722,6 +773,7 @@ typedef enum
 {
     CGPoint point = [self.eventsView convertPoint:pt fromView:self];
     NSIndexPath *path = [self.eventsView indexPathForItemAtPoint:point];
+    NSLog(@"dayAtPoint path: %@", path);
     if (path) {
         return [self dateForDayAtIndexPath:path];
     }
@@ -1008,6 +1060,9 @@ typedef enum
     NSMutableArray *rows = [NSMutableArray new];
     
     MGCDateRange *visibleRange = [self visibleDays];
+    
+    NSLog(@"visibleEventRows self.eventRows: %lu", (unsigned long)[self.eventRows count]);
+    
     if (visibleRange) {
         
         for (NSDate *date in self.eventRows) {
@@ -1016,6 +1071,9 @@ typedef enum
             }
         }
     }
+    
+    NSLog(@"visibleEventRows rows: %lu", (unsigned long)[rows count]);
+    
     return rows;
 }
 
@@ -1044,38 +1102,42 @@ typedef enum
 {
     
     MGCEventsRowView * eventsView = (MGCEventsRowView*)[self.reuseQueue dequeueReusableObjectWithReuseIdentifier:EventsRowViewIdentifier];
-    
+
     NSDate *referenceDate = [self startDateOfMontInSection:rowStart];
-    
+
     NSLog(@"referenceDate: %@ - %@", [rowStart toLocalDayMonthYearString], [referenceDate toLocalDayMonthYearString]);
-    
+
     NSUInteger first = [self.calendar components:NSCalendarUnitDay fromDate:referenceDate toDate:rowStart options:0].day;
     NSUInteger numDays = 7;
     NSLog(@"first - numDays: %lu - %lu", (unsigned long)first, (unsigned long)numDays);
-    
+
     eventsView.referenceDate = referenceDate;
     eventsView.scrollEnabled = NO;
     eventsView.itemHeight = self.itemHeight;
     eventsView.delegate = self;
     eventsView.daysRange =  NSMakeRange(first, numDays);
     [eventsView reload];
+
+    [self cacheRow:eventsView forDate:rowStart];
     
     return eventsView;
     
-    //TODO: [THANH] perfomant by caching
-    
+//    //TODO: [THANH] perfomant by caching
+//
 //    MGCEventsRowView *eventsView = [self.eventRows objectForKey: rowStart];
+//
+//    NSLog(@"eventsRowViewAtDate rowStart: %@", [rowStart toLocalDayMonthYearString]);
 //
 //    if (eventsView == nil) {
 //        eventsView = (MGCEventsRowView*)[self.reuseQueue dequeueReusableObjectWithReuseIdentifier:EventsRowViewIdentifier];
 //
 //        NSDate *referenceDate = [self startDateOfMontInSection:rowStart]; //[self.calendar mgc_startOfMonthForDate:rowStart];
 //
-//        NSLog(@"referenceDate: %@ - %@", [rowStart toLocalDayMonthYearString], [referenceDate toLocalDayMonthYearString]);
+//        NSLog(@"eventsRowViewAtDate referenceDate: %@ - %@", [rowStart toLocalDayMonthYearString], [referenceDate toLocalDayMonthYearString]);
 //
 //        NSUInteger first = [self.calendar components:NSCalendarUnitDay fromDate:referenceDate toDate:rowStart options:0].day;
-//        NSUInteger numDays = 7;//[self.calendar rangeOfUnit:NSCalendarUnitDay inUnit:NSCalendarUnitWeekOfMonth forDate:rowStart].length;
-//        NSLog(@"first - numDays: %lu - %lu", (unsigned long)first, (unsigned long)numDays);
+//        NSUInteger numDays = 7;
+//        NSLog(@"eventsRowViewAtDate first - numDays: %lu - %lu", (unsigned long)first, (unsigned long)numDays);
 //
 //        eventsView.referenceDate = referenceDate;
 //        eventsView.scrollEnabled = NO;
@@ -1084,7 +1146,7 @@ typedef enum
 //        eventsView.daysRange =  NSMakeRange(first, numDays);
 //        [eventsView reload];
 //    } else {
-//        NSLog(@"eventsView != nil => load from cache: referenceDate %@ - range(%lu:%lu)", [eventsView.referenceDate toLocalDayMonthYearString], eventsView.daysRange.location, eventsView.daysRange.length);
+//        NSLog(@"eventsRowViewAtDate eventsView != nil => load from cache: referenceDate %@ - range(%lu:%lu)", [eventsView.referenceDate toLocalDayMonthYearString], eventsView.daysRange.location, eventsView.daysRange.length);
 //    }
 //
 //    [self cacheRow:eventsView forDate:rowStart];
@@ -1092,17 +1154,20 @@ typedef enum
 //    return eventsView;
 }
 
-- (void)cacheRow:(MGCEventsRowView*)eventsView forDate:(NSDate*)date
+- (void)cacheRow:(MGCEventsRowView*)eventsView forDate:(NSDate*)startDate
 {
-    MGCEventsRowView *rowView = [self.eventRows objectForKey:date];
+    MGCEventsRowView *rowView = [self.eventRows objectForKey:startDate];
+    
+    NSLog(@"cacheRow rowView: %lu - %lu : %@", (unsigned long)rowView.daysRange.length, (unsigned long)rowView.daysRange.location, [startDate toLocalDayMonthYearString]);
+    
     if (rowView)
     {
         // if already in the cache, we remove it first
         // because we want to keep the list in strict MRU order
-        [self.eventRows removeObjectForKey:date];
+        [self.eventRows removeObjectForKey:startDate];
     }
     
-    [self.eventRows setObject:eventsView forKey:date];
+    [self.eventRows setObject:eventsView forKey:startDate];
     
     if (self.eventRows.count >= kRowCacheSize)
     {
@@ -1110,15 +1175,15 @@ typedef enum
     }
 }
 
--(MGCMonthPlannerWeekView*)monthRowViewAtIndexPath:(NSIndexPath*)indexPath
-{
+-(MGCMonthPlannerWeekView*)monthRowViewAtIndexPath:(NSIndexPath*)indexPath {
     NSDate *rowDate = [self dateForDayAtIndexPath:indexPath];
+    NSLog(@"\n\n");
     NSLog(@"monthRowViewAtIndexPath rowStart: {%lu:%lu} - %@", indexPath.section, indexPath.row, [rowDate toLocalDayMonthYearString]);
-    MGCMonthPlannerWeekView *rowView = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthRowViewKind withReuseIdentifier:MonthRowViewIdentifier forIndexPath:indexPath];
-   
+    MGCMonthPlannerWeekView *rowView = [self.eventsView dequeueReusableSupplementaryViewOfKind:MonthRowViewKind
+                                                                           withReuseIdentifier:MonthRowViewIdentifier
+                                                                                  forIndexPath:indexPath];
     MGCEventsRowView *eventsView = [self eventsRowViewAtDate:rowDate];
     rowView.eventsView = eventsView;
-    
     return rowView;
 }
 
@@ -1162,14 +1227,14 @@ typedef enum
     return [MGCDateRange dateRangeWithStart:start end:end];
 }
 
-- (void)highlightDaysInRange:(MGCDateRange*)range
-{
-    if (range)
-    {
+- (void)highlightDaysInRange:(MGCDateRange*)range {
+    NSLog(@"highlightDaysInRange: %@ - %@", [range.start toLocalDayMonthYearString], [range.end toLocalDayMonthYearString]);
+    if (range) {
         NSArray *paths = [self indexPathsForDaysInRange:[self daysRangeFromDateRange:range]];
         for (NSIndexPath *path in paths)
         {
             MGCMonthPlannerViewDayCell *dayCell = (MGCMonthPlannerViewDayCell*)[self.eventsView cellForItemAtIndexPath:path];
+            NSLog(@"highlightDaysInRange: highlighted = YES");
             dayCell.highlighted = YES;
         }
     }
@@ -1178,6 +1243,7 @@ typedef enum
         NSArray *visible = [self.eventsView visibleCells];
         for (MGCMonthPlannerViewDayCell *cell in visible)
         {
+            NSLog(@"highlightDaysInRange: highlighted = NO");
             cell.highlighted = NO;
         }
     }
@@ -1199,7 +1265,9 @@ typedef enum
 	
 	if (eventCell)  // a cell was touched
 	{
-        if (!self.canMoveEvents) return NO;
+        if (!self.canMoveEvents) {
+            return NO;
+        }
         
 		if ([self.dataSource respondsToSelector:@selector(monthPlannerView:canMoveCellForEventAtIndex:date:)])
 		{
@@ -1231,6 +1299,7 @@ typedef enum
 
 		// adjust the frame
 		CGRect frame = [self.eventsView convertRect:eventCell.bounds fromView:eventCell];
+        NSLog(@"frame: x:%f y:%f w:%f h:%f", frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 		self.interactiveCell.frame = frame;
 	}
 	else	// an empty space was touched
@@ -1270,23 +1339,19 @@ typedef enum
 	[self highlightDaysInRange:nil];
 	
 	NSDate *hoveredDate = [self dayAtPoint:point];
-	if (hoveredDate)
-	{
+	if (hoveredDate) {
 		NSDate *highlightStart = hoveredDate;
-		if (self.dragEventDate)
-		{
+		if (self.dragEventDate) {
 			NSDateComponents *comps = [NSDateComponents new];
 			comps.day = self.dragEventTouchDayOffset;
 			highlightStart = [self.calendar dateByAddingComponents:comps toDate:hoveredDate options:0];
 		}
 		
 		NSDateComponents *comps = [NSDateComponents new];
-		if (self.isInteractiveCellForNewEvent)
-		{
+		if (self.isInteractiveCellForNewEvent) {
 			comps.day = 1;
 		}
-		else
-		{
+		else {
 			comps.day = [[self daysRangeFromDateRange:self.dragEventDateRange]components:NSCalendarUnitDay forCalendar:self.calendar].day;
 		}
 		NSDate *highlightEnd = [self.calendar dateByAddingComponents:comps toDate:highlightStart options:0];
@@ -1432,7 +1497,7 @@ typedef enum
 
 - (NSInteger)collectionView:(UICollectionView*)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 42; //[self numberOfDaysForMonthAtIndex:section];
+    return 42;
 }
 
 - (UICollectionViewCell*)collectionView:(UICollectionView*)collectionView cellForItemAtIndexPath:(NSIndexPath*)indexPath
@@ -1542,21 +1607,16 @@ typedef enum
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString*)kind atIndexPath:(NSIndexPath*)indexPath
 {
-	if ([kind isEqualToString:MonthBackgroundViewKind])
-	{
-        NSLog(@"viewForSupplementaryElementOfKind MGCMonthPlannerBackgroundView: %lu:%lu", indexPath.section, indexPath.row);
+	if ([kind isEqualToString:MonthBackgroundViewKind]) {
         MGCMonthPlannerBackgroundView * view = [self backgroundViewForMonthAtIndexPath:indexPath];
         return view;
 	}
     else if ([kind isEqualToString:MonthHeaderViewKind]) {
-        NSLog(@"viewForSupplementaryElementOfKind MonthHeaderViewKind: %lu:%lu", indexPath.section, indexPath.row);
         return [self headerViewForMonthAtIndexPath:indexPath];
     }
 	else if ([kind isEqualToString:MonthRowViewKind]) {
-        NSLog(@"viewForSupplementaryElementOfKind monthRowViewAtIndexPath: %lu:%lu", indexPath.section, indexPath.row);
 		return [self monthRowViewAtIndexPath:indexPath];
 	}
-    NSLog(@"viewForSupplementaryElementOfKind nil: %lu:%lu", indexPath.section, indexPath.row);
 	return nil;
 }
 
