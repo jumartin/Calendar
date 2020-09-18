@@ -32,7 +32,7 @@ extension MonthViewController {
     override func monthPlannerView(_ view: MGCMonthPlannerView!, cellForNewEventAt date: Date!) -> MGCEventView! {
         let eventView = EventCreateViewCell.init()
         eventView.configure(date: date)
-        eventView.onCreateEventBySummary = { summary, date in
+        eventView.onCreateEventBySummary = { summary, date, type in
             view.endInteraction()
         }
         return eventView
